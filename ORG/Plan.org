@@ -1,0 +1,34 @@
+* TODO сделать схему
+* TODO отладить схему
+* TODO включить в схему програму с розбери
+* TODO собрать схему
+  - Note taken on [2018-10-29 Пн 20:19] \\
+    lats add anoser note
+  sdfsdf sdf sdf sdfsdf
+sdfsdfsdf
+sdfsdf sd fsd fd
+    - some note?\\
+      Intrasting where it puting this
+
+  1) ;;df
+  2) [X] 
+  3) [X] sdf
+  4) 
+  5) sdfsdfs sdf sdf sd[fn:1] 
+  6) 
+* TODO настроить росбери пай
+- dfd
+- s
+- 
+- 
+* TODO написать програму к росбери
+* TODO Сдать работу
+  DEADLINE: <2018-11-26 Пн>
+* TODO отладить механику с електроникой
+  SCHEDULED: <2018-11-26 Пн 23:22>
+* TODO Зкончит работу
+  SCHEDULED: <2018-11-26 Пн 20:40> DEADLINE: <2018-12-09 Вс>
+
+* Footnotes
+
+[fn:1] I not undestend ecthakli how this must work
