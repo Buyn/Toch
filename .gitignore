@@ -4,3 +4,8 @@
 *.pdsbak
 .ssh
 Billd
+.project
+.pydevproject
+virtualenv/
+__pycache__
+*.pyc
