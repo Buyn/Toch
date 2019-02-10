@@ -1,3 +1,4 @@
+from model import spicom
 
 # Bitbang'd SPI interface with an MCP3008 ADC device{{{
 # MCP3008 is 8-channel 10-bit analog to digital converter
@@ -28,6 +29,7 @@ BUS = 0
 DEVICE = 0
 #Initialze the SPI # {{{
 spi = spidev.SpiDev()
+com = spicom.SPICom()
 # }}}
 
 #Varialbes for the Debounce # {{{
