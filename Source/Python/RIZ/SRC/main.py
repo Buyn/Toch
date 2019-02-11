@@ -1,4 +1,3 @@
-from presenter.spicom import SPICom
 
 # Bitbang'd SPI interface with an MCP3008 ADC device{{{
 # MCP3008 is 8-channel 10-bit analog to digital converter
@@ -24,6 +23,7 @@ import spidev
 import time
 import sys
 from model.globalsvar import * 
+from presenter.spicom import SPICom
 # }}}
 
 #Initialze the SPI # {{{
@@ -115,7 +115,11 @@ def mainlope():
             continue
         if  var == "led01":
             print ("set Led line to 01")
-            ledstm.execute(C_LED_01)
+            ledstm.execute([C_LED_01])
+            continue
+        if  var == "t":
+            print ("Test")
+            ledstm.execute([C_LED_01, 0x01, 0x0f])
             continue
         writeNumber(var)
         print ("RPI: Hi Arduino, I sent you ", var)
