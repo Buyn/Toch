@@ -25,6 +25,9 @@ BUS = 0
 DEVICE = 0
 #Initialze the SPI # {{{
 spi = spidev.SpiDev()
+#spi.max_speed_hz = 5000
+#spi.mode = 0b00
+#spi.bits_per_word = 8
 # }}}
 
 #Varialbes for the Debounce # {{{
@@ -59,7 +62,8 @@ def writeNumber(value):
     # create spi object
     # open spi port 0, device (CS) 1
     spi.open(BUS,DEVICE)
-    spi.writebytes([hex(value)])
+    spi.writebytes([hex(1)])
+    #spi.writebytes([hex(value)])
     spi.close()
     return -1
 
@@ -67,7 +71,13 @@ def sendOn():
     # create spi object
     # open spi port 0, device (CS) 1
     spi.open(BUS,DEVICE)
-    resp = spi.xfer([0x31,0x30,0X0A])
+    spi.max_speed_hz = 18000000
+    spi.mode = 0b00
+    spi.lsbfirst = False
+    resp = spi.xfer([0x31])
+    resp = spi.xfer([0x41])
+    resp = spi.xfer([0x51])
+    #resp = spi.xfer([0x31,0x30,0X0A])
     spi.close()
     return resp
 
@@ -75,14 +85,23 @@ def sendOff():
     # create spi object
     # open spi port 0, device (CS) 1
     spi.open(BUS,DEVICE)
-    resp = spi.xfer([0x31,0x31,0X0A])
+    spi.max_speed_hz = 18000000
+    spi.mode = 0b00
+    spi.lsbfirst = False
+    resp = spi.xfer([0x32])
+    #resp = spi.xfer([0x32,0x33,0X0A])
     spi.close()
     return resp
 
 def readNumber():
     # number = bus.read_byte_data(address, 1)
     number = 0 
-    number = spi.readbytes(1)
+    spi.open(BUS,DEVICE)
+    spi.max_speed_hz = 18000000
+    spi.mode = 0b00
+    spi.lsbfirst = False
+    #number = spi.readbytes(1)
+    spi.close()
     return number
 
 if __name__ == '__main__':
@@ -92,14 +111,12 @@ if __name__ == '__main__':
             if not var:
                 continue
             if  var == 1:
-                print "ON"
-                print sendOn()
-            if  var == 0:
-                print "OFF"
-                print sendOff()
+                print "On - ", sendOn()
+            if  var == 2:
+                print "Off - ", sendOff()
             if  var == "c":
                 print "Command"
-            writeNumber(var)
+            #writeNumber(var)
             print "RPI: Hi Arduino, I sent you ", var
             # sleep one second
             number = readNumber()
@@ -110,9 +127,11 @@ if __name__ == '__main__':
             #sendings(sendDate)
             #resiving()
             #printingResult()
+
             #val = readAdc(0)
             #print "ADC Result: ", str(val)
             #time.sleep(1)
     except KeyboardInterrupt:
         spi.close() 
         sys.exit(0)
+

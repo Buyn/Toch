@@ -1,4 +1,4 @@
-from model import spicom
+from presenter.spicom import SPICom
 
 # Bitbang'd SPI interface with an MCP3008 ADC device{{{
 # MCP3008 is 8-channel 10-bit analog to digital converter
@@ -23,13 +23,12 @@ Created on 10 февр. 2019 г.
 import spidev
 import time
 import sys
+from model.globalsvar import * 
 # }}}
 
-BUS = 0 
-DEVICE = 0
 #Initialze the SPI # {{{
 spi = spidev.SpiDev()
-com = spicom.SPICom()
+ledstm = SPICom(LEDSTM_ADRRESS)
 # }}}
 
 #Varialbes for the Debounce # {{{
@@ -59,7 +58,7 @@ def readAdc(channel):
     r = spi.xfer2(buildReadCommand(channel))
     return processAdcValue(r)
         
-#End of the Script
+
 def writeNumber(value):
     # create spi object
     # open spi port 0, device (CS) 1
@@ -72,7 +71,13 @@ def sendOn():
     # create spi object
     # open spi port 0, device (CS) 1
     spi.open(BUS,DEVICE)
-    resp = spi.xfer([0x31,0x30,0X0A])
+    spi.max_speed_hz = 18000000
+    spi.mode = 0b00
+    spi.lsbfirst = False
+    resp = spi.xfer([0x31])
+    resp = spi.xfer([0x41])
+    resp = spi.xfer([0x51])
+    #resp = spi.xfer([0x31,0x30,0X0A])
     spi.close()
     return resp
 
@@ -80,7 +85,11 @@ def sendOff():
     # create spi object
     # open spi port 0, device (CS) 1
     spi.open(BUS,DEVICE)
-    resp = spi.xfer([0x31,0x31,0X0A])
+    spi.max_speed_hz = 18000000
+    spi.mode = 0b00
+    spi.lsbfirst = False
+    resp = spi.xfer([0x32])
+    #resp = spi.xfer([0x32,0x33,0X0A])
     spi.close()
     return resp
 
@@ -103,6 +112,10 @@ def mainlope():
             print (sendOff())
         if  var == "c":
             print ("Command")
+            continue
+        if  var == "led01":
+            print ("set Led line to 01")
+            ledstm.execute(C_LED_01)
             continue
         writeNumber(var)
         print ("RPI: Hi Arduino, I sent you ", var)
