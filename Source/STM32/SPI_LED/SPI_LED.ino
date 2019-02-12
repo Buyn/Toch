@@ -22,11 +22,17 @@
 #define STEKSIZE 30   
 #define TITLEABOUT "SPI LED v 0.1"
 //Commands list
+//LED comands
 #define LEDSTART		0x11
 #define LEDSTOP 		0x10
 #define LEDSET	 		0x14
-#define LED01SET		0x0A
-#define LED02SET		0x0B
+#define LED01SET		0x1A
+#define LED02SET		0x1B
+//Stak commands
+#define ENDOFSESION			0xFF
+#define ENDOFFILE				0xEF
+#define EXECUTE				0xAA
+
 /*}}}*/
 /*Varibls Block{{{*/
 RGB_LED led_Line(RBG_PIN_R, RBG_PIN_G, RBG_PIN_B);
@@ -90,20 +96,70 @@ void execute_command(void){
 		back_msg = command_stak_point;
 		return;
 		}
-	switch (msg) {
+	switch (msg) {/*{{{*/
+		case LEDSTART:/*{{{*/
+			Serial.println("Start LED");
+			led_activ = true;
+			command_stak_point = 0;
+			test.trige();
+			back_msg = 0;
+			break;/*}}}*/
+		case LEDSTOP:/*{{{*/
+			Serial.println("Stop LED");
+			led_activ = false;
+			command_stak_point = 0;
+			test.trige();
+			back_msg = 0;
+			break;/*}}}*/
+		case LED01SET:/*{{{*/
+			Serial.println("Set Led 01");
+				for (int i = 0; i < 3; i++) {
+					ledstate01[i] = command_stak[i];		
+				}
+			command_stak_point = 0;
+			test.trige();
+			back_msg = 0;
+			break;/*}}}*/
+		case LED02SET:/*{{{*/
+			Serial.println("Set Led 02");
+				for (int i = 0; i < 3; i++) {
+					ledstate02[i] = command_stak[i];		
+				}
+			command_stak_point = 0;
+			test.trige();
+			back_msg = 0;
+			break;/*}}}*/
 		case LEDSET:/*{{{*/
 			Serial.println("To Led Fade");
-			led_Line.fade_to( command_stak[0], 0, 0);
 			led_Line.fade_to( command_stak[0], command_stak[1], command_stak[2]);
 			led_Line.set_speed(command_stak[3]);
 			command_stak_point = 0;
+			test.trige();
+			back_msg = 0;
+			break;/*}}}*/
+		case EXECUTE:/*{{{*/
+			Serial.println("Execute");
+			commands_waiting = 0;
+			test.trige();
+			back_msg = command_stak_point;
+			break;/*}}}*/
+		case ENDOFFILE:/*{{{*/
+			Serial.println("ENDOFFILE");
+			commands_waiting = 0;
+			test.trige();
+			back_msg = command_stak_point;
+			break;/*}}}*/
+		case ENDOFSESION:/*{{{*/
+			Serial.println("ENDOFSESION");
+			spi_sesion = false;
 			test.trige();
 			break;/*}}}*/
 		default:/*{{{*/
 			Serial.println("Error!!!");
 			test.trige();
+			back_msg = 1;
 			/*}}}*/
-			}
+			}/*}}}*/
 	} //}}}
 
 /*   spirotine   *  {{{ */
