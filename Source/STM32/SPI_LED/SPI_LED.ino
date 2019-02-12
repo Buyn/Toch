@@ -164,8 +164,9 @@ void execute_command(void){
 
 /*   spirotine   *  {{{ */
 void spirutine(void){
-	if (!spi_pasiv) msg = SPI.transfer(back_msg); 
-	else msg = SPI.transfer(); 
+	//if (!spi_pasiv) 
+		msg = SPI.transfer(back_msg); 
+	//else { msg = SPI.transfer(); }
 	if (!spi_sesion) {/*{{{*/
 		back_msg = msg;	
 		spi_sesion = true;
@@ -230,7 +231,7 @@ void loop() {/*{{{*/
 		Serial.println("LED line Done");
 		led_loop();
 		}/*}}}*/
-	if (digitalRead(SPI_CS_PIN)>=HIGH) {{{{
+	if (digitalRead(SPI_CS_PIN)>=HIGH) { //{{{
 		spirutine();
 		}/*}}}*/
 	led_Line.runtime();

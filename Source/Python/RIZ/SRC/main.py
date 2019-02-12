@@ -99,6 +99,49 @@ def readNumber():
     number = spi.readbytes(1)
     return number
 
+
+def sth(param0):
+    return hex(int(param0))
+
+
+def ledcommand(elm_var):
+    if (elm_var[1] == "set"):
+        print("Set led = ", 
+              SC_LEDSET, 
+              sth(elm_var[2]), 
+              sth(elm_var[3]), 
+              sth(elm_var[4]), 
+              sth(elm_var[5]))
+        ledstm.execute([SC_LEDSET, 
+                      sth(elm_var[2]), 
+                      sth(elm_var[3]), 
+                      sth(elm_var[4]), 
+                      sth(elm_var[5])]) 
+    if (elm_var[1] == "01"):
+        print("Set led 01 = ", 
+              SC_LED01SET, 
+              sth(elm_var[2]), 
+              sth(elm_var[3]), 
+              sth(elm_var[4]), 
+              sth(elm_var[5]))
+        ledstm.execute([SC_LED01SET, 
+                      sth(elm_var[2]), 
+                      sth(elm_var[3]), 
+                      sth(elm_var[4]), 
+                      sth(elm_var[5])]) 
+    if (elm_var[1] == "02"):
+        print("Set led 02 = ", 
+              SC_LED02SET, 
+              sth(elm_var[2]), 
+              sth(elm_var[3]), 
+              sth(elm_var[4]), 
+              sth(elm_var[5]))
+        ledstm.execute([SC_LED02SET, 
+                      sth(elm_var[2]), 
+                      sth(elm_var[3]), 
+                      sth(elm_var[4]), 
+                      sth(elm_var[5])]) 
+
 def mainlope():
     while True:
         var = input("Enter Command: ")
@@ -113,13 +156,27 @@ def mainlope():
         if  var == "c":
             print ("Command")
             continue
-        if  var == "led01":
-            print ("set Led line to 01")
-            ledstm.execute([C_LED_01])
+        if  var == "ledstart":
+            print ("Start LED")
+            ledstm.execute([SC_LEDSTART])
+            continue
+        if  var == "ledset":
+            print ("Stop LED")
+            ledstm.execute([SC_LEDSTOP])
+            continue
+        if  var == "ledstop":
+            print ("Stop LED")
+            ledstm.execute([SC_LEDSTOP])
             continue
         if  var == "t":
             print ("Test")
             ledstm.execute([C_LED_01, 0x01, 0x0f])
+            continue
+        elm_var = None
+        elm_var = var.split(' ')
+        if (len(elm_var)>1):
+            if (elm_var[0] == 'led'):
+                ledcommand(elm_var)
             continue
         writeNumber(var)
         print ("RPI: Hi Arduino, I sent you ", var)
