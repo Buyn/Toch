@@ -20,7 +20,7 @@ LED test(LED_BUILTIN);
 /*}}}*/
 
 void setup(){/*{{{*/
-	//enable serial datada print
+	//enable serial data print
 	test.trige();
 	Serial.begin(9600); 
 	Serial.println("RBG LED v 0.1");

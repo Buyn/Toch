@@ -17,7 +17,7 @@ class SPICom(object):
         self.spi.open(BUS,DEVICE)
         resp = self.spi.xfer(word)
         self.spi.close()
-        print("sent = [ ", word, " ] , resiv = [ ", resp, " ]")
+        print("send = [ ", word, " ] , resiv = [ ", resp, " ]")
         return resp
     
     
