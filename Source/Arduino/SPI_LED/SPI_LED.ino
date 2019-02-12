@@ -12,10 +12,10 @@
 /*}}}*/
 
 /*Define Block{{{*/
-#define RBG_PIN_R PA7   // пин для канала R
-#define RBG_PIN_G PB1   // пин для канала G
-#define RBG_PIN_B PB0   // пин для канала B
-#define SPI_CS_PIN PA4   // пин для канала B
+#define RBG_PIN_R 3   // пин для канала R
+#define RBG_PIN_G 5   // пин для канала G
+#define RBG_PIN_B 6   // пин для канала B
+#define SPI_CS_PIN 10   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 1    
 #define FADESPEED 50   
