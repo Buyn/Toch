@@ -5,7 +5,7 @@
 // Serial output is here for debug
 
 #include <SPI.h>
-#include <cstdint>
+//#include <cstdint>
 
 void setupSPI(void)
 {
@@ -24,9 +24,10 @@ void setup()
 
 uint8_t count = 0;
 void loop() {
+	s_temp_serial = Serial.readStringUntil('\n');
    // Blocking call to read SPI message
 	//	byte c = SPDR;  // grab byte from SPI Data Register
-	uint8_t msg = SPI.transfer(++count);
+	uint8_t msg = SPI.transfer(s_temp_serial);
 	Serial.print("Received = 0b");
 	Serial.print(msg, BIN);
 	Serial.print(", 0x");
@@ -34,6 +35,6 @@ void loop() {
 	Serial.print(", ");
 	Serial.println(msg);
 	Serial.print("Send = ");
-	Serial.println(count);
+	Serial.println(s_temp_serial);
 	}
 
