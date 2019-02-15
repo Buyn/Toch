@@ -15,11 +15,11 @@
 #define RBG_PIN_R PA7   // пин для канала R
 #define RBG_PIN_G PB1   // пин для канала G
 #define RBG_PIN_B PB0   // пин для канала B
-#define SPI_CS_PIN PA4   // пин для канала B
+//#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 1    
 #define FADESPEED 50   
-#define STEKSIZE 30   
+//#define STEKSIZE 30   
 #define TITLEABOUT "SPI LED v 0.1"
 //Commands list
 #define SPIADRRES			0x08
