@@ -29,34 +29,18 @@
 #define LEDSET	 		0x14
 #define LED01SET		0x1A
 #define LED02SET		0x1B
-//Stak commands
-#define ENDOFSESION			0xFF
-#define ENDOFFILE				0xEF
-#define EXECUTE				0xAA
 
 /*}}}*/
 /*Varibls Block{{{*/
 RGB_LED led_Line(RBG_PIN_R, RBG_PIN_G, RBG_PIN_B);
 int state = 0;
-int commands_waiting = 0;
-uint8_t command_stak[STEKSIZE] ;
 unsigned int ledstate01[] = {255, 0, 255, 20} ;
 unsigned int ledstate02[] = {0, 255, 0, 20} ;
-int command_stak_point = 0 ;
 bool led_activ  = false;
-bool spi_pasiv  = false;
-bool spi_sesion = false;
 LED test(LED_BUILTIN);
-uint8_t msg = 0;
-uint8_t back_msg = 0;
+SlaveSPI = sspi(SPIADRRES);
 /*}}}*/
 
-void setupSPI(void) {/*{{{*/
-   // The clock value is not used
-   // SPI1 is selected by default
-   // MOSI, MISO, SCK and NSS PINs are set by the library
-   SPI.beginTransactionSlave(SPISettings(18000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT));
-	}/*}}}*/
 /*   setupLEDLine   * {{{ */
 void setupLEDLine(void){
 	// RGBLED
@@ -92,25 +76,17 @@ void setup() {/*{{{*/
 
 /*   execute_command   *  {{{ */
 void execute_command(void){
-	if (msg > 15) {
-		commands_waiting = msg;	
-		back_msg = command_stak_point;
-		return;
-		}
-	switch (msg) {/*{{{*/
+	switch (sspi.pull()) {/*{{{*/
 		case LEDSTART:/*{{{*/
 			Serial.println("Start LED");
 			led_activ = true;
-			command_stak_point = 0;
 			test.trige();
-			back_msg = 0;
 			break;/*}}}*/
 		case LEDSTOP:/*{{{*/
 			Serial.println("Stop LED");
 			led_activ = false;
-			command_stak_point = 0;
 			test.trige();
-			back_msg = 0;
+			sspi.setmsg( 0 );
 			break;/*}}}*/
 		case LED01SET:/*{{{*/
 			Serial.println("Set Led 01");
@@ -137,23 +113,6 @@ void execute_command(void){
 			command_stak_point = 0;
 			test.trige();
 			back_msg = 0;
-			break;/*}}}*/
-		case EXECUTE:/*{{{*/
-			Serial.println("Execute");
-			commands_waiting = 0;
-			test.trige();
-			back_msg = command_stak_point;
-			break;/*}}}*/
-		case ENDOFFILE:/*{{{*/
-			Serial.println("ENDOFFILE");
-			commands_waiting = 0;
-			test.trige();
-			back_msg = command_stak_point;
-			break;/*}}}*/
-		case ENDOFSESION:/*{{{*/
-			Serial.println("ENDOFSESION");
-			spi_sesion = false;
-			test.trige();
 			break;/*}}}*/
 		default:/*{{{*/
 			Serial.println("Error in command execute!!!");
