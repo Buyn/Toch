@@ -1,7 +1,7 @@
 #include "SlaveSPI.h"
 
 /*   SlaveSPI::SlaveSPI   * {{{ */
-SlaveSPI::SlaveSPI(byte adrress) {
+SlaveSPI::SlaveSPI(int adrress) {
    // The clock value is not used
    // SPI1 is selected by default
    // MOSI, MISO, SCK and NSS PINs are set by the library
@@ -11,7 +11,7 @@ SlaveSPI::SlaveSPI(byte adrress) {
 
 /*   SlaveSPI::add_to_stak   * {{{ */
 void SlaveSPI::add_to_stak(void){
-	Serial.print(microseconds());
+	Serial.print(micros());
 	Serial.println(": Comannd adding  ");
 	commands_waiting--;
 	command_stak[command_stak_point] = msg;
@@ -22,12 +22,12 @@ void SlaveSPI::add_to_stak(void){
 
 /*   SlaveSPI::execute_command   *  {{{ */
 void SlaveSPI::execute_command(void){
-	Serial.print(microseconds());
+	Serial.print(micros());
 	Serial.println(": Comannd Exekution  ");
 	//{{{ is adding list command
 	if (msg > 15) {
 		commands_waiting = msg;	
-		Serial.print(microseconds());
+		Serial.print(micros());
 		Serial.print(": Comannd waiting - ");
 		Serial.println(commands_waiting);
 		back_msg = command_stak_point;
@@ -80,10 +80,9 @@ bool SlaveSPI::isExecute(void){
 	} //}}}
 
 /*   SlaveSPI::setmsg   * {{{ */
-void SlaveSPI::setmsg(uint8_t newmsg){
+void SlaveSPI::setmsg(int newmsg){
 	back_msg = newmsg;
 	} //}}}
-
 
 /*   SlaveSPI::runtime   * {{{ */
 bool SlaveSPI::runtime(void){
@@ -109,7 +108,7 @@ void SlaveSPI::spirutine(void){
 	if (!spi_sesion && msg == spiaddress) {/*{{{*/
 		back_msg = msg;	
 		spi_sesion = true;
-		Serial.print(microseconds());
+		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
 		//return;
 		}/*}}}*/
@@ -117,10 +116,10 @@ void SlaveSPI::spirutine(void){
 		execute_command();
 		}/*}}}*/
 	else if (spi_sesion && commands_waiting > 0) {/*{{{*/
-		add_to_stak()
+		add_to_stak();
 		}/*}}}*/
 	else  {/*{{{ Error*/
-		Serial.print(microseconds());
+		Serial.print(micros());
 		Serial.println(": Disinhron!  Error  ");
 		}/*}}}*/
 	} //}}}

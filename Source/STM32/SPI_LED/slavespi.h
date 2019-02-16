@@ -23,26 +23,31 @@
 #define EXECUTE				0xAA
 /*}}}*/
 //  calss{{{
-class SLAVESPI {
+class SlaveSPI {
  public: // {{{
+	 SlaveSPI(int );
 	 int	peek();
 	 int	pull();
 	 int	staksize();
 	 bool	runtime();
-	 bool isExecution();
-	 byte spiaddress;
-	 void setmsg( uint8_t);
+	 bool isExecute();
+	 int 	spiaddress;
+	 void setmsg( int );
 	/*}}}*/
  private:/*{{{*/
-	uint8_t 	command_stak[STEKSIZE] ;
+	int  	command_stak[STEKSIZE] ;
 	int 		commands_waiting 		= 0;
 	int 		command_stak_point 	= 0 ;
 	bool		spi_pasiv 				= false;
 	bool		spi_sesion				= false;
 	bool		command_to_execute 	= false;
-	uint8_t 	msg = 0;
-	uint8_t	back_msg = 0;
-	void 		execute_command(void)
+	int  	msg = 0;
+	int 	back_msg = 0;
+	void 		execute_command(void);
+	void 		spirutine(void);
+	void 		add_to_stak(void);
+
 	/*}}}*/
  };
  /*}}}*/
+#endif
