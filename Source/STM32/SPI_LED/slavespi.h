@@ -11,7 +11,7 @@
 #include "WProgram.h"
 #endif
 #include <SPI.h>
-#include <cstdint>
+//#include <cstdint>
 /*}}}*/
 //define bloc  {{{
 #define SPI_CS_PIN PA4   // slave spi pin CS\SS
@@ -33,6 +33,7 @@ class SlaveSPI {
 	 bool isExecute();
 	 int 	spiaddress;
 	 void setmsg( int );
+	void 	spinit(void);
 	/*}}}*/
  private:/*{{{*/
 	int  	command_stak[STEKSIZE] ;

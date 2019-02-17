@@ -1,18 +1,24 @@
 #include "SlaveSPI.h"
 
+
 /*   SlaveSPI::SlaveSPI   * {{{ */
 SlaveSPI::SlaveSPI(int adrress) {
+	spiaddress = adrress;
+	} //}}}
+
+/*   SlaveSPI::spinit   * {{{ */
+void SlaveSPI::spinit(void){
    // The clock value is not used
    // SPI1 is selected by default
    // MOSI, MISO, SCK and NSS PINs are set by the library
    SPI.beginTransactionSlave(SPISettings(18000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT));
-	spiaddress = adrress;
 	} //}}}
 
 /*   SlaveSPI::add_to_stak   * {{{ */
 void SlaveSPI::add_to_stak(void){
 	Serial.print(micros());
-	Serial.println(": Comannd adding  ");
+	Serial.print(": Comannd adding. waiting = ");
+	Serial.println(commands_waiting);
 	commands_waiting--;
 	command_stak[command_stak_point] = msg;
 	//TODO merje to one line
@@ -51,6 +57,8 @@ void SlaveSPI::execute_command(void){
 			break;/*}}}*/
 		default:/*{{{*/
 			Serial.println("Error in stek command execute!!!");
+			Serial.println("ENDOFSESION");
+			spi_sesion = false;
 			back_msg = 0;
 			/*}}}*/
 			}/*}}}*/
@@ -95,7 +103,7 @@ bool SlaveSPI::runtime(void){
 /*   SlaveSPI::spirotine   *  {{{ */
 void SlaveSPI::spirutine(void){
 	//if (!spi_pasiv) 
-		msg = SPI.transfer(back_msg); 
+	msg = SPI.transfer(back_msg); 
 	Serial.print("Recived = 0b");
 	Serial.print(msg, BIN);
 	Serial.print(", 0x");
@@ -121,5 +129,7 @@ void SlaveSPI::spirutine(void){
 	else  {/*{{{ Error*/
 		Serial.print(micros());
 		Serial.println(": Disinhron!  Error  ");
+		Serial.println("ENDOFSESION");
+		spi_sesion = false;
 		}/*}}}*/
 	} //}}}

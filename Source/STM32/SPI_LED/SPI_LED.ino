@@ -147,9 +147,10 @@ void setup() {/*{{{*/
 	//enable serial data print
 	test.trige();
 	Serial.begin(115200);
-	delay(1000);
+	delay(3000);
 	Serial.println(TITLEABOUT);
 	setupLEDLine();
+	sspi.spinit();
 	Serial.println("End Setup");
 	}/*}}}*/
 
