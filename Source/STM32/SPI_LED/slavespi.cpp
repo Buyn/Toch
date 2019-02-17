@@ -17,11 +17,13 @@ void SlaveSPI::spinit(void){
 void SlaveSPI::add_to_stak(void){
 	Serial.print(micros());
 	Serial.print(": Comannd adding. waiting = ");
-	Serial.println(commands_waiting);
+	Serial.print(commands_waiting);
+	Serial.print("stak = ");
+	Serial.println(command_stak_point);
 	commands_waiting--;
-	command_stak[command_stak_point] = msg;
+	command_stak[command_stak_point++] = msg;
 	//TODO merje to one line
-	command_stak_point++;
+	//command_stak_point++;
 	back_msg = msg;	
 	} //}}}
 
