@@ -1,6 +1,5 @@
 #include "SlaveSPI.h"
 
-
 /*   SlaveSPI::SlaveSPI   * {{{ */
 SlaveSPI::SlaveSPI(int adrress) {
 	spiaddress = adrress;
@@ -31,7 +30,7 @@ void SlaveSPI::execute_command(void){
 	Serial.print(micros());
 	Serial.println(": Comannd Exekution  ");
 	//{{{ is adding list command
-	if (msg > 15) {
+	if (msg =< 15) {
 		commands_waiting = msg;	
 		Serial.print(micros());
 		Serial.print(": Comannd waiting - ");
@@ -54,12 +53,14 @@ void SlaveSPI::execute_command(void){
 		case ENDOFSESION:/*{{{*/
 			Serial.println("ENDOFSESION");
 			spi_sesion = false;
+			commands_waiting = 0;
 			break;/*}}}*/
 		default:/*{{{*/
 			Serial.println("Error in stek command execute!!!");
 			Serial.println("ENDOFSESION");
 			spi_sesion = false;
-			back_msg = 0;
+			commands_waiting = 0;
+			back_msg = STAKERRORCOMAND;
 			/*}}}*/
 			}/*}}}*/
 	} //}}}
@@ -116,6 +117,7 @@ void SlaveSPI::spirutine(void){
 	if (!spi_sesion && msg == spiaddress) {/*{{{*/
 		back_msg = msg;	
 		spi_sesion = true;
+		commands_waiting = 0;
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
 		//return;
@@ -130,6 +132,9 @@ void SlaveSPI::spirutine(void){
 		Serial.print(micros());
 		Serial.println(": Disinhron!  Error  ");
 		Serial.println("ENDOFSESION");
+		back_msg = DISINHRONERROR;
 		spi_sesion = false;
+		commands_waiting = 0;
+		if(msg != spiaddress) back_msg = DISINHRONADRESSERROR;
 		}/*}}}*/
 	} //}}}

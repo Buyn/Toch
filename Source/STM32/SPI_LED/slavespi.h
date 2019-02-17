@@ -22,6 +22,11 @@
 #define ENDOFFILE				0xEF
 #define EXECUTE				0xAA
 /*}}}*/
+//define ERROR bloc  {{{
+#define DISINHRONERROR						0x10
+#define DISINHRONADRESSERROR				0x11
+#define STAKERRORCOMAND						0x20
+/*}}}*/
 //  calss{{{
 class SlaveSPI {
  public: // {{{
