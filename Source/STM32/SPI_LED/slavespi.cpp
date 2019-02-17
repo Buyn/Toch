@@ -30,7 +30,7 @@ void SlaveSPI::execute_command(void){
 	Serial.print(micros());
 	Serial.println(": Comannd Exekution  ");
 	//{{{ is adding list command
-	if (msg =< 15) {
+	if (msg <= 15) {
 		commands_waiting = msg;	
 		Serial.print(micros());
 		Serial.print(": Comannd waiting - ");
@@ -42,16 +42,17 @@ void SlaveSPI::execute_command(void){
 		case EXECUTE:/*{{{*/
 			Serial.println("Execute Last");
 			commands_waiting = 0;
-			back_msg = command_stak_point;
+			back_msg = msg;
 			command_to_execute	= true;
 			break;/*}}}*/
 		case ENDOFFILE:/*{{{*/
 			Serial.println("ENDOFFILE");
 			commands_waiting = 0;
-			back_msg = command_stak_point;
+			back_msg = msg;
 			break;/*}}}*/
 		case ENDOFSESION:/*{{{*/
 			Serial.println("ENDOFSESION");
+			back_msg = msg;
 			spi_sesion = false;
 			commands_waiting = 0;
 			break;/*}}}*/
