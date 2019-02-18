@@ -36,8 +36,8 @@ class SPICom(object):
     
     def sendWordsList(self, command):
         # send waiting one word
+        print("comad list = ",  command)
         print("lens is = ", "0x0" + str((len(command))))
-        #self.send("0x0" + str((len(command))))
         self.send((len(command)))
         for t in command:
             # send command

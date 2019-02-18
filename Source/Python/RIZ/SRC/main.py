@@ -43,46 +43,30 @@ def writeNumber(number):
 
 
 def sth(param0):
-    return hex(int(param0))
+    return hex(isInt(param0))
 
-
+def fillLEDset(setlist, command):
+    """Filling list from arrey and adding command"""
+    return [
+          sth(setlist[2]), 
+          sth(setlist[3]), 
+          sth(setlist[4]), 
+          sth(setlist[5]),
+          command 
+          ] 
+    
 def ledcommand(elm_var):
     if (elm_var[1] == "set"):
-        print("Set led = ", 
-              SC_LEDSET, 
-              sth(elm_var[2]), 
-              sth(elm_var[3]), 
-              sth(elm_var[4]), 
-              sth(elm_var[5]))
-        ledstm.execute([SC_LEDSET, 
-                      sth(elm_var[2]), 
-                      sth(elm_var[3]), 
-                      sth(elm_var[4]), 
-                      sth(elm_var[5])]) 
+        print("Set led  = ", fillLEDset(elm_var, SC_LEDSET))
+        ledstm.execute( fillLEDset(elm_var, SC_LEDSET))
     if (elm_var[1] == "01"):
         print("Set led 01 = ", 
-              SC_LED01SET, 
-              sth(elm_var[2]), 
-              sth(elm_var[3]), 
-              sth(elm_var[4]), 
-              sth(elm_var[5]))
-        ledstm.execute([SC_LED01SET, 
-                      sth(elm_var[2]), 
-                      sth(elm_var[3]), 
-                      sth(elm_var[4]), 
-                      sth(elm_var[5])]) 
+                fillLEDset(elm_var, SC_LED01SET))
+        ledstm.execute( fillLEDset(elm_var, SC_LED01SET))
     if (elm_var[1] == "02"):
         print("Set led 02 = ", 
-              SC_LED02SET, 
-              sth(elm_var[2]), 
-              sth(elm_var[3]), 
-              sth(elm_var[4]), 
-              sth(elm_var[5]))
-        ledstm.execute([SC_LED02SET, 
-                      sth(elm_var[2]), 
-                      sth(elm_var[3]), 
-                      sth(elm_var[4]), 
-                      sth(elm_var[5])]) 
+                fillLEDset(elm_var, SC_LED02SET))
+        ledstm.execute( fillLEDset(elm_var, SC_LED02SET)) 
 
 
 def isInt(var):
