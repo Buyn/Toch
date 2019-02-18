@@ -1,4 +1,3 @@
-
 # Bitbang'd SPI interface with an MCP3008 ADC device{{{
 # MCP3008 is 8-channel 10-bit analog to digital converter
 #  Connections are:
@@ -77,49 +76,61 @@ def isInt(var):
         return 0
 
 
+def getUserInput():
+    pass
+
+
+def isLEDCommand(var):
+    if  var == "ledstart":
+        print ("Start LED")
+        ledstm.execute([SC_LEDSTART])
+        return True
+    if  var == "ledstop":
+        print ("Stop LED")
+        ledstm.execute([SC_LEDSTOP])
+        return True
+    if  var == "t":
+        print ("Test")
+        ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
+        return True
+    if  var == "b":
+        print ("Blue")
+        ledstm.execute([0xff, 0xf1, 0x01, 0x0f, SC_LEDSET])
+        return True
+    if  var == "r":
+        print ("Red")
+        ledstm.execute([0x00, 0xff, 0x00, 0x0f, SC_LEDSET])
+        return True
+    if  var == "g":
+        print ("Green")
+        ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
+        return True
+    if  var == "w":
+        print ("White")
+        ledstm.execute([0xff, 0xff, 0xff, 0x0f, SC_LEDSET])
+        return True
+    if  var == "o":
+        print ("OFF")
+        ledstm.execute([0x00, 0x00, 0x00, 0x0f, SC_LEDSET])
+        return True
+    return False
+
+
+def isCommandList(elm_var):
+    if (len(elm_var)>1):
+        if (elm_var[0] == 'led'):
+            ledcommand(elm_var)
+        return True
+    return False
+
+
 def mainlope():
     while True:
         var = input("Enter Command: ")
         if not var:
             continue
-        if  var == "ledstart":
-            print ("Start LED")
-            ledstm.execute([SC_LEDSTART])
-            continue
-        if  var == "ledstop":
-            print ("Stop LED")
-            ledstm.execute([SC_LEDSTOP])
-            continue
-        if  var == "t":
-            print ("Test")
-            ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
-            continue
-        if  var == "b":
-            print ("Blue")
-            ledstm.execute([0xff, 0xf1, 0x01, 0x0f, SC_LEDSET])
-            continue
-        if  var == "r":
-            print ("Red")
-            ledstm.execute([0x00, 0xff, 0x00, 0x0f, SC_LEDSET])
-            continue
-        if  var == "g":
-            print ("Green")
-            ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
-            continue
-        if  var == "w":
-            print ("White")
-            ledstm.execute([0xff, 0xff, 0xff, 0x0f, SC_LEDSET])
-            continue
-        if  var == "o":
-            print ("OFF")
-            ledstm.execute([0x00, 0x00, 0x00, 0x0f, SC_LEDSET])
-            continue
-        elm_var = None
-        elm_var = var.split(' ')
-        if (len(elm_var)>1):
-            if (elm_var[0] == 'led'):
-                ledcommand(elm_var)
-            continue
+        if isLEDCommand(var): continue
+        if isCommandList(var.split(' ')): continue
         number = writeNumber(isInt(var))
 
 
