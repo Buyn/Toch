@@ -102,17 +102,33 @@ def mainlope():
             print ("Start LED")
             ledstm.execute([SC_LEDSTART])
             continue
-        if  var == "ledset":
-            print ("Stop LED")
-            ledstm.execute([SC_LEDSTOP])
-            continue
         if  var == "ledstop":
             print ("Stop LED")
             ledstm.execute([SC_LEDSTOP])
             continue
         if  var == "t":
             print ("Test")
-            ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, C_LED_01])
+            ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
+            continue
+        if  var == "b":
+            print ("Blue")
+            ledstm.execute([0xff, 0xf1, 0x01, 0x0f, SC_LEDSET])
+            continue
+        if  var == "r":
+            print ("Red")
+            ledstm.execute([0x00, 0xff, 0x00, 0x0f, SC_LEDSET])
+            continue
+        if  var == "g":
+            print ("Green")
+            ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
+            continue
+        if  var == "w":
+            print ("White")
+            ledstm.execute([0xff, 0xff, 0xff, 0x0f, SC_LEDSET])
+            continue
+        if  var == "o":
+            print ("OFF")
+            ledstm.execute([0x00, 0x00, 0x00, 0x0f, SC_LEDSET])
             continue
         elm_var = None
         elm_var = var.split(' ')
