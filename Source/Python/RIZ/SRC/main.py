@@ -44,6 +44,7 @@ def writeNumber(number):
 def sth(param0):
     return hex(isInt(param0))
 
+
 def fillLEDset(setlist, command):
     """Filling list from arrey and adding command"""
     return [
@@ -54,6 +55,7 @@ def fillLEDset(setlist, command):
           command 
           ] 
     
+
 def ledcommand(elm_var):
     if (elm_var[1] == "set"):
         print("Set led  = ", fillLEDset(elm_var, SC_LEDSET))
@@ -78,6 +80,21 @@ def isInt(var):
 
 def getUserInput():
     pass
+
+
+def printHelp():
+    """on h printing hel to log"""
+    print ( "ledstart "," Start LED")
+    print (  "ledstop ", "Stop LED")
+    print (  "t ", "Test")
+    print (  "b ", "Blue")
+    print (  "r ", "Red")
+    print (  "g ", "Green")
+    print (  "w ", "White")
+    print (  "o ", "OFF")
+    print ( 'led ', "set", " red green blue speed  ", "Set led  = ")
+    print ( 'led ', "01" , " red green blue speed  ", "Set led 01 = ") 
+    print ( 'led ', "02" , " red green blue speed  ", "Set led 02 = ") 
 
 
 def isLEDCommand(var):
@@ -113,6 +130,9 @@ def isLEDCommand(var):
         print ("OFF")
         ledstm.execute([0x00, 0x00, 0x00, 0x0f, SC_LEDSET])
         return True
+    if  var == "h":
+        printHelp()
+        return True
     return False
 
 
@@ -126,6 +146,7 @@ def isCommandList(elm_var):
 
 def mainlope():
     while True:
+        print ("Enter h for help(list of command)")
         var = input("Enter Command: ")
         if not var:
             continue
