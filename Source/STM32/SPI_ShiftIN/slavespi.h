@@ -26,6 +26,7 @@
 #define DISINHRONERROR						0x10
 #define DISINHRONADRESSERROR				0x11
 #define STAKERRORCOMAND						0x20
+#define TIMEOUTSESION						0x20
 /*}}}*/
 //  calss{{{
 class SlaveSPI {
@@ -41,14 +42,16 @@ class SlaveSPI {
 	void 	spinit(void);
 	/*}}}*/
  private:/*{{{*/
-	int  	command_stak[STEKSIZE] ;
+	int  		command_stak[STEKSIZE] ;
 	int 		commands_waiting 		= 0;
 	int 		command_stak_point 	= 0 ;
 	bool		spi_pasiv 				= false;
 	bool		spi_sesion				= false;
 	bool		command_to_execute 	= false;
-	int  	msg = 0;
-	int 	back_msg = 0;
+	int 		msg = 0;
+	int 		back_msg = 0;
+	long		sesionend;
+	bool		isSesionEnd(void);
 	void 		execute_command(void);
 	void 		spirutine(void);
 	void 		add_to_stak(void);

@@ -30,7 +30,6 @@ void SlaveSPI::add_to_stak(void){
 /*   SlaveSPI::execute_command   *  {{{ */
 void SlaveSPI::execute_command(void){
 	Serial.print(micros());
-	Serial.println(": Comannd Exekution  ");
 	//{{{ is adding list command
 	if (msg <= 15) {
 		commands_waiting = msg;	
@@ -40,6 +39,7 @@ void SlaveSPI::execute_command(void){
 		back_msg = command_stak_point;
 		return;
 		}/*}}}*/
+	Serial.println(": Comannd Exekution  ");
 	switch (msg) {/*{{{*/
 		case EXECUTE:/*{{{*/
 			Serial.println("Execute Last");
@@ -66,6 +66,19 @@ void SlaveSPI::execute_command(void){
 			back_msg = STAKERRORCOMAND;
 			/*}}}*/
 			}/*}}}*/
+	} //}}}
+
+/*   SlaveSPI::isSesionEnd   * {{{ */
+bool SlaveSPI::isSesionEnd(void){
+	if (sesionend >= milisec()){
+		back_msg = TIMEOUTSESION;	
+		spi_sesion = false;
+		commands_waiting = 0;
+		Serial.print(micros());
+		Serial.println(": Sesion end: Timeout Error");
+		return true;
+		}
+	return false;
 	} //}}}
 
 /*   SlaveSPI::peek   * {{{ */
@@ -123,7 +136,7 @@ void SlaveSPI::spirutine(void){
 		commands_waiting = 0;
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
-		//return;
+		return;
 		}/*}}}*/
 	else if (spi_sesion && commands_waiting == 0) {/*{{{*/
 		execute_command();
