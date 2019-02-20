@@ -16,6 +16,7 @@
 //define bloc  {{{
 #define SPI_CS_PIN PA4   // slave spi pin CS\SS
 #define STEKSIZE 30   
+#define SESIONTIMEOUT 10   
 //Commands list
 //Stak commands
 #define ENDOFSESION			0xFF

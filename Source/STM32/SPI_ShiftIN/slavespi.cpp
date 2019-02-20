@@ -70,7 +70,7 @@ void SlaveSPI::execute_command(void){
 
 /*   SlaveSPI::isSesionEnd   * {{{ */
 bool SlaveSPI::isSesionEnd(void){
-	if (sesionend >= milisec()){
+	if (sesionend >= millis()){
 		back_msg = TIMEOUTSESION;	
 		spi_sesion = false;
 		commands_waiting = 0;
@@ -134,14 +134,15 @@ void SlaveSPI::spirutine(void){
 		back_msg = msg;	
 		spi_sesion = true;
 		commands_waiting = 0;
+		sesionend = millis + SESIONTIMEOUT
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
 		return;
 		}/*}}}*/
-	else if (spi_sesion && commands_waiting == 0) {/*{{{*/
+	else if (spi_sesion && commands_waiting == 0 && !isSesionEnd()) {/*{{{*/
 		execute_command();
 		}/*}}}*/
-	else if (spi_sesion && commands_waiting > 0) {/*{{{*/
+	else if (spi_sesion && commands_waiting > 0 && !isSesionEnd()) {/*{{{*/
 		add_to_stak();
 		}/*}}}*/
 	else  {/*{{{ Error*/
