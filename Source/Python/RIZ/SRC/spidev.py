@@ -1,36 +1,37 @@
+from model.globalsvar import * 
 
 class SpiDev(object):
     
     
-    def __init__(self):
-        pass
+    def __init__(self, debugmode = DEBUGMODE):
+        self.debugmode = debugmode
 
     
     def open(self, BUS, DEVICE):
-        print("open", BUS, DEVICE)
+        if (self.debugmode): print("open", BUS, DEVICE)
 
     
     def xfer2(self, build_read_command):
-        print('xfer2', build_read_command)
+        if (self.debugmode): print('xfer2', build_read_command)
 
     
     def writebytes(self, hex):
-        print('writebytes', hex)
+        if (self.debugmode): print('writebytes', hex)
 
     
     def close(self):
-        print('close')
+        if (self.debugmode): print('close')
 
     
     def xfer(self, param1):
-        print('xfer = ', param1)
+        if (self.debugmode): print('xfer = ', param1)
         return 0
 
     
     def readbytes(self, param1):
         result = []
         for i in range(param1):
-            print(i, " = ", result)
+            if (self.debugmode): print(i, " = ", result)
             result.append(i)
         return result
     

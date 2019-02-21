@@ -134,7 +134,7 @@ void SlaveSPI::spirutine(void){
 		back_msg = msg;	
 		spi_sesion = true;
 		commands_waiting = 0;
-		sesionend = millis + SESIONTIMEOUT
+		sesionend = millis() + SESIONTIMEOUT;
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
 		return;

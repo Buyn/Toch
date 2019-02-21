@@ -27,7 +27,7 @@
 #define DISINHRONERROR						0x10
 #define DISINHRONADRESSERROR				0x11
 #define STAKERRORCOMAND						0x20
-#define TIMEOUTSESION						0x20
+#define TIMEOUTSESION						0x30
 /*}}}*/
 //  calss{{{
 class SlaveSPI {

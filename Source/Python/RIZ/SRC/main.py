@@ -25,7 +25,7 @@ from presenter.spicom import SPICom
 # }}}
 
 #Initialze the SPI # {{{
-ledstm = SPICom(LEDSTM_ADRRESS)
+ledstm = SPICom(LEDSTM_ADRRESS, debugmode=2)
 # }}}
 
 #Varialbes for the Debounce # {{{

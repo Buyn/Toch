@@ -1,6 +1,8 @@
+DEBUGMODE = False
+
 # SPI Devise
-BUS = 0 
-DEVICE = 0
+BUS     = 0 
+DEVICE  = 0
 
 # SOI Adresses
 LEDSTM_ADRRESS = 0x08

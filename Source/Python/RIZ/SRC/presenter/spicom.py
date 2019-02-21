@@ -5,8 +5,9 @@ from model.globalsvar import *
 class SPICom(object):
     
     
-    def __init__(self, address):
+    def __init__(self, address, debugmode = DEBUGMODE):
         self.address = address
+        self.debugmode = debugmode
         self.spi = spidev.SpiDev()
 
 
@@ -18,7 +19,7 @@ class SPICom(object):
         self.spi.lsbfirst = False
         resp = self.spi.xfer([word])
         self.spi.close()
-        print("send = [ ", word, " ] , resiv = [ ", resp, " ]")
+        if (self.debugmode >= 3): print("send = [ ", word, " ] , resiv = [ ", resp, " ]")
         return resp
     
     
@@ -36,8 +37,8 @@ class SPICom(object):
     
     def sendWordsList(self, command):
         # send waiting one word
-        print("comad list = ",  command)
-        print("lens is = ", "0x0" + str((len(command))))
+        if (self.debugmode >= 3): print("comad list = ",  command)
+        if (self.debugmode >= 3): print("lens is = ", "0x0" + str((len(command))))
         self.send((len(command)))
         for t in command:
             # send command
