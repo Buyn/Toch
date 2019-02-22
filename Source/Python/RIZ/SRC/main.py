@@ -48,25 +48,26 @@ def sth(param0):
 def fillLEDset(setlist, command):
     """Filling list from arrey and adding command"""
     return [
-          sth(setlist[2]), 
-          sth(setlist[3]), 
-          sth(setlist[4]), 
           sth(setlist[5]),
+          sth(setlist[4]), 
+          sth(setlist[3]), 
+          sth(setlist[2]), 
           command 
           ] 
     
 
 def ledcommand(elm_var):
     if (elm_var[1] == "set"):
-        print("Set led  = ", fillLEDset(elm_var, SC_LEDSET))
+        print("Set led  = ", 
+                fillLEDset(elm_var, hex(SC_LEDSET)))
         ledstm.execute( fillLEDset(elm_var, SC_LEDSET))
     if (elm_var[1] == "01"):
         print("Set led 01 = ", 
-                fillLEDset(elm_var, SC_LED01SET))
+                fillLEDset(elm_var, hex(SC_LED01SET)))
         ledstm.execute( fillLEDset(elm_var, SC_LED01SET))
     if (elm_var[1] == "02"):
         print("Set led 02 = ", 
-                fillLEDset(elm_var, SC_LED02SET))
+                fillLEDset(elm_var, hex(SC_LED02SET)))
         ledstm.execute( fillLEDset(elm_var, SC_LED02SET)) 
 
 
