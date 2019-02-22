@@ -12,7 +12,7 @@ class SPICom(object):
 
 
     def send(self, word):
-        print("sending = [ ", word, " ] ")
+        if (self.debugmode >= 3): print("sending = [ ", word, " ] ")
         self.spi.open(BUS,DEVICE)
         self.spi.max_speed_hz = 18000000
         self.spi.mode = 0b00
@@ -24,40 +24,49 @@ class SPICom(object):
     
     
     def sendEOF(self):
+        if (self.debugmode >= 2): print("send = [ END OF FILE ] ")
         return self.send(SC_ENDOFFILE)
     
     
     def sendExecude(self):
+        if (self.debugmode >= 2): print("send = [ EXECUTE LAST ONE COMMAND ] ")
         return self.send(SC_EXECUTECOMMAND)
     
     
     def sendEndSession(self):
+        if (self.debugmode >= 2): print("send = [ END OF SISION ] ")
         return self.send(SC_ENDOFSESION)
     
     
     def sendWordsList(self, command):
+        result = []
         # send waiting one word
         if (self.debugmode >= 3): print("comad list = ",  command)
         if (self.debugmode >= 3): print("lens is = ", "0x0" + str((len(command))))
         self.send((len(command)))
         for t in command:
             # send command
-            self.send(t)
+            result.append(self.send(t))
+        return result
     
+    
+    def decodeError(self, error):
+        if (error == 0): return " ok [ NO ERROR ]"
+        elif (error == DISINHRONERROR): return " [ DISINHRONERROR ]"
+        elif (error == DISINHRONADRESSERROR): return " [ DISINHRONADRESSERROR ]"
+        elif (error == STAKERRORCOMAND): return " [ STAKERRORCOMAND ]"
+        elif (error == TIMEOUTSESION): return " [ TIMEOUTSESION ]"
     
     def execute(self, command):
-        self.send(self.address)
-        self.sendWordsList(command)
-        #self.sendEOF()
-        self.sendExecude()
-        self.sendEndSession()
-    
-    
-    # put in Stek
-    
-    
-    
-    
-
-
-
+        if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
+        if (self.debugmode >= 2): 
+            print("Last Sesion Ends whith = ",
+                      self.decodeError(self.send(self.address)))
+        resivlist = self.sendWordsList(command)
+        if (self.debugmode >= 2): print("MsgStakList elements waiting = ", resivlist[0]) 
+        resivlist.append((self.sendExecude()))
+        if (self.debugmode >= 2): print("commandStak send = ", command) 
+        if (self.debugmode >= 2): print("commandStak resiv = ", resivlist) 
+        if (self.debugmode >= 2): 
+            print("Last command result = ",
+                      self.decodeError(self.sendEndSession()))

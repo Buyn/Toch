@@ -11,6 +11,12 @@ LEDSTM_ADRRESS = 0x08
 SC_ENDOFFILE        = 0xEF
 SC_EXECUTECOMMAND   = 0xAA
 SC_ENDOFSESION      = 0xFF
+#define ERROR bloc  
+DISINHRONERROR                    = 0x10
+DISINHRONADRESSERROR              = 0x11
+STAKERRORCOMAND                   = 0x20
+TIMEOUTSESION                     = 0x30
+
 # Commands list
 # LED comands
 SC_LEDSTART        = 0x11
