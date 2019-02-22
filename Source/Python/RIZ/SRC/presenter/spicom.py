@@ -70,3 +70,26 @@ class SPICom(object):
         if (self.debugmode >= 2): 
             print("Last command result = ",
                       self.decodeError(self.sendEndSession()))
+            
+            
+    def sendGetVar(self):
+        return self.send(SC_GETVARBYNAME)
+    
+    
+    def getVar(self, varName):
+        if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
+        if (self.debugmode >= 2): 
+            print("Last Sesion Ends whith = ",
+                      self.decodeError(self.send(self.address)))
+        resivlist = self.sendWordsList([varName])
+        if (self.debugmode >= 2): print("MsgStakList elements waiting = ", resivlist[0]) 
+        resivlist.append((self.sendGetVar()))
+        if (self.debugmode >= 2): print("commandStak send = ", 1, varName) 
+        if (self.debugmode >= 2): print("commandStak resiv = ", resivlist) 
+        if (self.debugmode >= 2): print("MsgStakList elements waiting = ", resivlist[0]) 
+        if (self.debugmode >= 2): print("Send Var Name = ", varName)
+        if (self.debugmode >= 2): print("SPI get Name = ", self.sendGetVar())
+        return self.sendEndSession()
+    
+    
+    

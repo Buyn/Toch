@@ -109,28 +109,28 @@ def isLEDCommand(var):
         return True
     if  var == "t":
         print ("Test")
-        ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
+        ledstm.execute([0x0f, 0x01, 0xf1, 0xf0, SC_LEDSET])
         return True
     if  var == "b":
         print ("Blue")
-        ledstm.execute([0xff, 0xf1, 0x01, 0x0f, SC_LEDSET])
+        ledstm.execute([0x0f, 0x00, 0x00, 0xff, SC_LEDSET])
         return True
     if  var == "r":
         print ("Red")
-        ledstm.execute([0x00, 0xff, 0x00, 0x0f, SC_LEDSET])
+        ledstm.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET])
         return True
     if  var == "g":
         print ("Green")
-        ledstm.execute([0xf0, 0xf1, 0x01, 0x0f, SC_LEDSET])
+        ledstm.execute([0x0f, 0xff, 0x00, 0x00, SC_LEDSET])
         return True
     if  var == "w":
         print ("White")
-        ledstm.execute([0xff, 0xff, 0xff, 0x0f, SC_LEDSET])
+        ledstm.execute([0x0f, 0xff, 0xff, 0xff, SC_LEDSET])
         return True
     if  var == "o":
         print ("OFF")
-        ledstm.execute([0x00, 0x00, 0x00, 0x0f, SC_LEDSET])
         return True
+        ledstm.execute([0x0f, 0x00, 0x00, 0x00, SC_LEDSET])
     if  var == "h":
         printHelp()
         return True

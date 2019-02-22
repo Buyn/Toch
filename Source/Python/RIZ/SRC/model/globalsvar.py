@@ -10,7 +10,10 @@ LEDSTM_ADRRESS = 0x08
 # SPI stek command
 SC_ENDOFFILE        = 0xEF
 SC_EXECUTECOMMAND   = 0xAA
+SC_GETVARBYNAME     = 0xBA
 SC_ENDOFSESION      = 0xFF
+#define Vars Names
+VN_BUTTONVAULT01    = 0xFF
 #define ERROR bloc  
 DISINHRONERROR                    = 0x10
 DISINHRONADRESSERROR              = 0x11
