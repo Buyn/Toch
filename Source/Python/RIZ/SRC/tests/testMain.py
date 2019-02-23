@@ -51,6 +51,11 @@ class Test(unittest.TestCase):
         self.assertEqual(
             isCommandList( var.split(" "))
             , True)
+        var = "debug 1"
+        print(var.split(" "))
+        self.assertEqual(
+            isCommandList( var.split(" "))
+            , True)
         var = "ledstop"
         print(var.split(" "))
         self.assertEqual(

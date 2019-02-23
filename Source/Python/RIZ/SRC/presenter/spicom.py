@@ -57,6 +57,7 @@ class SPICom(object):
         elif (error == STAKERRORCOMAND): return " [ STAKERRORCOMAND ]"
         elif (error == TIMEOUTSESION): return " [ TIMEOUTSESION ]"
     
+
     def execute(self, command):
         if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
         if (self.debugmode >= 2): 
@@ -90,6 +91,36 @@ class SPICom(object):
         if (self.debugmode >= 2): print("Send Var Name = ", varName)
         if (self.debugmode >= 2): print("SPI get Name = ", self.sendGetVar())
         return self.sendEndSession()
+
+    
+    def sendGetAllMsg(self):
+        if (self.debugmode >= 2): print("send = [ GET ALL MESAGES ] ")
+        return self.send(SC_GETALLMSG)
+    
+    
+    def getAllMsg(self, testmsg=None):
+        if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
+        if (self.debugmode >= 2): 
+            print("Last Sesion Ends whith = ",
+                      self.decodeError(self.send(self.address)))
+        resivlist = self.sendGetAllMsg()
+        if testmsg == 0 :
+            resivlist = self.send(0)
+        if resivlist == 0 :
+            if (self.debugmode >= 2): print("No Mesages") 
+            self.sendEndSession()
+            return 0
+        if (self.debugmode >= 2): print("MsgStakList elements waiting = ", resivlist) 
+        msglist = []
+        sendmsg = resivlist
+        for t in range(resivlist):
+            msglist.append(self.send(sendmsg))
+            sendmsg = t
+        if (self.debugmode >= 2): print("resiv mesages list = ", msglist)
+        self.sendEndSession()
+        return msglist 
+    
+    
     
     
     

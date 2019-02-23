@@ -138,11 +138,17 @@ def isLEDCommand(var):
     return False
 
 
+def debugcommand(elm_var):
+    ledstm.debugmode = isInt(elm_var[1])
+
+
 def isCommandList(elm_var):
     if (not isinstance(elm_var, str) and len(elm_var) > 1):
 #   if (len(elm_var)>1):
         if (elm_var[0] == 'led'):
             ledcommand(elm_var)
+        if (elm_var[0] == 'debug'):
+            debugcommand(elm_var)
         return True
     return False
 
