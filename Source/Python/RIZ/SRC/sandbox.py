@@ -1,6 +1,8 @@
 
-a = [1, 2, 3, 4, 5]
+a = [1]
+b = 1
 
 print(a)
-a.reverse()
-print(a)
+print(b)
+print(len(a))
+print(len(b))

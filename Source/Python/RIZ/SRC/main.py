@@ -11,6 +11,7 @@
 # SCK  -> GPIO11
 # CE1  -> GPIO7
 # CE1  -> GPIO8
+from array import array
 '''
 Created on 10 февр. 2019 г.
 @author: BuYn
@@ -138,7 +139,8 @@ def isLEDCommand(var):
 
 
 def isCommandList(elm_var):
-    if (len(elm_var)>1):
+    if (not isinstance(elm_var, str) and len(elm_var) > 1):
+#   if (len(elm_var)>1):
         if (elm_var[0] == 'led'):
             ledcommand(elm_var)
         return True
