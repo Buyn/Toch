@@ -38,13 +38,13 @@ class Test(unittest.TestCase):
     def testSpidevXref(self):
         self.assertEqual(
             self.ledstm.send( 200 )
-            , 200 + 1)
+            , 200 )
 
         
     def testGetVar(self):
         self.assertEqual(
             self.ledstm.getVar( 100 )
-            , SC_ENDOFSESION + 1)
+            , SC_ENDOFSESION )
 
         
 if __name__ == "__main__":
