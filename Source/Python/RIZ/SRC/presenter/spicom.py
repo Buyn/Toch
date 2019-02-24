@@ -97,6 +97,11 @@ class SPICom(object):
         if (self.debugmode >= 2): print("send = [ GET ALL MESAGES ] ")
         return self.send(SC_GETALLMSG)
     
+
+    def sendGetMsgByCount(self):
+        if (self.debugmode >= 2): print("send = [ GET MESAGES BY COUNT] ")
+        return self.send(SC_GETMSGBYCOUNT)
+    
     
     def getAllMsg(self, testmsg=None):
         if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
@@ -131,5 +136,24 @@ class SPICom(object):
                                         "" if resiv == self.address 
                                         else "in", "correct Adress")
         return self.sendEndSession()
+
     
-    
+    def getMsgByCount(self, number, testmsg = 0):
+        if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
+        if (self.debugmode >= 2): 
+            print("Last Sesion Ends whith = ",
+                      self.decodeError(self.send(self.address)))
+        
+        resiv = self.sendGetMsgByCount()
+        if (self.debugmode >= 2): print("We Sending to ", 
+                                        "" if resiv == self.address 
+                                        else "in", "correct Adress")
+        if (self.debugmode >= 2): 
+            print("Sending Namber of values we wating = ", hex(number))
+        resiv = [self.send(number)]
+        if (self.debugmode >= 2): 
+            print("Resivid value whith name= ", resiv[0])
+        resiv.append(self.sendEndSession())
+        if (self.debugmode >= 2): 
+            print("We Get", resiv)
+        return resiv

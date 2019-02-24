@@ -62,6 +62,12 @@ class Test(unittest.TestCase):
             self.ledstm.isWaitingMsg(testmsg = 0) , 255)
 
         
+    def testgetMsgByCount(self):
+        #self.ledstm.debugmode = 3
+        self.assertEqual( 
+            self.ledstm.getMsgByCount(2, testmsg = 0) , [2, 255])
+
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
