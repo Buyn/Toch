@@ -50,6 +50,10 @@ class SPICom(object):
         return result
     
     
+    def sendGetVar(self):
+        return self.send(SC_GETVARBYNAME)
+    
+    
     def decodeError(self, error):
         if (error == 0): return " ok [ NO ERROR ]"
         elif (error == DISINHRONERROR): return " [ DISINHRONERROR ]"
@@ -73,10 +77,6 @@ class SPICom(object):
                       self.decodeError(self.sendEndSession()))
             
             
-    def sendGetVar(self):
-        return self.send(SC_GETVARBYNAME)
-    
-    
     def getVar(self, varName):
         if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
         if (self.debugmode >= 2): 
@@ -119,8 +119,17 @@ class SPICom(object):
         if (self.debugmode >= 2): print("resiv mesages list = ", msglist)
         self.sendEndSession()
         return msglist 
+
     
-    
-    
+    def isWaitingMsg(self, testmsg = 0):
+        if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
+        if (self.debugmode >= 2): 
+            print("Last Sesion Ends whith = ",
+                      self.decodeError(self.send(self.address)))
+        resiv = self.sendGetAllMsg()
+        if (self.debugmode >= 2): print("We Sending to ", 
+                                        "" if resiv == self.address 
+                                        else "in", "correct Adress")
+        return self.sendEndSession()
     
     
