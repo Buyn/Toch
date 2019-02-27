@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 # Bitbang'd SPI interface with an MCP3008 ADC device{{{
 # MCP3008 is 8-channel 10-bit analog to digital converter
 #  Connections are:
@@ -141,6 +143,7 @@ def isLEDCommand(var):
 
 def debugcommand(elm_var):
     ledstm.debugmode = isInt(elm_var[1])
+    print("Debug mode set to ", elm_var[1])
 
 
 def isCommandList(elm_var):

@@ -16,9 +16,9 @@ void SlaveSPI::spinit(void){
 /*   SlaveSPI::add_to_stak   * {{{ */
 void SlaveSPI::add_to_stak(void){
 	Serial.print(micros());
-	Serial.print(": Comannd adding. waiting = ");
+	Serial.print(": Comannd adding. waiting = (");
 	Serial.print(commands_waiting);
-	Serial.print("stak = ");
+	Serial.print(") stak = ");
 	Serial.println(command_stak_point);
 	commands_waiting--;
 	command_stak[command_stak_point++] = msg;
@@ -110,7 +110,7 @@ void SlaveSPI::setmsg(int newmsg){
 
 /*   SlaveSPI::runtime   * {{{ */
 bool SlaveSPI::runtime(void){
-	if (digitalRead(SPI_CS_PIN)>=LOW) { 
+	if (digitalRead(SPI_CS_PIN)==HIGH) { 
 		spirutine();
 		}
 	return command_to_execute;
@@ -119,11 +119,14 @@ bool SlaveSPI::runtime(void){
 /*   SlaveSPI::spirotine   *  {{{ */
 void SlaveSPI::spirutine(void){
 	//if (!spi_pasiv) 
-	Serial.print("SPI_CS_PIN befo is ");
+	Serial.print(micros());
+	Serial.print(" :SPI_CS_PIN befo is ");
 	Serial.println(digitalRead(SPI_CS_PIN));
 	msg = SPI.transfer(back_msg); 
-	Serial.print("SPI_CS_PIN after is ");
+	Serial.print(micros());
+	Serial.print(" :SPI_CS_PIN after is ");
 	Serial.println(digitalRead(SPI_CS_PIN));
+	isSesionEnd();
 	Serial.print("Recived = 0b");
 	Serial.print(msg, BIN);
 	Serial.print(", 0x");
