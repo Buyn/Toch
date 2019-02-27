@@ -23,7 +23,6 @@ void SlaveSPI::add_to_stak(void){
 	commands_waiting--;
 	command_stak[command_stak_point++] = msg;
 	//TODO merje to one line
-	//command_stak_point++;
 	back_msg = msg;	
 	} //}}}
 
@@ -70,7 +69,7 @@ void SlaveSPI::execute_command(void){
 
 /*   SlaveSPI::isSesionEnd   * {{{ */
 bool SlaveSPI::isSesionEnd(void){
-	if (sesionend >= millis()){
+	if (millis() >= sesionend){
 		back_msg = TIMEOUTSESION;	
 		spi_sesion = false;
 		commands_waiting = 0;
@@ -111,7 +110,7 @@ void SlaveSPI::setmsg(int newmsg){
 
 /*   SlaveSPI::runtime   * {{{ */
 bool SlaveSPI::runtime(void){
-	if (digitalRead(SPI_CS_PIN)>=HIGH) { 
+	if (digitalRead(SPI_CS_PIN)>=LOW) { 
 		spirutine();
 		}
 	return command_to_execute;
@@ -120,7 +119,11 @@ bool SlaveSPI::runtime(void){
 /*   SlaveSPI::spirotine   *  {{{ */
 void SlaveSPI::spirutine(void){
 	//if (!spi_pasiv) 
+	Serial.print("SPI_CS_PIN befo is ");
+	Serial.println(digitalRead(SPI_CS_PIN));
 	msg = SPI.transfer(back_msg); 
+	Serial.print("SPI_CS_PIN after is ");
+	Serial.println(digitalRead(SPI_CS_PIN));
 	Serial.print("Recived = 0b");
 	Serial.print(msg, BIN);
 	Serial.print(", 0x");
@@ -137,6 +140,8 @@ void SlaveSPI::spirutine(void){
 		sesionend = millis() + SESIONTIMEOUT;
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
+		Serial.println(millis());
+		Serial.println(sesionend);
 		return;
 		}/*}}}*/
 	else if (spi_sesion && commands_waiting == 0 && !isSesionEnd()) {/*{{{*/

@@ -60,6 +60,7 @@ class SPICom(object):
         elif (error == DISINHRONADRESSERROR): return " [ DISINHRONADRESSERROR ]"
         elif (error == STAKERRORCOMAND): return " [ STAKERRORCOMAND ]"
         elif (error == TIMEOUTSESION): return " [ TIMEOUTSESION ]"
+        return "Unknowe error code : " + str(error)
     
 
     def execute(self, command):

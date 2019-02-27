@@ -16,12 +16,16 @@
 //define bloc  {{{
 #define SPI_CS_PIN PA4   // slave spi pin CS\SS
 #define STEKSIZE 30   
-#define SESIONTIMEOUT 10   
+#define SESIONTIMEOUT 900   
 //Commands list
 //Stak commands
 #define ENDOFSESION			0xFF
 #define ENDOFFILE				0xEF
 #define EXECUTE				0xAA
+#define SC_GETALLMSG       0xB0
+#define SC_GETVARBYNAME    0xBA
+#define SC_GETMSGBYCOUNT   0xBC
+
 /*}}}*/
 //define ERROR bloc  {{{
 #define DISINHRONERROR						0x10
@@ -40,15 +44,19 @@ class SlaveSPI {
 	 bool isExecute();
 	 int 	spiaddress;
 	 void setmsg( int );
-	void 	spinit(void);
+	 void 	spinit(void);
 	/*}}}*/
  private:/*{{{*/
 	int  		command_stak[STEKSIZE] ;
+	int  		msg_stak[STEKSIZE * 3] ;
 	int 		commands_waiting 		= 0;
 	int 		command_stak_point 	= 0 ;
+	int 		msg_stak_point 		= 0 ;
 	bool		spi_pasiv 				= false;
-	bool		spi_sesion				= false;
+	//delit 
 	bool		command_to_execute 	= false;
+	bool		spi_sesion				= false;
+	bool		msg_transfer			= false;
 	int 		msg = 0;
 	int 		back_msg = 0;
 	long		sesionend;
