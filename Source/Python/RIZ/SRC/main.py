@@ -97,6 +97,7 @@ def printHelp():
     print ( 'led ', "set", " red green blue speed  ", "Set led  = ")
     print ( 'led ', "01" , " red green blue speed  ", "Set led 01 = ") 
     print ( 'led ', "02" , " red green blue speed  ", "Set led 02 = ") 
+    print ( 'debug ', "paramMode" , " set debug mode to new value") 
 
 
 def isLEDCommand(var):

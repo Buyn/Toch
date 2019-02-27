@@ -38,7 +38,8 @@ class SPICom(object):
         return self.send(SC_ENDOFSESION)
     
     
-    def sendWordsList(self, command):
+    def sendWordsList(self, command, testmsg = None):
+
         result = []
         # send waiting one word
         if (self.debugmode >= 3): print("comad list = ",  command)
