@@ -4,9 +4,9 @@ DEBUGMODE = False
 BUS     = 0 
 DEVICE  = 0
 
-# SOI Adresses
+# SPI Adresses
 LEDSTM_ADRRESS = 0x08
-
+SPI_SLEEPAFTERSEND = 0.1
 # SPI stek command
 SC_EXECUTECOMMAND   = 0xAA
 SC_GETALLMSG        = 0xB0
