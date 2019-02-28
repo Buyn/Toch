@@ -12,3 +12,4 @@ Billd
 virtualenv/
 __pycache__
 *.pyc
+.settings
