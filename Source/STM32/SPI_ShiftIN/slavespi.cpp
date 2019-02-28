@@ -28,7 +28,7 @@ void SlaveSPI::add_to_stak(void){
 
 /*   SlaveSPI::execute_command   *  {{{ */
 void SlaveSPI::execute_command(void){
-	Serial.print(micros());
+	Serial.println(micros());
 	//{{{ is adding list command
 	if (msg <= 15) {
 		commands_waiting = msg;	
@@ -110,7 +110,7 @@ void SlaveSPI::setmsg(int newmsg){
 
 /*   SlaveSPI::runtime   * {{{ */
 bool SlaveSPI::runtime(void){
-	if (digitalRead(SPI_CS_PIN)==HIGH) { 
+	if (digitalRead(SPI_CS_PIN)==LOW) { 
 		spirutine();
 		}
 	return command_to_execute;
