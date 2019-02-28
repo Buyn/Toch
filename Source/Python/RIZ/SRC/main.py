@@ -51,10 +51,10 @@ def sth(param0):
 def fillLEDset(setlist, command):
     """Filling list from arrey and adding command"""
     return [
-          sth(setlist[5]),
-          sth(setlist[4]), 
-          sth(setlist[3]), 
-          sth(setlist[2]), 
+          isInt(setlist[5]),
+          isInt(setlist[4]), 
+          isInt(setlist[3]), 
+          isInt(setlist[2]), 
           command 
           ] 
     
