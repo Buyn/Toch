@@ -23,7 +23,7 @@ class SPICom(object):
         resp = self.spi.xfer([word])
         self.spi.close()
         if (self.debugmode >= 3): print("send = [ ", word, " ] , resiv = [ ", resp, " ]")
-        time.sleep (SPI_SLEEPAFTERSEND);
+        #time.sleep (SPI_SLEEPAFTERSEND);
         return resp
     
     
