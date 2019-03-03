@@ -20,9 +20,10 @@ void SlaveSPI::add_to_stak(void){
 	Serial.print(commands_waiting);
 	Serial.print(") stak = ");
 	Serial.println(command_stak_point);
+	Serial.print( command_stak[command_stak_point]);
+	Serial.println("Set stak ");
 	commands_waiting--;
 	command_stak[command_stak_point++] = msg;
-	//TODO merje to one line
 	back_msg = msg;	
 	} //}}}
 
@@ -89,8 +90,16 @@ int SlaveSPI::peek(void){
 int SlaveSPI::pull(void){
 	if (command_stak_point == 0)
 		return command_stak[command_stak_point];
-	else	
+	else {
+		if (command_to_execute){
+			Serial.print( command_stak[command_stak_point]);
+			Serial.println(" : Set command to false");
+			command_to_execute = false;
+			}
+		Serial.print( command_stak[command_stak_point]);
+		Serial.println("Get stak ");
 		return command_stak[command_stak_point--];
+		}
 	} //}}}
 
 /*   SlaveSPI::staksize   * {{{ */
@@ -138,6 +147,7 @@ void SlaveSPI::spirutine(void){
 		spi_sesion = true;
 		commands_waiting = 0;
 		sesionend = millis() + SESIONTIMEOUT;
+		command_stak_point = 0;
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
 		Serial.println(millis());

@@ -12,9 +12,9 @@
 /*}}}*/
 
 /*Define Block{{{*/
-#define RBG_PIN_R PA7   // пин для канала R
-#define RBG_PIN_G PB1   // пин для канала G
-#define RBG_PIN_B PB0   // пин для канала B
+#define RBG_PIN_R PA8   // пин для канала R
+#define RBG_PIN_G PA9   // пин для канала G
+#define RBG_PIN_B PA10  // пин для канала B
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 1    
@@ -66,6 +66,7 @@ void setupLEDLine(void){
 
 /*   execute_command   *  {{{ */
 void execute_command(void){
+	Serial.println("In exe Switch");
 	switch (sspi.pull()) {/*{{{*/
 		case LEDSTART:/*{{{*/
 			Serial.println("Start LED");
@@ -96,6 +97,13 @@ void execute_command(void){
 			sspi.setmsg( 0 );
 			break;/*}}}*/
 		case LEDSET:/*{{{*/
+			Serial.println("To Led Fade");
+			led_Line.set_to( sspi.pull(), sspi.pull(), sspi.pull());
+			led_Line.set_speed(sspi.pull());
+			test.trige();
+			sspi.setmsg( 0 );
+			break;/*}}}*/
+		case 121231:/*{{{*/
 			Serial.println("To Led Fade");
 			led_Line.fade_to( sspi.pull(), sspi.pull(), sspi.pull());
 			led_Line.set_speed(sspi.pull());
