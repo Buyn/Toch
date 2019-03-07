@@ -16,14 +16,10 @@ void SlaveSPI::spinit(void){
 /*   SlaveSPI::add_to_stak   * {{{ */
 void SlaveSPI::add_to_stak(void){
 	Serial.print(micros());
-	Serial.print(": Comannd adding. waiting = (");
-	Serial.print(commands_waiting);
-	Serial.print(") stak = ");
-	Serial.println(command_stak_point);
-	Serial.print( command_stak[command_stak_point]);
-	Serial.println("Set stak ");
+	Serial.print(": command waiting: ");
+	Serial.println(commands_waiting);
 	commands_waiting--;
-	command_stak[command_stak_point++] = msg;
+	command_stak.push(msg);
 	back_msg = msg;	
 	} //}}}
 
@@ -36,7 +32,7 @@ void SlaveSPI::execute_command(void){
 		Serial.print(micros());
 		Serial.print(": Comannd waiting - ");
 		Serial.println(commands_waiting);
-		back_msg = command_stak_point;
+		back_msg = command_stak.staksize();
 		return;
 		}/*}}}*/
 	Serial.println(": Comannd Exekution  ");
@@ -83,28 +79,24 @@ bool SlaveSPI::isSesionEnd(void){
 
 /*   SlaveSPI::peek   * {{{ */
 int SlaveSPI::peek(void){
-	return command_stak[command_stak_point];
+	return command_stak.peek();
 	} //}}}
 
 /*   SlaveSPI::pull   * {{{ */
 int SlaveSPI::pull(void){
-	if (command_stak_point == 0)
-		return command_stak[command_stak_point];
-	else {
 		if (command_to_execute){
-			Serial.print( command_stak[command_stak_point]);
+			Serial.print( command_stak.peek());
 			Serial.println(" : Set command to false");
 			command_to_execute = false;
 			}
-		Serial.print( command_stak[command_stak_point]);
-		Serial.println("Get stak ");
-		return command_stak[command_stak_point--];
-		}
+		Serial.print( command_stak.peek());
+		Serial.println(" - Get form stak ");
+		return command_stak.pull();
 	} //}}}
 
 /*   SlaveSPI::staksize   * {{{ */
 int SlaveSPI::staksize(void){
-	return command_stak_point;
+	return command_stak.staksize();
 	} //}}}
 
 /*   SlaveSPI::isExecute   * {{{ */
@@ -147,7 +139,7 @@ void SlaveSPI::spirutine(void){
 		spi_sesion = true;
 		commands_waiting = 0;
 		sesionend = millis() + SESIONTIMEOUT;
-		command_stak_point = 0;
+		command_stak.reset();
 		Serial.print(micros());
 		Serial.println(": Connected: Start sesion");
 		Serial.println(millis());

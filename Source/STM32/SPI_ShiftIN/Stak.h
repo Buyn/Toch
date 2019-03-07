@@ -21,6 +21,7 @@ class Stak {
 	 int	pull();
 	 int	push(int );
 	 int	staksize();
+	 void	reset();
 	/*}}}*/
  private:/*{{{*/
 	int  		command_stak[STAKSIZE] ;

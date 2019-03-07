@@ -6,7 +6,7 @@ Stak::Stak(int size) {
 
 /*   Stak::push   * {{{ */
 int Stak::push(int newValue){
-	Serial.print("Add to Stak");
+	Serial.print("Add to Stak-(");
 	Serial.print(newValue);
 	Serial.print(") stak = ");
 	Serial.println(command_stak_point);
@@ -19,12 +19,17 @@ int Stak::peek(void){
 	return command_stak[command_stak_point];
 	} //}}}
 
+/*   Stak::reset   * {{{ */
+void Stak::reset(void){
+	command_stak_point = 0;
+	} //}}}
+
 /*   Stak::pull   * {{{ */
 int Stak::pull(void){
 	if (command_stak_point == 0)
 		return command_stak[command_stak_point];
 	else	
-		return command_stak[command_stak_point--];
+		return command_stak[--command_stak_point];
 	} //}}}
 
 /*   Stak::staksize   * {{{ */

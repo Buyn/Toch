@@ -133,8 +133,8 @@ def isLEDCommand(var):
         return True
     if  var == "o":
         print ("OFF")
-        return True
         ledstm.execute([0x0f, 0x00, 0x00, 0x00, SC_LEDSET])
+        return True
     if  var == "h":
         printHelp()
         return True

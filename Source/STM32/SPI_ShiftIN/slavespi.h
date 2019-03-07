@@ -11,7 +11,7 @@
 #include "WProgram.h"
 #endif
 #include <SPI.h>
-//#include <cstdint>
+#include "Stak.h"
 /*}}}*/
 //define bloc  {{{
 #define SPI_CS_PIN PA4   // slave spi pin CS\SS
@@ -47,11 +47,9 @@ class SlaveSPI {
 	 void 	spinit(void);
 	/*}}}*/
  private:/*{{{*/
-	int  		command_stak[STEKSIZE] ;
-	int  		msg_stak[STEKSIZE * 3] ;
+	Stak 		command_stak = Stak(1);
+	Stak 		msg_stak = Stak(1);
 	int 		commands_waiting 		= 0;
-	int 		command_stak_point 	= 0 ;
-	int 		msg_stak_point 		= 0 ;
 	bool		spi_pasiv 				= false;
 	//delit 
 	bool		command_to_execute 	= false;
@@ -64,7 +62,6 @@ class SlaveSPI {
 	void 		execute_command(void);
 	void 		spirutine(void);
 	void 		add_to_stak(void);
-
 	/*}}}*/
  };
  /*}}}*/

@@ -66,7 +66,8 @@ void setupLEDLine(void){
 
 /*   execute_command   *  {{{ */
 void execute_command(void){
-	Serial.println("In exe Switch");
+	Serial.print("In execut Switch");
+	Serial.println(sspi.peek());
 	switch (sspi.pull()) {/*{{{*/
 		case LEDSTART:/*{{{*/
 			Serial.println("Start LED");
