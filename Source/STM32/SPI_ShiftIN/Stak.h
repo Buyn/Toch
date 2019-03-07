@@ -1,8 +1,8 @@
 // Stak class{{{
 /*}}}*/
 /* include bloc {{{*/
-#ifndef SLAVESPI_h
-#define SLAVESPI_h
+#ifndef STAK_h
+#define STAK_h
 // the #include statment and code go here...
 #if ARDUINO >= 100
 #include "Arduino.h"
@@ -11,7 +11,7 @@
 #endif
 /*}}}*/
 //define bloc  {{{
-#define STEKSIZE 30   
+#define STAKSIZE 30   
 /*}}}*/
 //  calss{{{
 class Stak {
@@ -19,13 +19,12 @@ class Stak {
 	 Stak(int );
 	 int	peek();
 	 int	pull();
+	 int	push(int );
 	 int	staksize();
-	 void setmsg( int );
 	/*}}}*/
  private:/*{{{*/
-	int  		command_stak[STEKSIZE] ;
+	int  		command_stak[STAKSIZE] ;
 	int 		command_stak_point 	= 0 ;
-	void 		add_to_stak(void);
 	/*}}}*/
  };
  /*}}}*/
