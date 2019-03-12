@@ -100,9 +100,9 @@ class SPICom(object):
         return self.sendEndSession()
 
     
-    def sendGetAllMsg(self):
-        if (self.debugmode >= 2): print("send = [ GET ALL MESAGES ] ")
-        return self.send(SC_GETALLMSG)
+    def sendIsMsgWating(self):
+        if (self.debugmode >= 2): print("send = [ IS MESAGES WATING ] ")
+        return self.send(SC_ISMSGWATING)
     
 
     def sendGetMsgByCount(self):
@@ -115,7 +115,7 @@ class SPICom(object):
         if (self.debugmode >= 2): 
             print("Last Sesion Ends whith = ",
                       self.decodeError(self.send(self.address)))
-        resivlist = self.sendGetAllMsg()
+        resivlist = self.sendIsMsgWating()
         if testmsg == 0 :
             resivlist = self.send(0)
         if resivlist == 0 :
@@ -133,28 +133,30 @@ class SPICom(object):
         return msglist 
 
     
-    def isWaitingMsg(self, testmsg = 0):
+    def startSesion(self):
         if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
         if (self.debugmode >= 2): 
             print("Last Sesion Ends whith = ",
                       self.decodeError(self.send(self.address)))
-        resiv = self.sendGetAllMsg()
-        if (self.debugmode >= 2): print("We Sending to ", 
-                                        "" if resiv == self.address 
-                                        else "in", "correct Adress")
-        return self.sendEndSession()
 
     
-    def getMsgByCount(self, number, testmsg = 0):
-        if (self.debugmode >= 2): print("Sending to Adress = ", hex(self.address))
+    def isWaitingMsg(self, testmsg = 0):
+        self.startSesion()
+        self.isAdressCorrect(   self.sendIsMsgWating())
+        return                  self.sendEndSession()
+
+    
+    def isAdressCorrect(self, resiv):
         if (self.debugmode >= 2): 
-            print("Last Sesion Ends whith = ",
-                      self.decodeError(self.send(self.address)))
-        
-        resiv = self.sendGetMsgByCount()
-        if (self.debugmode >= 2): print("We Sending to ", 
-                                        "" if resiv == self.address 
-                                        else "in", "correct Adress")
+            print(
+                "We Sending to ", 
+                "" if resiv == self.address 
+                    else "in", "correct Adress")
+    
+    
+    def getOneMsg(self, number, testmsg = 0):
+        self.startSesion() 
+        self.isAdressCorrect(self.sendGetMsgByCount())
         if (self.debugmode >= 2): 
             print("Sending Namber of values we wating = ", hex(number))
         resiv = [self.send(number)]

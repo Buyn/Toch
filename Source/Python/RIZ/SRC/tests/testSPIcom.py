@@ -72,7 +72,7 @@ class Test(unittest.TestCase):
     def testgetMsgByCount(self):
         #self.ledstm.debugmode = 3
         self.assertEqual( 
-            self.ledstm.getMsgByCount(2, testmsg = 0) , [2, 255])
+            self.ledstm.getOneMsg(2, testmsg = 0) , [2, 255])
 
         
 if __name__ == "__main__":

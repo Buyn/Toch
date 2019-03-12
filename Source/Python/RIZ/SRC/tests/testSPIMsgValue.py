@@ -15,7 +15,7 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         print("*"*33,"*"*33)
-        print ("file opened")
+        print ("Seting up class")
         print("*"*33,"*"*33)
 
         

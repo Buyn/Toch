@@ -135,6 +135,10 @@ def isLEDCommand(var):
         print ("OFF")
         ledstm.execute([0x0f, 0x00, 0x00, 0x00, SC_LEDSET])
         return True
+    if  var == "i":
+        print ("Input loop Start")
+        ledstm.execute([0x0f, 0x00, 0x00, 0x00, SC_LEDSET])
+        return True
     if  var == "h":
         printHelp()
         return True
@@ -173,3 +177,19 @@ if __name__ == '__main__':
         mainlope()
     except KeyboardInterrupt:
         sys.exit(0)
+
+
+def inputLoop(timeLong):
+    print("Input loop stat for [ ", timeLong, " ] sec")
+    stopTime= time.time() + timeLong
+    while stopTime > time.time(): 
+        print("Secunds left until end of loop= ", timeLong )
+        timeLong-=1
+        newmsg  = ledstm.isWaitingMsg()
+        print("msg = ", newmsg)
+        if isInt(newmsg) > 0:
+            ledstm.getOneMsg(newmsg)
+        time.sleep (SPI_SLEEPBETVINMSGGET);
+    return newmsg
+
+
