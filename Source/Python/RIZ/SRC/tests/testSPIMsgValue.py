@@ -4,10 +4,8 @@ Created on 28 янв. 2019 г.
 @author: BuYn
 '''
 import unittest
-import main
 from model.globalsvar import *
-from presenter.spicom import SPICom
-from main import isLEDCommand, isCommandList
+from model import spimsgvalue
 
 class Test(unittest.TestCase):
 
@@ -33,6 +31,7 @@ class Test(unittest.TestCase):
         print("-++-"*10,i,"-++-"*33)
 
 
+
     def tearDown(self):
         i ="End Test Log"
         print("-++-"*10,i,"-++-"*33)
@@ -40,52 +39,24 @@ class Test(unittest.TestCase):
         print("-++-"*10,i,"-++-"*33)
 
 
-    def testisLedcommand(self):
+    def testInit(self):
+        self.spimsg = spimsgvalue.SPIMsgValue(200, 100) 
         self.assertEqual(
-            isLEDCommand( "led set 1 2 3 4" )
-            , False)
+            self.spimsg.msg.get(200)
+            , 100)
         self.assertEqual(
-            isLEDCommand( "ledstop" )
-            , True)
-        var = "debug 3"
-        print(var.split(" "))
-        self.assertEqual(
-            isCommandList( var.split(" "))
-            , True)
-        self.assertEqual(
-            isLEDCommand( "g" )
-            , True)
-
-
-    def testisCommandList(self):
-        var = "debug 3"
-        print(var.split(" "))
-        self.assertEqual(
-            isCommandList( var.split(" "))
-            , True)
-        var = "led set 1 2 3 4"
-        print(var.split(" "))
-        self.assertEqual(
-            isCommandList( var.split(" "))
-            , True)
-        var = "debug 1"
-        print(var.split(" "))
-        self.assertEqual(
-            isCommandList( var.split(" "))
-            , True)
-        var = "ledstop"
-        print(var.split(" "))
-        self.assertEqual(
-            isCommandList( var.split(" ") )
-            , False)
+            list(self.spimsg.msg.keys())[0]
+            , 200)
         
         
-    def testInpitLoop(self):
-        var = "debug 3"
-        isCommandList( var.split(" "))
+    def testSetVariblsByValueNames(self):
+        spimsg = spimsgvalue.SPIMsgValue(200, 100) 
+        self.setVariblsByValueNames()(
+            spimsg.msg.get(200)
+            , 100)
         self.assertEqual(
-            main.inputLoop(1)
-            , 255)
+            list(spimsg.msg.keys())[0]
+            , 200)
         
         
 if __name__ == "__main__":

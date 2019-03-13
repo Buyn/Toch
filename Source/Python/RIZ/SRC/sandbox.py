@@ -1,8 +1,5 @@
+d = {0: 'a', 1: 'b', 2: 'c', 3: 'd'}
 
-a = [1]
-b = 1
-
-print(a)
-print(b)
-print(len(a))
-print(len(b))
+print(d)
+print(list(d.keys())[0])
+print(d[2])
