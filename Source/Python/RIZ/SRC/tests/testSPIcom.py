@@ -69,7 +69,7 @@ class Test(unittest.TestCase):
                 [1,2,3,4,5,6,7,8,9,0], testmsg = 0 ) , [1,2,3,4,5,6,7,8,9,0])
 
         
-    def testgetMsgByCount(self):
+    def test_getOneMsg(self):
         #self.ledstm.debugmode = 3
         self.assertEqual( 
             self.ledstm.getOneMsg(2, testmsg = 0) , [2, 255])

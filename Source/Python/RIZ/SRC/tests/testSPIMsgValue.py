@@ -51,12 +51,13 @@ class Test(unittest.TestCase):
         
     def testSetVariblsByValueNames(self):
         spimsg = spimsgvalue.SPIMsgValue(200, 100) 
-        self.setVariblsByValueNames()(
-            spimsg.msg.get(200)
-            , 100)
-        self.assertEqual(
-            list(spimsg.msg.keys())[0]
-            , 200)
+        self.assertEqual( spimsg.msg , {200:100})
+        spimsg.set({300:500}),
+        self.assertEqual( spimsg.msg, {300:500})
+        self.assertEqual( spimsg.get(), {300:500})
+#         self.assertEqual(
+#             list(spimsg.msg.keys())[0]
+#             , 200)
         
         
 if __name__ == "__main__":

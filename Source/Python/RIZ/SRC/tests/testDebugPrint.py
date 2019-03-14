@@ -39,7 +39,7 @@ class Test(unittest.TestCase):
         print("-++-"*10,i,"-++-"*33)
 
         
-    def testInpitLoop(self):
+    def test_debugprint(self):
         self.dp.debugmod = 3
         self.assertEqual(
             self.dp.print(1,"Test msg", " 01")
@@ -55,6 +55,24 @@ class Test(unittest.TestCase):
             self.dp.print(1,"Test msg", " 04")
             , 1)
         
+
+    def test_Callable(self):
+        self.dp.debugmod = 3
+        self.assertEqual(
+            self.dp(1,"Test msg", " 01")
+            , 1)
+        self.assertNotEquals(
+            self.dp(4,"Test msg", " 02")
+            , 1)
+        self.dp.debugmod = 1
+        self.assertEqual(
+            self.dp(3,"Test msg", " 03")
+            , 0)
+        self.assertEqual(
+            self.dp(1,"Test msg", " 04")
+            , 1)
+        
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
