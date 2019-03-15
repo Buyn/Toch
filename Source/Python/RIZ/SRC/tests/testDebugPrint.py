@@ -71,6 +71,7 @@ class Test(unittest.TestCase):
         self.assertEqual(
             self.dp(1,"Test msg", " 04")
             , 1)
+<<<<<<< HEAD
         self.assertEqual(
             self.dp(3)
             , -1)
@@ -78,6 +79,9 @@ class Test(unittest.TestCase):
                 self.dp.debugmod
                 , 3)
 
+=======
+        
+>>>>>>> c83a38ddd0eba7e0ffc4538a8acd7c1888181b6f
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

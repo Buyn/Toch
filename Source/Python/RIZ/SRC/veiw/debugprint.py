@@ -7,9 +7,12 @@ class DebugPrint(object):
 
     
     def __call__(self, printonmod, *arg):
+<<<<<<< HEAD
         if len(arg)==0:
             self.debugmod = printonmoimap <F2> <esc><F8>
             return -1
+=======
+>>>>>>> c83a38ddd0eba7e0ffc4538a8acd7c1888181b6f
         return self.print(printonmod, *arg)
         
         
