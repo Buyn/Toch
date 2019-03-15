@@ -3,14 +3,14 @@
 import spidev
 from model.globalsvar import * 
 import time
+from veiw.debugprint import DebugPrint
 
 
 class SPICom(object):
-    
-    
     def __init__(self, address, debugmode = DEBUGMODE):
         self.address = address
         self.debugmode = debugmode
+        self.dp = DebugPrint(debugmode)
         self.spi = spidev.SpiDev()
 
 
@@ -157,12 +157,10 @@ class SPICom(object):
     def getOneMsg(self, number, testmsg = 0):
         self.startSesion() 
         self.isAdressCorrect(self.sendGetMsgByCount())
-        if (self.debugmode >= 2): 
-            print("Sending Namber of values we wating = ", hex(number))
+#             print("Sending Namber of values we wating = ", hex(number))
+        self.dp(2, "Sending Namber of values we wating = ", hex(number))
         resiv = [self.send(number)]
-        if (self.debugmode >= 2): 
-            print("Resivid value whith name= ", resiv[0])
+        self.dp(2, "Resivid value whith name= ", resiv[0])
         resiv.append(self.sendEndSession())
-        if (self.debugmode >= 2): 
-            print("We Get", resiv)
+        self.dp(2, "We Get", resiv)
         return resiv
