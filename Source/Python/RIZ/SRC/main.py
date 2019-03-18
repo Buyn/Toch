@@ -146,7 +146,7 @@ def isLEDCommand(var):
 
 
 def debugcommand(elm_var):
-    ledstm.debugmode = isInt(elm_var[1])
+    ledstm.dp(isInt(elm_var[1]))
     print("Debug mode set to ", elm_var[1])
 
 

@@ -48,7 +48,7 @@ class Test(unittest.TestCase):
 
         
     def testGetAllMsg(self):
-        #self.ledstm.debugmode = 3
+        #self.ledstm.dp(3)
         self.assertEqual( 
             self.ledstm.getAllMsg(testmsg = 0) , 0)
         self.assertEqual(
@@ -57,20 +57,20 @@ class Test(unittest.TestCase):
 
         
     def testisWatingMsg(self):
-        #self.ledstm.debugmode = 3
+        #self.ledstm.dp(3)
         self.assertEqual( 
             self.ledstm.isWaitingMsg(testmsg = 0) , 255)
 
         
     def testsendWordsList(self):
-        self.ledstm.debugmode = 3
+        self.ledstm.dp(3)
         self.assertEqual( 
             self.ledstm.sendWordsList(
                 [1,2,3,4,5,6,7,8,9,0], testmsg = 0 ) , [1,2,3,4,5,6,7,8,9,0])
 
         
     def test_getOneMsg(self):
-        #self.ledstm.debugmode = 3
+        #self.ledstm.dp(3)
         self.assertEqual( 
             self.ledstm.getOneMsg(2, testmsg = 0) , [2, 255])
 
