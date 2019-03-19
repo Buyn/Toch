@@ -137,7 +137,7 @@ def isLEDCommand(var):
         return True
     if  var == "i":
         print ("Input loop Start")
-        ledstm.execute([0x0f, 0x00, 0x00, 0x00, SC_LEDSET])
+        inputLoop(15)
         return True
     if  var == "h":
         printHelp()
@@ -161,6 +161,24 @@ def isCommandList(elm_var):
     return False
 
 
+def inputLoop(timeLong):
+    print("Input loop stat for [ ", timeLong, " ] sec")
+    stopTime= time.time() + timeLong
+    oldmsg = 0
+    while stopTime > time.time(): 
+        print("Secunds left until end of loop= ", timeLong )
+        timeLong-=1
+        newmsg  = ledstm.isWaitingMsg()
+        ledstm.dp(3, "msg = ", newmsg)
+        if isInt(newmsg) > 0 and oldmsg != newmsg:
+            result = ledstm.getOneMsg(newmsg)
+            print(result)
+            print(result[0])
+            print(bin(isInt(result[1])))
+            oldmsg = newmsg
+        time.sleep (SPI_SLEEPBETVINMSGGET);
+    return newmsg
+
 def mainlope():
     while True:
         print ("Enter h for help(list of command)")
@@ -171,7 +189,6 @@ def mainlope():
         if isCommandList(var.split(' ')): continue
         number = writeNumber(isInt(var))
 
-
 if __name__ == '__main__':
     try:
         mainlope()
@@ -179,17 +196,6 @@ if __name__ == '__main__':
         sys.exit(0)
 
 
-def inputLoop(timeLong):
-    print("Input loop stat for [ ", timeLong, " ] sec")
-    stopTime= time.time() + timeLong
-    while stopTime > time.time(): 
-        print("Secunds left until end of loop= ", timeLong )
-        timeLong-=1
-        newmsg  = ledstm.isWaitingMsg()
-        print("msg = ", newmsg)
-        if isInt(newmsg) > 0:
-            ledstm.getOneMsg(newmsg)
-        time.sleep (SPI_SLEEPBETVINMSGGET);
-    return newmsg
+
 
 

@@ -86,6 +86,11 @@ class Test(unittest.TestCase):
         self.assertEqual(
             main.inputLoop(1)
             , 255)
+        var = "debug 1"
+        isCommandList( var.split(" "))
+        self.assertEqual(
+            main.inputLoop(10)
+            , 255)
         
         
 if __name__ == "__main__":
