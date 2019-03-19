@@ -175,7 +175,7 @@ def inputLoop(timeLong):
         newmsg  = ledstm.isWaitingMsg()
         ledstm.dp(3, "msg = ", newmsg)
         if isInt(newmsg) > 0 and oldmsg != newmsg:
-            result = ledstm.getOneMsg(newmsg)
+            result = ledstm.getOneMsg(isInt(newmsg))
             print(result)
             print(result[0])
             print(bin(isInt(result[1])))

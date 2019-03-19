@@ -25,9 +25,9 @@ class SpiDev(object):
     
     def xfer(self, param1):
         if (self.debugmode): print('xfer = ', param1)
-        if isinstance(param1, int): return param1 + 1
+        if isinstance(param1, int): return {param1 + 1}
         if not isinstance(param1[0], int): raise "not int"
-        return param1[0] 
+        return [param1[0]]
 
     
     def readbytes(self, param1):
