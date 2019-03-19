@@ -75,6 +75,10 @@ def ledcommand(elm_var):
 
 
 def isInt(var):
+    if isinstance(var, int):
+        return var
+    if isinstance(var, list) and len(var) == 1:
+        return var[0]
     try:
         return int(var)
     except ValueError:
