@@ -39,6 +39,7 @@ class SlaveSPI {
 	 int	peek();
 	 int	pull();
 	 int	staksize();
+	 int	addMSG(int , unsigned int);
 	 bool	runtime();
 	 bool isExecute();
 	 int 	spiaddress;
@@ -49,9 +50,9 @@ class SlaveSPI {
 	Stak 		command_stak = Stak(1);
 	Stak 		msg_stak = Stak(1);
 	int 		commands_waiting 		= 0;
+	int 		msg_waiting				= 0;
 	bool		command_to_execute 	= false;
 	bool		spi_sesion				= false;
-	bool		msg_transfer			= false;
 	int 		msg 			= 0;
 	int 		back_msg 	= 0;
 	long		sesionend;

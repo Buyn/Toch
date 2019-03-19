@@ -43,6 +43,12 @@ void SlaveSPI::execute_command(void){
 			back_msg = msg;
 			command_to_execute	= true;
 			break;/*}}}*/
+		case SC_SC_ISMSGWATING:/*{{{*/
+			Serial.print("Asket number of MSG: ");
+			Serial.println(msg_stak.staksize());
+			back_msg = msg_stak.staksize();
+			command_to_execute	= true;
+			break;/*}}}*/
 		case ENDOFFILE:/*{{{*/
 			Serial.println("ENDOFFILE");
 			commands_waiting = 0;
@@ -62,6 +68,15 @@ void SlaveSPI::execute_command(void){
 			back_msg = STAKERRORCOMAND;
 			/*}}}*/
 			}/*}}}*/
+	} //}}}
+
+/*   SlaveSPI::addMSG   * {{{ */
+int SlaveSPI::addMSG(int name, unsigned int value){
+	msg_stak.push(name);
+	Serial.print("Pushingn in MSG stak : ");
+	Serial.println(value);
+	msg_stak.push(value);
+	return msg_stak.staksize();
 	} //}}}
 
 /*   SlaveSPI::isSesionEnd   * {{{ */

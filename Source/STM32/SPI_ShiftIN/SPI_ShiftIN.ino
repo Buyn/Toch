@@ -8,6 +8,8 @@
 #include "RGB_LED.h"
 #include "LED.h"
 #include "slaveSPI.h"
+#include "Shiftin.h"
+#include "pinsRedefine.h"
 #include <cstdint>
 /*}}}*/
 
@@ -40,6 +42,8 @@ unsigned int ledstate02[] = {0, 255, 0, 20} ;
 bool led_activ  = false;
 LED test(LED_BUILTIN);
 SlaveSPI sspi(SPIADRRES);
+ShiftIn sinput;
+
 /*}}}*/
 
 /*   setupLEDLine   * {{{ */
@@ -160,6 +164,18 @@ void setup() {/*{{{*/
 	Serial.println(TITLEABOUT);
 	setupLEDLine();
 	sspi.spinit();
+   /* Initialize our digital pins...  */
+	sinput.initpins();
+	/*
+   pinMode(SHIFTIN_PLOADPIN, OUTPUT);
+   pinMode(SHIFTIN_CLOCKENABLEPIN, OUTPUT);
+   pinMode(SHIFTIN_CLOCKPIN, OUTPUT);
+   pinMode(SHIFTIN_DATAPIN, INPUT);
+   digitalWrite(SHIFTIN_CLOCKPIN, LOW);
+   digitalWrite(SHIFTIN_PLOADPIN, HIGH);
+	*/
+   /* Read in and display the pin states at startup.  */
+	sinput.runtime();
 	Serial.println("End Setup");
 	}/*}}}*/
 
@@ -172,5 +188,13 @@ void loop() {/*{{{*/
 		execute_command();
 		}/*}}}*/
 	led_Line.runtime();
+   /* Read the state of all zones.  */
+   sinput.runtime();
+   /* If there was a chage in state, display which ones changed.  */
+   if(sinput.isChenged()) {/*{{{*/
+       Serial.print("*Pin value change detected*\r\n");
+       sinput.display_pin_values();
+		 sspi.addMSG(1, (unsigned int)sinput.oldPinValues); 
+		 }/*}}}*/
 	}/*}}}*/
 
