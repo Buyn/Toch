@@ -9,14 +9,15 @@
 #include "LED.h"
 #include "slaveSPI.h"
 #include "Shiftin.h"
-#include "pinsRedefine.h"
 #include <cstdint>
+//#include "pinsRedefine.h"
 /*}}}*/
 
 /*Define Block{{{*/
 #define RBG_PIN_R PA8   // пин для канала R
 #define RBG_PIN_G PA9   // пин для канала G
 #define RBG_PIN_B PA10  // пин для канала B
+//
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 1    

@@ -13,7 +13,10 @@
 #include <SPI.h>
 #include "Stak.h"
 /*}}}*/
-//define bloc  {{{
+//define Debug mods block{{{
+//#define DEBUGMSG_RECIVSEND
+/*}}}*/
+//define msg bloc  {{{
 #define SPI_CS_PIN PA4   // slave spi pin CS\SS
 #define STEKSIZE 30   
 #define SESIONTIMEOUT 900   
@@ -22,7 +25,7 @@
 #define ENDOFSESION			0xFF
 #define ENDOFFILE				0xEF
 #define EXECUTE				0xAA
-#define SC_SC_ISMSGWATING  0xB0
+#define SC_ISMSGWATING  	0xB0
 #define SC_GETVARBYNAME    0xBA
 #define SC_GETMSGBYCOUNT   0xBC
 /*}}}*/
@@ -57,9 +60,11 @@ class SlaveSPI {
 	int 		back_msg 	= 0;
 	long		sesionend;
 	bool		isSesionEnd(void);
+	void		sendFromStak(void);
 	void 		execute_command(void);
 	void 		spirutine(void);
 	void 		add_to_stak(void);
+	uint16 	readyTransfer(uint16 );
 	/*}}}*/
  };
  /*}}}*/

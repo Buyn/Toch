@@ -43,11 +43,14 @@ void SlaveSPI::execute_command(void){
 			back_msg = msg;
 			command_to_execute	= true;
 			break;/*}}}*/
-		case SC_SC_ISMSGWATING:/*{{{*/
+		case SC_GETMSGBYCOUNT:/*{{{*/
+			Serial.println("given back MSG");
+			back_msg = msg_stak.pull();
+			msg_waiting = 1;
+			break;/*}}}*/
+		case SC_ISMSGWATING:/*{{{*/
 			Serial.print("Asket number of MSG: ");
-			Serial.println(msg_stak.staksize());
 			back_msg = msg_stak.staksize();
-			command_to_execute	= true;
 			break;/*}}}*/
 		case ENDOFFILE:/*{{{*/
 			Serial.println("ENDOFFILE");
@@ -70,6 +73,15 @@ void SlaveSPI::execute_command(void){
 			}/*}}}*/
 	} //}}}
 
+/*   SlaveSPI::sendFromStak   * {{{ */
+void SlaveSPI::sendFromStak(void){
+	Serial.print("given back value : ");
+	Serial.println(msg_waiting);
+	back_msg = msg_stak.pull();
+	if( msg_waiting > 0 ) msg_waiting--;
+	//msg_waiting = msg;
+	} //}}}
+
 /*   SlaveSPI::addMSG   * {{{ */
 int SlaveSPI::addMSG(int name, unsigned int value){
 	msg_stak.push(name);
@@ -85,6 +97,7 @@ bool SlaveSPI::isSesionEnd(void){
 		back_msg = TIMEOUTSESION;	
 		spi_sesion = false;
 		commands_waiting = 0;
+		msg_waiting = 0;
 		Serial.print(micros());
 		Serial.println(": Sesion end: Timeout Error");
 		return true;
@@ -126,29 +139,37 @@ void SlaveSPI::setmsg(int newmsg){
 
 /*   SlaveSPI::runtime   * {{{ */
 bool SlaveSPI::runtime(void){
-	if (digitalRead(SPI_CS_PIN)==HIGH) { 
+	if ( spi_is_rx_nonempty(SPI.dev()) && !spi_is_busy(SPI.dev())) { /*{{{*/
 		spirutine();
-		}
+		}/*}}}*/
 	return command_to_execute;
+	} //}}}
+
+/*   SlaveSPI::readyTransfer   * {{{ */
+uint16 SlaveSPI::readyTransfer(uint16 response){
+   spi_dev * spi_d = SPI.dev();
+	if ( spi_is_tx_empty(spi_d) && !spi_is_busy(spi_d)) { 
+		spi_tx_reg(spi_d, response); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+	}else{
+		Serial.println("tx reg not empty");}
+   while (spi_is_busy(spi_d)); // "... and then wait until BSY=0 before disabling the SPI."
+	return (uint16)spi_rx_reg(spi_d);
 	} //}}}
 
 /*   SlaveSPI::spirotine   *  {{{ */
 void SlaveSPI::spirutine(void){
-	//if (!spi_pasiv) 
-//Serial.print(micros());
-//Serial.print(" :SPI_CS_PIN befo is ");
-//Serial.println(digitalRead(SPI_CS_PIN));
-	msg = SPI.transfer(back_msg); 
-//Serial.print(micros());
-//Serial.print(" :SPI_CS_PIN after is ");
-//Serial.println(digitalRead(SPI_CS_PIN));
+	//if ( !spi_is_rx_nonempty(SPI.dev()) && spi_is_busy(SPI.dev())) return;
+	//msg = SPI.transfer(back_msg); 
+	msg = readyTransfer(back_msg);
 	isSesionEnd();
+#ifndef DEBUGMSG_RECIVSEND
 	Serial.print("Recived = 0x");
 	Serial.print(msg, HEX);
 	Serial.print(", ");
 	Serial.println(msg);
 	Serial.print("Send = ");
 	Serial.println(back_msg);
+#endif
 	if (!spi_sesion && msg == spiaddress) {/*{{{*/
 		back_msg = msg;	
 		spi_sesion = true;
@@ -160,6 +181,9 @@ void SlaveSPI::spirutine(void){
 		Serial.println(millis());
 		Serial.println(sesionend);
 		return;
+		}/*}}}*/
+	else if (spi_sesion && msg_waiting != 0 && !isSesionEnd()) {/*{{{*/
+		sendFromStak();
 		}/*}}}*/
 	else if (spi_sesion && commands_waiting == 0 && !isSesionEnd()) {/*{{{*/
 		execute_command();
