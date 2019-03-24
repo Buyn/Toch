@@ -15,9 +15,11 @@ void SlaveSPI::spinit(void){
 
 /*   SlaveSPI::add_to_stak   * {{{ */
 void SlaveSPI::add_to_stak(void){
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 	Serial.print(micros());
 	Serial.print(": command waiting: ");
 	Serial.println(commands_waiting);
+#endif/*}}}*/
 	commands_waiting--;
 	command_stak.push(msg);
 	back_msg = msg;	
@@ -25,17 +27,23 @@ void SlaveSPI::add_to_stak(void){
 
 /*   SlaveSPI::execute_command   *  {{{ */
 void SlaveSPI::execute_command(void){
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 	Serial.println(micros());
+#endif/*}}}*/
 	//{{{ is adding list command
 	if (msg <= 15) {
 		commands_waiting = msg;	
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 		Serial.print(micros());
 		Serial.print(": Comannd waiting - ");
 		Serial.println(commands_waiting);
+#endif/*}}}*/
 		back_msg = command_stak.staksize();
 		return;
 		}/*}}}*/
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 	Serial.println(": Comannd Exekution  ");
+#endif/*}}}*/
 	switch (msg) {/*{{{*/
 		case EXECUTE:/*{{{*/
 			Serial.println("Execute Last");
@@ -49,7 +57,7 @@ void SlaveSPI::execute_command(void){
 			msg_waiting = 1;
 			break;/*}}}*/
 		case SC_ISMSGWATING:/*{{{*/
-			Serial.print("Asket number of MSG: ");
+			Serial.println("Asket number of MSG: ");
 			back_msg = msg_stak.staksize();
 			break;/*}}}*/
 		case ENDOFFILE:/*{{{*/
@@ -75,8 +83,10 @@ void SlaveSPI::execute_command(void){
 
 /*   SlaveSPI::sendFromStak   * {{{ */
 void SlaveSPI::sendFromStak(void){
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 	Serial.print("given back value : ");
 	Serial.println(msg_waiting);
+#endif/*}}}*/
 	back_msg = msg_stak.pull();
 	if( msg_waiting > 0 ) msg_waiting--;
 	//msg_waiting = msg;
@@ -113,12 +123,16 @@ int SlaveSPI::peek(void){
 /*   SlaveSPI::pull   * {{{ */
 int SlaveSPI::pull(void){
 		if (command_to_execute){
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 			Serial.print( command_stak.peek());
 			Serial.println(" : Set command to false");
+#endif/*}}}*/
 			command_to_execute = false;
 			}
+#ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 		Serial.print( command_stak.peek());
 		Serial.println(" - Get form stak ");
+#endif/*}}}*/
 		return command_stak.pull();
 	} //}}}
 
@@ -158,18 +172,16 @@ uint16 SlaveSPI::readyTransfer(uint16 response){
 
 /*   SlaveSPI::spirotine   *  {{{ */
 void SlaveSPI::spirutine(void){
-	//if ( !spi_is_rx_nonempty(SPI.dev()) && spi_is_busy(SPI.dev())) return;
-	//msg = SPI.transfer(back_msg); 
 	msg = readyTransfer(back_msg);
 	isSesionEnd();
-#ifndef DEBUGMSG_RECIVSEND
+#ifdef DEBUGMSG_RECIVSEND/*{{{*/
 	Serial.print("Recived = 0x");
 	Serial.print(msg, HEX);
 	Serial.print(", ");
 	Serial.println(msg);
 	Serial.print("Send = ");
 	Serial.println(back_msg);
-#endif
+#endif/*}}}*/
 	if (!spi_sesion && msg == spiaddress) {/*{{{*/
 		back_msg = msg;	
 		spi_sesion = true;
@@ -177,7 +189,7 @@ void SlaveSPI::spirutine(void){
 		sesionend = millis() + SESIONTIMEOUT;
 		command_stak.reset();
 		Serial.print(micros());
-		Serial.println(": Connected: Start sesion");
+		Serial.print(": Connected: Start sesion");
 		Serial.println(millis());
 		Serial.println(sesionend);
 		return;

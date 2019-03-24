@@ -6,10 +6,12 @@ Stak::Stak(int size) {
 
 /*   Stak::push   * {{{ */
 int Stak::push(int newValue){
+#ifdef DEBUGMSG_STAKCLASS/*{{{*/
 	Serial.print("Add to Stak-(");
 	Serial.print(newValue);
 	Serial.print(") stak = ");
 	Serial.println(command_stak_point);
+#endif/*}}}*/
 	command_stak[command_stak_point++] = newValue;
 	return command_stak_point ;
 	} //}}}

@@ -12,6 +12,7 @@
 /*}}}*/
 //define bloc  {{{
 #define STAKSIZE 30   
+//#define  DEBUGMSG_STAKCLASS
 /*}}}*/
 //  calss{{{
 class Stak {

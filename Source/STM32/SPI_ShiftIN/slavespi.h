@@ -15,6 +15,7 @@
 /*}}}*/
 //define Debug mods block{{{
 //#define DEBUGMSG_RECIVSEND
+//#define DEBUGMSG_EXECUTESTAK
 /*}}}*/
 //define msg bloc  {{{
 #define SPI_CS_PIN PA4   // slave spi pin CS\SS
