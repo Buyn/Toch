@@ -20,7 +20,7 @@
 //
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
-#define MAX_STATS 1    
+#define MAX_STATS 2    
 #define FADESPEED 50   
 //#define STEKSIZE 30   
 #define TITLEABOUT "SPI LED v 0.1"
