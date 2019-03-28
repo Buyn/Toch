@@ -27,6 +27,7 @@ void ShiftIn::update(void){
 
 /*   ShiftIn::isChenged   * {{{ */
 bool ShiftIn::isChenged(void){
+	runtime();
 	if(changed){
 		changed = false;
 		return  true;

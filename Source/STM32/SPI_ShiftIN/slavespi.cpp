@@ -13,7 +13,7 @@ void SlaveSPI::spinit(void){
    // SPI1 is selected by default
    // MOSI, MISO, SCK and NSS PINs are set by the library
 #ifndef UNITTEST/*{{{*/
-   SPI.beginTransactionSlave(SPISettings(18000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT));
+   SPI.beginTransactionSlave(SPISettings(18000000, MSBFIRST, SPI_MODE0, DATA_SIZE_16BIT));
 #endif/*UNITTEST }}}*/
 	} //}}}
 
@@ -101,8 +101,11 @@ void SlaveSPI::sendFromStack(void){
 /*   SlaveSPI::addMSG   * {{{ */
 int SlaveSPI::addMSG(int name, unsigned int value){
 	msg_stak.push(name);
+#ifdef DEBUGMSG_MSGSTASK/*{{{*/
+	Serial.print(name);
 	Serial.print(" :Pushing in MSG stack : ");
 	Serial.println(value);
+#endif/*DEBUGMSG_MSGSTASK}}}*/
 	msg_stak.push(value);
 	return msg_stak.count();
 	} //}}}

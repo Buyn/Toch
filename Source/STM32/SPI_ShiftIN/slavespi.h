@@ -23,6 +23,7 @@
 //define Debug mods block{{{
 //#define DEBUGMSG_RECIVSEND
 //#define DEBUGMSG_EXECUTESTAK
+#define DEBUGMSG_MSGSTASK
 /*}}}*/
 //define msg bloc  {{{
 #define SESIONTIMEOUT 900   

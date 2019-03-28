@@ -146,7 +146,7 @@ void led_loop(void){
 			led_Line.set_speed(ledstate01[3]);
 			state++;
 			state = (state)%max_state;
-			Serial.println(state);
+			//Serial.println(state);
 			test.trige();
 			break;/*}}}*/
 		case 1:/*{{{*/
@@ -156,7 +156,7 @@ void led_loop(void){
 			led_Line.set_speed(ledstate02[3]);
 			state++;
 			state = (state)%max_state;
-			Serial.println(state);
+			//Serial.println(state);
 			test.trige();
 			break;/*}}}*/
 		case 2:/*{{{*/
@@ -166,7 +166,7 @@ void led_loop(void){
 			led_Line.set_speed(ledstate03[3]);
 			state++;
 			state = (state)%max_state;
-			Serial.println(state);
+			//Serial.println(state);
 			test.trige();
 			break;/*}}}*/
 		default:/*{{{*/
@@ -189,14 +189,6 @@ void setup() {/*{{{*/
 	sspi.spinit();
    /* Initialize our digital pins...  */
 	sinput.initpins();
-	/*
-   pinMode(SHIFTIN_PLOADPIN, OUTPUT);
-   pinMode(SHIFTIN_CLOCKENABLEPIN, OUTPUT);
-   pinMode(SHIFTIN_CLOCKPIN, OUTPUT);
-   pinMode(SHIFTIN_DATAPIN, INPUT);
-   digitalWrite(SHIFTIN_CLOCKPIN, LOW);
-   digitalWrite(SHIFTIN_PLOADPIN, HIGH);
-	*/
    /* Read in and display the pin states at startup.  */
 	sinput.runtime();
 	Serial.println("End Setup");
@@ -207,14 +199,14 @@ void loop() {/*{{{*/
 		Serial.println("LED line Done");
 		led_loop();
 		}/*}}}*/
-	if (sspi.runtime()) { //{{{
+	if (sspi.runtime()) { //and return if is comand redy to exec{{{
 		execute_command();
 		}/*}}}*/
 	led_Line.runtime();
    /* Read the state of all zones.  */
-   sinput.runtime();
+   //sinput.runtime();
    /* If there was a chage in state, display which ones changed.  */
-   if(sinput.isChenged()) {/*{{{*/
+   if(sinput.isChenged()) {/*and it do runtime(){{{*/
        Serial.print("*Pin value change detected*\r\n");
        sinput.display_pin_values();
 		 sspi.addMSG(1, (unsigned int)sinput.oldPinValues); 
