@@ -53,23 +53,19 @@ class Stack {
     bool isFull () const;
     // set the printer of the stack.
     void setPrinter (Print & p);
-/*}}}*/
-  private:/*{{{*/
+	 void reset(void);
     // resize the size of the stack.
     void resize (const int s);
-
+/*}}}*/
+  private:/*{{{*/
     // exit report method in case of error.
     void exit (const char * m) const;
-
     // led blinking method in case of error.
     void blink () const;
-
     // the initial size of the stack.
     static const int initialSize = 2;
-
     // the pin number of the on-board led.
     static const int ledPin = 13;
-
     Print * printer; // the printer of the stack.
     T * contents;    // the array of the stack.
     int size;        // the size of the stack.
@@ -211,11 +207,16 @@ template<typename T>
 bool Stack<T>::isEmpty () const {
   return top == 0;
 }/*}}}*/
-
 // check if the stack is full.{{{
 template<typename T>
 bool Stack<T>::isFull () const {
   return top == size;
+}/*}}}*/
+
+// reset set top of tack to 0.{{{
+template<typename T>
+void Stack<T>::reset () {
+   top = 0;
 }/*}}}*/
 
 // get the number of items in the stack.{{{

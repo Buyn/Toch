@@ -5,12 +5,12 @@
 // Serial output is here for debug
 /*}}}*/
 /* Include Block{{{*/
+//#include "pinsRedefine.h"
 #include "RGB_LED.h"
 #include "LED.h"
 #include "slaveSPI.h"
 #include "Shiftin.h"
 #include <cstdint>
-//#include "pinsRedefine.h"
 /*}}}*/
 
 /*Define Block{{{*/
@@ -20,27 +20,31 @@
 //
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
-#define MAX_STATS 2    
-#define FADESPEED 50   
+#define MAX_STATS 3    
+#define FADESPEED 10   
 //#define STEKSIZE 30   
 #define TITLEABOUT "SPI LED v 0.1"
 //Commands list
 #define SPIADRRES			0x08
 //LED comands
-#define LEDSTART		0x11
 #define LEDSTOP 		0x10
+#define LEDSTART		0x11
+#define LEDMAXSTATE 	0x12
 #define LEDSET	 		0x14
 #define LED01SET		0x1A
 #define LED02SET		0x1B
+#define LED03SET		0x1C
 
 /*}}}*/
 
 /*Varibls Block{{{*/
 RGB_LED led_Line(RBG_PIN_R, RBG_PIN_G, RBG_PIN_B);
 int state = 0;
-unsigned int ledstate01[] = {255, 0, 255, 20} ;
-unsigned int ledstate02[] = {0, 255, 0, 20} ;
-bool led_activ  = false;
+unsigned int ledstate01[] = {255	, 0	, 255	, 10};
+unsigned int ledstate02[] = {0	, 255	, 0	, 10};
+unsigned int ledstate03[] = {255	, 0	, 255	, 10};
+bool led_activ  = true;
+int max_state = MAX_STATS;
 LED test(LED_BUILTIN);
 SlaveSPI sspi(SPIADRRES);
 ShiftIn sinput;
@@ -56,15 +60,15 @@ void setupLEDLine(void){
 	test.trige();
 	Serial.println("Full Red");
 	led_Line.set_to( 255, 0, 0);
-	delay(1000);
+	delay(100);
 	test.trige();
 	Serial.println("Full Green");
 	led_Line.set_to( 0, 255 , 0);
-	delay(1000);
+	delay(100);
 	test.trige();
 	Serial.println("Full Blue");
 	led_Line.set_to(0, 0, 255);
-	delay(1000);
+	delay(100);
 	test.trige();
 	led_Line.set_speed(FADESPEED);
 	} //}}}
@@ -88,7 +92,7 @@ void execute_command(void){
 			break;/*}}}*/
 		case LED01SET:/*{{{*/
 			Serial.println("Set Led 01");
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i <= 3; i++) {
 					ledstate01[i] = sspi.pull();		
 				}
 			test.trige();
@@ -96,8 +100,16 @@ void execute_command(void){
 			break;/*}}}*/
 		case LED02SET:/*{{{*/
 			Serial.println("Set Led 02");
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i <= 3; i++) {
 					ledstate02[i] = sspi.pull();		
+				}
+			test.trige();
+			sspi.setmsg( 0 );
+			break;/*}}}*/
+		case LED03SET:/*{{{*/
+			Serial.println("Set Led 03");
+				for (int i = 0; i <= 3; i++) {
+					ledstate03[i] = sspi.pull();		
 				}
 			test.trige();
 			sspi.setmsg( 0 );
@@ -109,10 +121,10 @@ void execute_command(void){
 			test.trige();
 			sspi.setmsg( 0 );
 			break;/*}}}*/
-		case 121231:/*{{{*/
-			Serial.println("To Led Fade");
-			led_Line.fade_to( sspi.pull(), sspi.pull(), sspi.pull());
-			led_Line.set_speed(sspi.pull());
+		case LEDMAXSTATE:/*{{{*/
+			Serial.print("Number of LED using - ");
+			Serial.println(sspi.peek());
+			max_state = sspi.pull();
 			test.trige();
 			sspi.setmsg( 0 );
 			break;/*}}}*/
@@ -133,7 +145,7 @@ void led_loop(void){
 			led_Line.fade_to( ledstate01[0], ledstate01[1], ledstate01[2]);
 			led_Line.set_speed(ledstate01[3]);
 			state++;
-			state = (state)%MAX_STATS;
+			state = (state)%max_state;
 			Serial.println(state);
 			test.trige();
 			break;/*}}}*/
@@ -143,7 +155,17 @@ void led_loop(void){
 			led_Line.fade_to( ledstate02[0], ledstate02[1], ledstate02[2]);
 			led_Line.set_speed(ledstate02[3]);
 			state++;
-			state = (state)%MAX_STATS;
+			state = (state)%max_state;
+			Serial.println(state);
+			test.trige();
+			break;/*}}}*/
+		case 2:/*{{{*/
+			Serial.println("To LED 03");
+			Serial.print(state);
+			led_Line.fade_to( ledstate03[0], ledstate03[1], ledstate03[2]);
+			led_Line.set_speed(ledstate03[3]);
+			state++;
+			state = (state)%max_state;
 			Serial.println(state);
 			test.trige();
 			break;/*}}}*/

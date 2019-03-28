@@ -11,18 +11,23 @@
 #include "WProgram.h"
 #endif
 #include <SPI.h>
-#include "Stak.h"
+//#include "Stak.h"
+#include "Stack.h"
+/*}}}*/
+//define  block{{{
+#define UINT unsigned int 
+#define STACK_COMMAND_SIZE 10
+#define STACK_MSG_SIZE		10
+//#define DEBUGMSG_EXECUTESTAK
 /*}}}*/
 //define Debug mods block{{{
 //#define DEBUGMSG_RECIVSEND
 //#define DEBUGMSG_EXECUTESTAK
 /*}}}*/
 //define msg bloc  {{{
-#define SPI_CS_PIN PA4   // slave spi pin CS\SS
-#define STEKSIZE 30   
 #define SESIONTIMEOUT 900   
 //Commands list
-//Stak commands
+//Stack commands
 #define ENDOFSESION			0xFF
 #define ENDOFFILE				0xEF
 #define EXECUTE				0xAA
@@ -39,33 +44,42 @@
 //  calss{{{
 class SlaveSPI {
  public: // {{{
-	 SlaveSPI(int );
-	 int	peek();
-	 int	pull();
-	 int	staksize();
-	 int	addMSG(int , unsigned int);
-	 bool	runtime();
-	 bool isExecute();
-	 int 	spiaddress;
-	 void setmsg( int );
-	 void spinit(void);
-	/*}}}*/
+	SlaveSPI(int );
+	int	peek();
+	int	pull();
+	int	staksize();
+	int	addMSG(int , unsigned int);
+	bool	runtime();
+	bool isExecute();
+	void spinit( void );
+	void setmsg( int );
+	//move to privat after test
+#ifdef UNITTEST/*{{{*/
+	int 	spiaddress;
+	void testmsg( int );
+	bool		spi_sesion				= false;
+	int 		back_msg 	= 0;
+#endif/*UNITTEST }}}*/
  private:/*{{{*/
-	Stak 		command_stak = Stak(1);
-	Stak 		msg_stak = Stak(1);
+#ifndef UNITTEST/*{{{*/
+	int 	spiaddress;
+	void testmsg( int );
+	bool		spi_sesion				= false;
+	int 		back_msg 	= 0;
+#endif/*UNITTEST }}}*/
+	Stack <int> 		command_stak;
+	Stack <int> 		msg_stak;
 	int 		commands_waiting 		= 0;
 	int 		msg_waiting				= 0;
 	bool		command_to_execute 	= false;
-	bool		spi_sesion				= false;
 	int 		msg 			= 0;
-	int 		back_msg 	= 0;
 	long		sesionend;
 	bool		isSesionEnd(void);
-	void		sendFromStak(void);
+	void		sendFromStack(void);
 	void 		execute_command(void);
 	void 		spirutine(void);
 	void 		add_to_stak(void);
-	uint16 	readyTransfer(uint16 );
+	UINT	 	readyTransfer(UINT );
 	/*}}}*/
  };
  /*}}}*/
