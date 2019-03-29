@@ -14,6 +14,7 @@
 # CE1  -> GPIO7
 # CE1  -> GPIO8
 from array import array
+import pygame
 '''
 Created on 10 февр. 2019 г.
 @author: BuYn
@@ -106,6 +107,15 @@ def printHelp():
     print ( 'debug ', "paramMode" , " set debug mode to new value") 
 
 
+def setReadyStatus():
+    pygame.mixer.init()
+    pygame.mixer.music.load("file.wav")
+    pygame.mixer.music.set_volume(1.0)
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        pass
+
+
 def isLEDCommand(var):
     if  var == "ledstart":
         print ("Start LED")
@@ -145,6 +155,16 @@ def isLEDCommand(var):
         return True
     if  var == "h":
         printHelp()
+        return True
+    if  var == "im":
+        print( ledstm.isWaitingMsg())
+        return True
+    if  var == "gm":
+        print( ledstm.getOneMsg(1))
+        return True
+    if  var == "ready":
+        print("To ready Status")
+        setReadyStatus()
         return True
     return False
 
