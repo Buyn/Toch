@@ -14,17 +14,26 @@ class SPICom(object):
         self.spi = spidev.SpiDev()
 
 
+    def pack(self, tup) :
+        #reversed(tup)
+        sum = 0
+        for i in range(len(tup)) :
+            sum |= tup[i]<<(i<<3)
+        return sum
+
+
     def send(self, word):
         self.dp(3,"sending = [ ", word, " ] ")
         self.spi.open(BUS,DEVICE)
         self.spi.max_speed_hz = 18000000
         self.spi.mode = 0b00
         self.spi.lsbfirst = False
-        resp = self.spi.xfer([word])
+        #resp = self.spi.xfer([word])
+        resp = self.spi.xfer3([0x0,word])
         self.spi.close()
         self.dp(3,"send = [ ", word, " ] , resiv = [ ", resp, " ]")
-        time.sleep (SPI_SLEEPAFTERSEND);
-        return resp
+        #time.sleep (SPI_SLEEPAFTERSEND);
+        return self.pack(resp[::-1])
     
     
     def sendEOF(self):

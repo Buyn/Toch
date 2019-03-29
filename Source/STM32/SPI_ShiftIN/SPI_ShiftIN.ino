@@ -17,7 +17,8 @@
 #define RBG_PIN_R PA8   // пин для канала R
 #define RBG_PIN_G PA9   // пин для канала G
 #define RBG_PIN_B PA10  // пин для канала B
-//
+//debug msges 
+//#define					DEBUGMSG_LEDLINE
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 3    
@@ -40,9 +41,9 @@
 /*Varibls Block{{{*/
 RGB_LED led_Line(RBG_PIN_R, RBG_PIN_G, RBG_PIN_B);
 int state = 0;
-unsigned int ledstate01[] = {255	, 0	, 255	, 10};
+unsigned int ledstate01[] = {255	, 0	, 0	, 10};
 unsigned int ledstate02[] = {0	, 255	, 0	, 10};
-unsigned int ledstate03[] = {255	, 0	, 255	, 10};
+unsigned int ledstate03[] = {0	, 0	, 255	, 10};
 bool led_activ  = true;
 int max_state = MAX_STATS;
 LED test(LED_BUILTIN);
@@ -136,7 +137,7 @@ void execute_command(void){
 			}/*}}}*/
 	} //}}}
 
-/*   led_loop   * {{{ */
+/*   led_loop   *{{{ */
 void led_loop(void){
 	switch (state) {
 		case 0:/*{{{*/
@@ -146,7 +147,7 @@ void led_loop(void){
 			led_Line.set_speed(ledstate01[3]);
 			state++;
 			state = (state)%max_state;
-			//Serial.println(state);
+			Serial.println(state);
 			test.trige();
 			break;/*}}}*/
 		case 1:/*{{{*/
@@ -156,7 +157,7 @@ void led_loop(void){
 			led_Line.set_speed(ledstate02[3]);
 			state++;
 			state = (state)%max_state;
-			//Serial.println(state);
+			Serial.println(state);
 			test.trige();
 			break;/*}}}*/
 		case 2:/*{{{*/
@@ -166,7 +167,7 @@ void led_loop(void){
 			led_Line.set_speed(ledstate03[3]);
 			state++;
 			state = (state)%max_state;
-			//Serial.println(state);
+			Serial.println(state);
 			test.trige();
 			break;/*}}}*/
 		default:/*{{{*/
@@ -196,7 +197,9 @@ void setup() {/*{{{*/
 
 void loop() {/*{{{*/
 	if (led_activ && led_Line.done()) {/*{{{*/
+#ifdef DEBUGMSG_LEDLINE/*{{{*/
 		Serial.println("LED line Done");
+#endif/*DEBUGMSG_LEDLINE}}}*/
 		led_loop();
 		}/*}}}*/
 	if (sspi.runtime()) { //and return if is comand redy to exec{{{

@@ -67,8 +67,7 @@ void SlaveSPI::execute_command(void){
 		case ENDOFFILE:/*{{{*/
 			Serial.println("ENDOFFILE");
 			commands_waiting = 0;
-			commands_waiting = 0;
-			back_msg = msg;
+			back_msg = msg_stak.count();
 			break;/*}}}*/
 		case ENDOFSESION:/*{{{*/
 			Serial.println("ENDOFSESION");

@@ -218,7 +218,6 @@ template<typename T>
 void Stack<T>::reset () {
    top = 0;
 }/*}}}*/
-
 // get the number of items in the stack.{{{
 template<typename T>
 int Stack<T>::count () const {
