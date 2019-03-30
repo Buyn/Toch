@@ -131,6 +131,7 @@ void Stack<T>::resize (const int s) {
   if (contents == NULL)
     exit ("STACK: insufficient memory to resize stack.");
 
+  if (top > s)top = s;
   // set the new size of the stack.
   size = s;
 }/*}}}*/
@@ -213,7 +214,7 @@ bool Stack<T>::isFull () const {
   return top == size;
 }/*}}}*/
 
-// reset set top of tack to 0.{{{
+// reset set top of stack to 0.{{{
 template<typename T>
 void Stack<T>::reset () {
    top = 0;

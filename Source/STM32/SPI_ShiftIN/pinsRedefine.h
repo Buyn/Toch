@@ -17,4 +17,10 @@
 #define SHIFTIN_DATAPIN          PB14 // Qh serial output Connects to the Q7 pin 
 #define SHIFTIN_CLOCKPIN         PB15 // clk Connects to the Clock pin 
 /*}}}*/
+//define Debug mods block{{{
+//#define DEBUGMSG_RECIVSEND
+//#define DEBUGMSG_EXECUTESTAK
+#define DEBUGMSG_MSGSTASK
+#define DEBUGMSG_INFO
+/*}}}*/
 //#endif

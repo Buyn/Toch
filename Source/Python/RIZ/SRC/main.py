@@ -105,6 +105,9 @@ def printHelp():
     print ( 'led ', "01" , " red green blue speed  ", "Set led 01 = ") 
     print ( 'led ', "02" , " red green blue speed  ", "Set led 02 = ") 
     print ( 'debug ', "paramMode" , " set debug mode to new value") 
+    print ( 'im '   , " isWaitingMsg") 
+    print ( 'gm '   , " getOneMsg") 
+    print ( 'ready ', " To ready Status") 
 
 
 def setReadyStatus():

@@ -18,12 +18,12 @@
 #define UINT unsigned int 
 #define STACK_COMMAND_SIZE 10
 #define STACK_MSG_SIZE		10
-//#define DEBUGMSG_EXECUTESTAK
 /*}}}*/
 //define Debug mods block{{{
 //#define DEBUGMSG_RECIVSEND
 //#define DEBUGMSG_EXECUTESTAK
-#define DEBUGMSG_MSGSTASK
+//#define DEBUGMSG_MSGSTASK
+//#define DEBUGMSG_INFO
 /*}}}*/
 //define msg bloc  {{{
 #define SESIONTIMEOUT 900   

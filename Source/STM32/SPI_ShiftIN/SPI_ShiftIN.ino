@@ -5,7 +5,7 @@
 // Serial output is here for debug
 /*}}}*/
 /* Include Block{{{*/
-//#include "pinsRedefine.h"
+#include "pinsRedefine.h"
 #include "RGB_LED.h"
 #include "LED.h"
 #include "slaveSPI.h"
@@ -182,12 +182,12 @@ void led_loop(void){
 
 void setup() {/*{{{*/
 	//enable serial data print
-	test.trige();
 	Serial.begin(115200);
-	delay(3000);
-	Serial.println(TITLEABOUT);
+	test.trige();
+	//delay(3000);
 	setupLEDLine();
 	sspi.spinit();
+	Serial.println(TITLEABOUT);
    /* Initialize our digital pins...  */
 	sinput.initpins();
    /* Read in and display the pin states at startup.  */
