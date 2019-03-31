@@ -47,7 +47,7 @@ void SlaveSPI::execute_command(void){
 #ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 	Serial.println(": Command Exekution  ");
 #endif/*}}}*/
-	switch (msg) {/*{{{*/
+	switch (msg) {/* {{{*/
 		case EXECUTE:/*{{{*/
 #ifdef DEBUGMSG_EXECUTESTAK/*{{{*/
 			Serial.println("Execute Last");
@@ -58,14 +58,16 @@ void SlaveSPI::execute_command(void){
 			break;/*}}}*/
 		case SC_GETMSGBYCOUNT:/*{{{*/
 #ifdef DEBUGMSG_INFO /*{{{*/
-			Serial.println("given back MSG: ", msg_stak.count());
-#endif/*DEBUGMSG_INFO }}}*/
+			Serial.print("given back MSG: ");
+			Serial.println(msg_stak.count());
+#endif/*DEBUGMSG_INFO  }}}*/
 			back_msg = msg_stak.pop();
 			msg_waiting = 1;
 			break;/*}}}*/
 		case SC_ISMSGWATING:/*{{{*/
 #ifdef DEBUGMSG_INFO /*{{{*/
-			Serial.println("Asket number of MSG: ", msg_stak.count());
+			Serial.print("Asket number of MSG: ");
+			Serial.println(msg_stak.count());
 #endif/*DEBUGMSG_INFO }}}*/
 			back_msg = msg_stak.count();
 			break;/*}}}*/
@@ -110,10 +112,11 @@ void SlaveSPI::sendFromStack(void){
 int SlaveSPI::addMSG(int name, unsigned int value){
 	msg_stak.push(name);
 #ifdef DEBUGMSG_MSGSTASK/*{{{*/
-	//Serial.print(name);
-	Serial.println(name, " :Pushing in MSG stack : ", value);
-	Serial.println(" MSG in stack : ", msg_stak.count());
-	//Serial.println(value);
+	Serial.print(name);
+	Serial.print(" :Pushing in MSG stack : ");
+	Serial.println(value);
+	Serial.print(" MSG in stack : ");
+	Serial.println( msg_stak.count());
 #endif/*DEBUGMSG_MSGSTASK}}}*/
 	msg_stak.push(value);
 	return msg_stak.count();
@@ -224,7 +227,7 @@ void SlaveSPI::spirutine(void){
 		//command_stak.reset();
 #ifdef DEBUGMSG_INFO /*{{{*/
 		//Serial.print(micros());
-		Serial.print(micros(),": Connected: Start sesion:", sesionend);
+		Serial.println("Connected: Start sesion");
 		//Serial.println(sesionend);
 #endif/*DEBUGMSG_INFO }}}*/
 		return;

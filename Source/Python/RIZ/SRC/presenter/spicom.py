@@ -152,15 +152,14 @@ class SPICom(object):
     def isAdressCorrect(self, resiv):
         self.dp(2, "We Sending to ", 
                 "" if resiv == self.address 
-                    else "in", "correct Adress")
+                    else "not", "correct Adress")
     
     
     def getOneMsg(self, number, testmsg = 0):
         self.startSesion() 
         self.isAdressCorrect(self.sendGetMsgByCount())
-#             print("Sending Namber of values we wating = ", hex(number))
-        self.dp(2, "Sending Namber of values we wating = ", hex(number))
-        resiv = [self.send(number)]
+        self.dp(2, "Sending Number of values we wating = ", hex(number))
+        resiv = [self.send(0)]
         self.dp(2, "Resivid value whith name= ", resiv[0])
         resiv.append(self.sendEndSession())
         self.dp(2, "We Get", resiv)

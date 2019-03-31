@@ -163,7 +163,7 @@ def isLEDCommand(var):
         print( ledstm.isWaitingMsg())
         return True
     if  var == "gm":
-        print( ledstm.getOneMsg(1))
+        print( ledstm.getOneMsg(0))
         return True
     if  var == "ready":
         print("To ready Status")

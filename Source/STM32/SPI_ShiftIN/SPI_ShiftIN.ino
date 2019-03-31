@@ -5,7 +5,6 @@
 // Serial output is here for debug
 /*}}}*/
 /* Include Block{{{*/
-#include "pinsRedefine.h"
 #include "RGB_LED.h"
 #include "LED.h"
 #include "slaveSPI.h"
