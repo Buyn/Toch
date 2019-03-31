@@ -139,6 +139,7 @@ class SPICom(object):
     
     def startSesion(self):
         self.dp(2, "Sending to Adress = ", hex(self.address))
+        self.dp(2, "Sending to Adress = ", hex(self.address))
         self.dp(2, "Last Sesion Ends whith = ",
                       self.decodeError(self.send(self.address)))
 

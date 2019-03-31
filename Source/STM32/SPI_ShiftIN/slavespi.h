@@ -1,9 +1,9 @@
 // SPI full-duplex slave example{{{
 // TODO size down all int to byte()
 /*}}}*/
-/* include bloc {{{*/
-#ifndef SLAVESPI_h
+#ifndef SLAVESPI_h/*{{{*/
 #define SLAVESPI_h
+/* include bloc {{{*/
 // the #include statment and code go here...
 #if ARDUINO >= 100
 #include "Arduino.h"
@@ -11,10 +11,17 @@
 #include "WProgram.h"
 #endif
 #include <SPI.h>
-//#include "Stak.h"
 #include "Stack.h"
 /*}}}*/
 //define  block{{{
+#ifdef UNITTEST/*{{{*/
+class spi_dev{ // {{{
+ public: 
+	int 		back_msg 	= 0;
+ private:
+	int 		msg 			= 0;
+ }; /*}}}*/
+#endif/*UNITTEST }}}*/
 #define UINT unsigned int 
 #define STACK_COMMAND_SIZE 10
 #define STACK_MSG_SIZE		10
@@ -42,8 +49,8 @@
 #define STAKERRORCOMAND						0x20
 #define TIMEOUTSESION						0x30
 /*}}}*/
-//  calss{{{
-class SlaveSPI {
+
+class SlaveSPI { //{{{
  public: // {{{
 	SlaveSPI(int );
 	int	peek();
@@ -61,15 +68,16 @@ class SlaveSPI {
 	bool		spi_sesion				= false;
 	int 		back_msg 	= 0;
 #endif/*UNITTEST }}}*/
+//}}}
  private:/*{{{*/
 #ifndef UNITTEST/*{{{*/
-	int 	spiaddress;
-	void testmsg( int );
+	int 		spiaddress;
 	bool		spi_sesion				= false;
-	int 		back_msg 	= 0;
+	int 		back_msg 				= 0;
 #endif/*UNITTEST }}}*/
 	Stack <int> 		command_stak;
 	Stack <int> 		msg_stak;
+   spi_dev * 			spi_d ;
 	int 		commands_waiting 		= 0;
 	int 		msg_waiting				= 0;
 	bool		command_to_execute 	= false;
@@ -78,10 +86,11 @@ class SlaveSPI {
 	bool		isSesionEnd(void);
 	void		sendFromStack(void);
 	void 		execute_command(void);
-	void 		spirutine(void);
+	void 		spirutine(spi_dev *);
 	void 		add_to_stak(void);
-	UINT	 	readyTransfer(UINT );
+	UINT	 	readyTransfer(spi_dev * );
+	void	 	setSPIbackmsg(spi_dev * );
 	/*}}}*/
  };
  /*}}}*/
-#endif
+#endif /*SLAVESPI_h}}}*/

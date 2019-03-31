@@ -173,42 +173,60 @@ void SlaveSPI::setmsg(int newmsg){
 	back_msg = newmsg;
 	} //}}}
 
+/*   SlaveSPI::setSPIbackmsg   * {{{ */
+void SlaveSPI::setSPIbackmsg(spi_dev * spi_d){
+#ifndef UNITTEST/*{{{*/
+	while (spi_is_busy(spi_d)); // "... and then wait until BSY=0 before disabling the SPI."
+	spi_tx_reg(spi_d, back_msg); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+#endif/*UNITTEST }}}*/
+	} //}}}
+
 /*   SlaveSPI::testmsg   * {{{ */
+#ifdef UNITTEST/*{{{*/
 void SlaveSPI::testmsg(int newmsg){
 	msg = newmsg;
-	spirutine();
+	spirutine( (spi_dev *) & newmsg);
 	//spi_sesion = true;
 	} //}}}
+#endif /*UNITTEST}}}*/
 
 /*   SlaveSPI::runtime   * {{{ */
 bool SlaveSPI::runtime(void){
 #ifndef UNITTEST/*{{{*/
-	if ( spi_is_rx_nonempty(SPI.dev()) && !spi_is_busy(SPI.dev())) { /*{{{*/
-		spirutine();
+   //spi_dev * spi_d = SPI.dev();
+   spi_d = SPI.dev();
+	if ( spi_is_tx_empty(spi_d) && !spi_is_busy(spi_d)) { /*{{{*/
+		setSPIbackmsg(spi_d);
+		}/*}}}*/
+	if ( spi_is_rx_nonempty(spi_d) && !spi_is_busy(spi_d)) { /*{{{*/
+		spirutine(spi_d);
 		}/*}}}*/
 #endif/*UNITTEST }}}*/
 	return command_to_execute;
 	} //}}}
 
 /*   SlaveSPI::readyTransfer   * {{{ */
-UINT SlaveSPI::readyTransfer(UINT response){
+UINT SlaveSPI::readyTransfer(spi_dev * spi_d){
 #ifndef UNITTEST/*{{{*/
-   spi_dev * spi_d = SPI.dev();
-	if ( spi_is_tx_empty(spi_d) && !spi_is_busy(spi_d)) { 
-		spi_tx_reg(spi_d, response); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
-	}else{
-		Serial.println("tx reg not empty");}
-   while (spi_is_busy(spi_d)); // "... and then wait until BSY=0 before disabling the SPI."
+   //spi_dev * spi_d = SPI.dev();
+	if ( spi_is_tx_empty(spi_d)) { 
+		while (spi_is_busy(spi_d)); // "... and then wait until BSY=0 before disabling the SPI."
+#ifdef DEBUGMSG_INFO/*{{{*/
+		Serial.print("spi tx wose empty");
+#endif /*DEBUGMSG_INFO}}}*/
+		spi_tx_reg(spi_d, back_msg); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+		}
+	while (spi_is_busy(spi_d)); // "... and then wait until BSY=0 before disabling the SPI."
 	return (UINT)spi_rx_reg(spi_d);
 #endif/*UNITTEST }}}*/
 #ifdef UNITTEST/*{{{*/
-	return response;
+	return back_msg;
 #endif/*UNITTEST }}}*/
 	} //}}}
 
 /*   SlaveSPI::spirutine   *  {{{ */
-void SlaveSPI::spirutine(void){
-	msg = readyTransfer(back_msg);
+void SlaveSPI::spirutine(spi_dev * spi_d){
+	msg = readyTransfer(spi_d);
 	isSesionEnd();
 #ifdef DEBUGMSG_RECIVSEND/*{{{*/
 	Serial.print("Recived = 0x");
@@ -220,11 +238,11 @@ void SlaveSPI::spirutine(void){
 #endif/*}}}*/
 	if (!spi_sesion && msg == spiaddress) {/*{{{*/
 		back_msg = msg;	
+		setSPIbackmsg(spi_d);
 		spi_sesion = true;
 		commands_waiting = 0;
 		msg_waiting = 0;
 		sesionend = millis() + SESIONTIMEOUT;
-		//command_stak.reset();
 #ifdef DEBUGMSG_INFO /*{{{*/
 		//Serial.print(micros());
 		Serial.println("Connected: Start sesion");
@@ -234,12 +252,15 @@ void SlaveSPI::spirutine(void){
 		}/*}}}*/
 	else if (spi_sesion && msg_waiting != 0 && !isSesionEnd()) {/*{{{*/
 		sendFromStack();
+		setSPIbackmsg(spi_d);
 		}/*}}}*/
 	else if (spi_sesion && commands_waiting == 0 && !isSesionEnd()) {/*{{{*/
 		execute_command();
+		setSPIbackmsg(spi_d);
 		}/*}}}*/
 	else if (spi_sesion && commands_waiting > 0 && !isSesionEnd()) {/*{{{*/
 		add_to_stak();
+		setSPIbackmsg(spi_d);
 		}/*}}}*/
 	else  {/*{{{ Error*/
 		Serial.print(micros());
@@ -250,5 +271,6 @@ void SlaveSPI::spirutine(void){
 		commands_waiting = 0;
 		msg_waiting = 0;
 		if(msg != spiaddress) back_msg = DISINHRONADRESSERROR;
+		setSPIbackmsg(spi_d);
 		}/*}}}*/
 	} //}}}
