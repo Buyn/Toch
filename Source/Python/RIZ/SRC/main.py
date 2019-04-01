@@ -206,6 +206,7 @@ def inputLoop(timeLong):
         time.sleep (SPI_SLEEPBETVINMSGGET);
     return newmsg
 
+
 def mainlope():
     while True:
         print ("Enter h for help(list of command)")

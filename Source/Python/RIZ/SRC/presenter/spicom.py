@@ -28,7 +28,6 @@ class SPICom(object):
         self.spi.max_speed_hz = 18000000
         self.spi.mode = 0b00
         self.spi.lsbfirst = False
-        #resp = self.spi.xfer([word])
         resp = self.spi.xfer3([0x0,word])
         self.spi.close()
         self.dp(3,"send = [ ", word, " ] , resiv = [ ", resp, " ]")
