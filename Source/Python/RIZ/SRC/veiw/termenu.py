@@ -20,6 +20,9 @@ class TerMenu(object):# {{{
     def __init__(self, spi, debugmode = DEBUGMODE):# {{{
         self.dp = DebugPrint(debugmode)
         self.spi = spi
+        self.inputOn = True
+        self.pauseEnd = 0
+        self.inputOff = False 
         # }}}
 
     def writeNumber(self, number):# {{{
@@ -97,7 +100,7 @@ class TerMenu(object):# {{{
         print ( 'debug ', "paramMode" , " set debug mode to new value") 
         print ( 'im '   , " isWaitingMsg") 
         print ( 'gm '   , " getOneMsg") 
-        print ( 'ready ', " To ready Status") 
+        print ( 'rd  = ready ', " To ready Status") 
         # }}}
 
     def setReadyStatus(self):# {{{
@@ -105,8 +108,6 @@ class TerMenu(object):# {{{
         pygame.mixer.music.load("file.wav")
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
-        while pygame.mixer.music.get_busy() == True:
-            pass
         # }}}
 
     def isLEDCommand(self, var):# {{{
@@ -144,7 +145,7 @@ class TerMenu(object):# {{{
             return True
         if  var == "i":
             print ("Input loop Start")
-            self.inputLoop(15)
+            self.setInputPause(sec = 35)
             return True
         if  var == "h":
             self.printHelp()
@@ -155,7 +156,7 @@ class TerMenu(object):# {{{
         if  var == "gm":
             print( self.spi.getOneMsg(0))
             return True
-        if  var == "ready":
+        if  var == "rd":
             print("To ready Status")
             self.setReadyStatus()
             return True
@@ -178,11 +179,26 @@ class TerMenu(object):# {{{
         # }}}
 
     def pruntMenu(self):# {{{
+        if not self.setInputPause(): return False
         var = self.getUserInput()
         if self.isLEDCommand(var): return
         if self.isCommandList(var.split(' ')): return
         return self.writeNumber(self.isInt(var))
         # }}}
+    
+    def setInputPause(self, sec = None):
+        if self.inputOff: return False
+        timenow = time.time()
+        if sec == None and self.pauseEnd > timenow: 
+            return False
+        if sec == None and self.pauseEnd < timenow: 
+            self.inputOn = True
+            return True
+        if isinstance(sec, int):
+            self.pauseEnd = timenow + sec
+            self.inputOn = False
+    
+    
 # }}}
 
 

@@ -5,10 +5,10 @@ Created on 28 янв. 2019 г.
 '''
 # }}}
 import unittest# {{{
-import main
 from model.globalsvar import *
 from presenter.spicom import SPICom
 from veiw.termenu import TerMenu
+import time
 # }}}
 class Test(unittest.TestCase):# {{{
 
@@ -80,6 +80,39 @@ class Test(unittest.TestCase):# {{{
         self.assertEqual(
             self.terMenu.isCommandList( var.split(" ") )
             , False)
+        # }}}
+        
+    def test_inputOn(self):# {{{
+        self.assertEqual(
+            self.terMenu.inputOn , True)
+        self.terMenu.setInputPause(sec = 0.8) 
+        self.assertEqual(
+            self.terMenu.inputOn , True)
+        self.terMenu.setInputPause(1)
+        self.assertEqual(
+            self.terMenu.inputOn , False)
+        time.sleep(1)
+        self.assertEqual(
+            self.terMenu.setInputPause() , True)
+        self.assertEqual(
+            self.terMenu.inputOn , True)
+        # }}}
+        
+    def test_inputOff(self):# {{{
+        self.terMenu.inputOff = True
+        self.assertEqual(
+            self.terMenu.inputOn , True)
+        self.terMenu.setInputPause(sec = 0.8) 
+        self.assertEqual(
+            self.terMenu.inputOn , True)
+        self.terMenu.setInputPause(1)
+        self.assertEqual(
+            self.terMenu.inputOn , True)
+        time.sleep(1)
+        self.assertEqual(
+            self.terMenu.setInputPause() , False)
+        self.assertEqual(
+            self.terMenu.inputOn , True)
         # }}}
         
 if __name__ == "__main__":# {{{

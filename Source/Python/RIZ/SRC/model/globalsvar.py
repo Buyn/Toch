@@ -8,7 +8,7 @@ DEVICE  = 0
 LEDSTM_ADRRESS = 0x08
 # SPI Timing
 SPI_SLEEPAFTERSEND      = 0.1
-SPI_SLEEPBETVINMSGGET   = 0.5
+SPI_SLEEPBETWINMSGGET   = 0.5
 # SPI stek command
 SC_EXECUTECOMMAND   = 0xAA
 SC_ISMSGWATING      = 0xB0
@@ -17,7 +17,7 @@ SC_GETMSGBYCOUNT    = 0xBC
 SC_ENDOFFILE        = 0xEF
 SC_ENDOFSESION      = 0xFF
 #define Vars Names
-VN_BUTTONVAULT01    = 0xA1
+VN_BUTTONVAULT01    = 0x01
 #define ERROR bloc  
 DISINHRONERROR                    = 0x10
 DISINHRONADRESSERROR              = 0x11
@@ -31,6 +31,6 @@ SC_LEDSTART        = 0x11
 SC_LEDSET          = 0x14
 SC_LED01SET        = 0x1A
 SC_LED02SET        = 0x1B
-# Stak commands
+# Stak Varible Names
 
 

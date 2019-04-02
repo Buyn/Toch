@@ -4,8 +4,10 @@ Created on 28 янв. 2019 г.
 @author: BuYn
 '''
 import unittest
+import main
 from model.globalsvar import *
-from model import spimsgvalue
+from presenter.spicom import SPICom
+from presenter.buttons import Buttons
 
 class Test(unittest.TestCase):
 
@@ -13,7 +15,7 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         print("*"*33,"*"*33)
-        print ("Seting up class")
+        print ("file opened")
         print("*"*33,"*"*33)
 
         
@@ -29,7 +31,7 @@ class Test(unittest.TestCase):
         print("-++-"*10,i,"-++-"*33)
         i ="Start Test Log"
         print("-++-"*10,i,"-++-"*33)
-
+        self.buttons = Buttons()
 
 
     def tearDown(self):
@@ -39,25 +41,28 @@ class Test(unittest.TestCase):
         print("-++-"*10,i,"-++-"*33)
 
 
-    def testInit(self):
-        self.spimsg = spimsgvalue.SPIMsgValue(200, 100) 
+    def test_Buttons(self):
         self.assertEqual(
-            self.spimsg.msg.get(200)
-            , 100)
+            self.buttons.presed , [])
         self.assertEqual(
-            list(self.spimsg.msg.keys())[0]
-            , 200)
+            self.buttons.change , False)
         
         
-    def testSetVariblsByValueNames(self):
-        spimsg = spimsgvalue.SPIMsgValue(200, 100) 
-        self.assertEqual( spimsg.msg , {200:100})
-        spimsg.set({300:500}),
-        self.assertEqual( spimsg.msg, {300:500})
-        self.assertEqual( spimsg.get(), {300:500})
-#         self.assertEqual(
-#             list(spimsg.msg.keys())[0]
-#             , 200)
+    def test_set(self):
+        self.buttons.set(200)
+        print(bin(200))
+        self.assertEqual(
+            len(self.buttons.presed) , 3)
+        self.assertEqual(
+            self.buttons.change , True)
+        print(self.buttons.presed)
+        self.buttons.set(1)
+        print(bin(1))
+        self.assertEqual(
+            len(self.buttons.presed) , 1)
+        self.assertEqual(
+            self.buttons.change , True)
+        print(self.buttons.presed)
         
         
 if __name__ == "__main__":

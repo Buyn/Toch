@@ -39,14 +39,18 @@ class Test(unittest.TestCase):
         print("-++-"*10,i,"-++-"*33)
 
 
-    def testInpitLoop(self):
-        self.assertEqual(
-            255
-            , 255)
-        self.assertEqual(
-            255
-            , 255)
-        
+#     def testInpitLoop(self):
+#         var = "debug 3"
+#         isCommandList( var.split(" "))
+#         self.assertEqual(
+#             main.inputLoop(1)
+#             , 255)
+#         var = "debug 1"
+#         isCommandList( var.split(" "))
+#         self.assertEqual(
+#             main.inputLoop(10)
+#             , 255)
+         
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

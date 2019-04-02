@@ -40,12 +40,16 @@ class Test(unittest.TestCase):
 
 
     def testInpitLoop(self):
-        self.assertEqual(
-            255
-            , 255)
-        self.assertEqual(
-            255
-            , 255)
+        var = "debug 3"
+#         isCommandList( var.split(" "))
+#         self.assertEqual(
+#             main.inputLoop(1)
+#             , 255)
+#         var = "debug 1"
+#         isCommandList( var.split(" "))
+#         self.assertEqual(
+#             main.inputLoop(10)
+#             , 255)
         
         
 if __name__ == "__main__":
