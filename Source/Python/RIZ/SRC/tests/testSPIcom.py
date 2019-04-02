@@ -72,7 +72,7 @@ class Test(unittest.TestCase):
     def test_getOneMsg(self):
         #self.ledstm.dp(3)
         self.assertEqual( 
-            self.ledstm.getOneMsg(0, testmsg = 0) , [0, 255])
+            self.ledstm.getOneMsg(0, testmsg = 0) , [255, 0])
 
         
 if __name__ == "__main__":

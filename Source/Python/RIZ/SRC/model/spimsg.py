@@ -47,6 +47,7 @@ class SpiMSG(object):
                 print("Get Button")
                 print(bin(msg[1]))
                 self.buttons.set(msg[1])
+                print(self.buttons.presed)
                 result = True
                 continue
             if result == None:

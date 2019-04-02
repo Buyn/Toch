@@ -79,8 +79,8 @@ class TerMenu(object):# {{{
         while True:
             print ("Enter h for help(list of command)")
             var = input("Enter Command: ")
-            if not var:
-                continue
+#             if not var:
+#                 continue
             return var
         # }}}
 
@@ -181,8 +181,9 @@ class TerMenu(object):# {{{
     def pruntMenu(self):# {{{
         if not self.setInputPause(): return False
         var = self.getUserInput()
-        if self.isLEDCommand(var): return
-        if self.isCommandList(var.split(' ')): return
+        if var == None or var == "": return False
+        if self.isLEDCommand(var): return True
+        if self.isCommandList(var.split(' ')): return True
         return self.writeNumber(self.isInt(var))
         # }}}
     

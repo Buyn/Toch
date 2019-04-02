@@ -10,9 +10,7 @@ class Buttons(object):
     def __init__(self):
         self.change     = False
         self.lastBitWord= 0
-        self.bReset     = 1
-        self.bOk        = 1
-        self.bChoice    = 1
+        self.commands   = {}
         self.presed     = []
 
     
@@ -21,7 +19,7 @@ class Buttons(object):
         self.lastBitWord = newBits
         self.presed = []
         self.change = True
-        for i in range (8):
+        for i in range (16):
             if newBits >> i&1 :
                 self.presed.append(i)
     

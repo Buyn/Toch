@@ -4,6 +4,11 @@ DEBUGMODE = False
 BUS     = 0 
 DEVICE  = 0
 
+# buttons pins
+B_RESET     = 13
+B_OK        = 14
+B_CHOICE    = 15
+
 # SPI Adresses
 LEDSTM_ADRRESS = 0x08
 # SPI Timing

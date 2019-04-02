@@ -162,5 +162,5 @@ class SPICom(object):
         resiv = [self.send(0)]
         self.dp(2, "Resivid value whith name= ", resiv[0])
         resiv.append(self.sendEndSession())
-        self.dp(2, "We Get", resiv)
+        self.dp(2, "We Get", resiv.reverse())
         return resiv

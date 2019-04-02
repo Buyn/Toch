@@ -55,7 +55,7 @@ class Test(unittest.TestCase):# {{{
         self.assertEqual(
             len(self.smsg.msgsStack[0]) , 2 )
         self.assertEqual(
-            self.smsg.msgsStack[0] , [0, 255] )
+            self.smsg.msgsStack[0] , [255, 0] )
         # }}}
         
     def test_runtime(self):# {{{
