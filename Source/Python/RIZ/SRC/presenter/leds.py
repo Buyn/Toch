@@ -20,9 +20,13 @@ class LEDs(object):
 
     
     def ledOff(self, ledpin):
-        self.bitWordLast ^= 1<<ledpin 
+        self.bitWordLast &= ~(1<<ledpin )
         self.chenged = True
     
+
+    def ledTrig(self, ledpin):
+        self.bitWordLast ^= 1<<ledpin 
+        self.chenged = True
     
     
     

@@ -52,7 +52,6 @@ class Test(unittest.TestCase):
             self.leds.chenged , False)
         # }}}
         
-        
     def test_bitOperatioons(self):# {{{
         x = 11
         print(bin(x))
@@ -131,6 +130,35 @@ class Test(unittest.TestCase):
             self.leds.chenged , True)
         self.leds.ledOff(L_FULLCYCLE) 
         self.assertEqual(
+            self.leds.bitWordLast, 0)
+        self.leds.ledOff(L_FULLCYCLE) 
+        self.assertEqual(
+            self.leds.bitWordLast, 0)
+        self.assertEqual(
+            self.leds.chenged , True)
+        # }}}
+
+    def test_ledTrig(self):# {{{
+        self.leds.bitWordLast = 8448
+        print(self.leds.bitWordLast)
+        self.assertEqual(
+            len(self.printbit(self.leds.bitWordLast))
+            , 2)
+        self.assertEqual(
+            self.leds.chenged , False)
+        print(L_READY)
+        self.leds.ledTrig(L_READY) 
+        print(self.leds.bitWordLast)
+        self.assertEqual(
+            len(self.printbit(self.leds.bitWordLast))
+            , 1)
+        self.assertEqual(
+            self.leds.chenged , True)
+        self.leds.ledTrig(L_FULLCYCLE) 
+        self.assertEqual(
+            self.leds.bitWordLast, 0)
+        self.leds.ledTrig(L_FULLCYCLE) 
+        self.assertNotEqual(
             self.leds.bitWordLast, 0)
         self.assertEqual(
             self.leds.chenged , True)

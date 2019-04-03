@@ -16,6 +16,7 @@
 from veiw.termenu import TerMenu
 from presenter.buttons import Buttons
 from model.spimsg import SpiMSG
+from presenter.leds import LEDs
 '''
 Created on 10 февр. 2019 г.
 @author: BuYn
@@ -35,9 +36,10 @@ spi     = SPICom(LEDSTM_ADRRESS, debugmode=DEBUGMODE)
 # }}}
 
 #Varialbes for the Debounce # {{{
-terMenu = TerMenu(spi)
 buttons     = Buttons()
 msg         = SpiMSG(spi, buttons)
+leds        = LEDs(spi)
+terMenu     = TerMenu(spi)
 # }}}
     
 
