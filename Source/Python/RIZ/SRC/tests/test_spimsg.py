@@ -13,7 +13,6 @@ import time
 # }}}
 class Test(unittest.TestCase):# {{{
 
-
     @classmethod# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)

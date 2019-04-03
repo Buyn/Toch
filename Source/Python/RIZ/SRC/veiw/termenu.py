@@ -108,6 +108,7 @@ class TerMenu(object):# {{{
         pygame.mixer.music.load("file.wav")
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
+        spi.execute([SC_LEDSTOP])
         # }}}
 
     def isLEDCommand(self, var):# {{{

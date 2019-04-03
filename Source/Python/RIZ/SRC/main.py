@@ -75,14 +75,15 @@ def initButtons():
     buttons.setComandOnPress(B_CHOICE, 
                              terMenu.setReadyStatus)
     buttons.setComandOnPress(B_OK, 
-                             spi.execute([SC_LEDSTOP]))
+                             lambda: spi.execute([SC_LEDSTOP]))
     buttons.setComandOnPress(B_RESET, 
-                             spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET]))
+                             lambda: spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET]))
 
 
 if __name__ == '__main__':
     parsArgList()
     initButtons()
+    terMenu.setReadyStatus()
     try:
         mainloope()
     except KeyboardInterrupt:

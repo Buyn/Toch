@@ -8,6 +8,27 @@ DEVICE  = 0
 B_RESET     = 13
 B_OK        = 14
 B_CHOICE    = 15
+# LEDs pins
+ledsPins = {
+   "Sharpenning"           	: 15,
+   "Polishing"             	: 14,
+   "Ready"                 	: 13,
+   "Right side"             	: 12,
+   "Left side"              	: 11,
+   "Ceramic knife"          	: 10,
+   "Polishing disk cleaning"	: 9 ,
+   "Full cycle"             	: 8 ,
+   "Middle cycle"           	: 7
+    }
+L_SHARPENNING            = 15
+L_POLISHING              = 14
+L_READY                  = 13
+L_RIGHTSIDE              = 12
+L_LEFTSIDE               = 11
+L_CERAMICKNIFE           = 10
+L_POLISDHINGDISKCLEANING = 9
+L_FULLCYCLE              = 8
+L_MIDDLECYCLE            = 7
 
 # SPI Adresses
 LEDSTM_ADRRESS = 0x08
@@ -36,6 +57,7 @@ SC_LEDSTART        = 0x11
 SC_LEDSET          = 0x14
 SC_LED01SET        = 0x1A
 SC_LED02SET        = 0x1B
-# Stak Varible Names
+#ShiftOut comands
+SC_SETSHIFTOUT     = 0x21
 
 

@@ -46,7 +46,7 @@ class SPICom(object):
     
     
     def sendEndSession(self):
-        self.dp(2, "send = [ END OF SISION ] ")
+        self.dp(2, "send = [ END OF SESION ] ")
         return self.send(SC_ENDOFSESION)
     
     
