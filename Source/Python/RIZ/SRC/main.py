@@ -39,11 +39,11 @@ spi     = SPICom(LEDSTM_ADRRESS, debugmode=DEBUGMODE)
 buttons     = Buttons()
 msg         = SpiMSG(spi, buttons)
 leds        = LEDs(spi)
-terMenu     = TerMenu(spi)
+terMenu     = TerMenu(
+                    spi,
+                    leds
+                    )
 # }}}
-    
-
-
 
 def mainloope():
     while True:

@@ -17,7 +17,9 @@ from veiw.debugprint import DebugPrint
 
 class TerMenu(object):# {{{
 
-    def __init__(self, spi, debugmode = DEBUGMODE):# {{{
+    def __init__(self, spi, leds, debugmode = DEBUGMODE):# {{{
+        self.leds = leds
+        self.debugmode = debugmode
         self.dp = DebugPrint(debugmode)
         self.spi = spi
         self.inputOn = True
@@ -79,8 +81,6 @@ class TerMenu(object):# {{{
         while True:
             print ("Enter h for help(list of command)")
             var = input("Enter Command: ")
-#             if not var:
-#                 continue
             return var
         # }}}
 
@@ -101,6 +101,7 @@ class TerMenu(object):# {{{
         print ( 'im '   , " isWaitingMsg") 
         print ( 'gm '   , " getOneMsg") 
         print ( 'rd  = ready ', " To ready Status") 
+        print ( 'leds', "pin param" , "LED trigered on param pin ") 
         # }}}
 
     def setReadyStatus(self):# {{{
@@ -108,7 +109,7 @@ class TerMenu(object):# {{{
         pygame.mixer.music.load("file.wav")
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
-        spi.execute([SC_LEDSTOP])
+        self.spi.execute([SC_LEDSTOP])
         # }}}
 
     def isLEDCommand(self, var):# {{{
@@ -169,12 +170,20 @@ class TerMenu(object):# {{{
         print("Debug mode set to ", elm_var[1])
         # }}}
 
+
+    def setLED(self, ledpin):
+        print("LED trigered on pin = ", ledpin)
+        self.leds.ledTrig(ledpin)
+    
+    
     def isCommandList(self, elm_var):# {{{
         if (not isinstance(elm_var, str) and len(elm_var) > 1):
             if (elm_var[0] == 'led'):
                 self.ledcommand(elm_var)
             if (elm_var[0] == 'debug'):
                 self.debugcommand(elm_var)
+            if (elm_var[0] == 'leds'):
+                self.setLED(self.isInt(elm_var[1]))
             return True
         return False
         # }}}
@@ -199,11 +208,6 @@ class TerMenu(object):# {{{
         if isinstance(sec, int):
             self.pauseEnd = timenow + sec
             self.inputOn = False
-    
-    
+
 # }}}
-
-
-
-
 
