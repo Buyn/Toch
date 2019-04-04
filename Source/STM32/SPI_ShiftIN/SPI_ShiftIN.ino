@@ -9,6 +9,7 @@
 #include "LED.h"
 #include "slaveSPI.h"
 #include "Shiftin.h"
+#include "ShiftOut.h"
 #include <cstdint>
 /*}}}*/
 
@@ -34,7 +35,8 @@
 #define LED01SET		0x1A
 #define LED02SET		0x1B
 #define LED03SET		0x1C
-
+//ShiftOut comands
+#define SETSHIFTOUT     0x21
 /*}}}*/
 
 /*Varibls Block{{{*/
@@ -48,6 +50,7 @@ int max_state = MAX_STATS;
 LED test(LED_BUILTIN);
 SlaveSPI sspi(SPIADRRES);
 ShiftIn sinput;
+ShiftOut shiftout;
 
 /*}}}*/
 
@@ -111,6 +114,13 @@ void execute_command(void){
 				for (int i = 0; i <= 3; i++) {
 					ledstate03[i] = sspi.pull();		
 				}
+			test.trige();
+			sspi.setmsg( 0 );
+			break;/*}}}*/
+		case SETSHIFTOUT:/*{{{*/
+			Serial.print("Set LEDs pins to:");
+			Serial.println(sspi.peek(), BIN);
+			shiftout.send16(sspi.pull());
 			test.trige();
 			sspi.setmsg( 0 );
 			break;/*}}}*/
@@ -187,8 +197,10 @@ void setup() {/*{{{*/
 	setupLEDLine();
 	sspi.spinit();
 	Serial.println(TITLEABOUT);
-   /* Initialize our digital pins...  */
+   /* Initialize in digital pins...  */
 	sinput.initpins();
+   /* Initialize our digital pins...  */
+	shiftout.initpins();
    /* Read in and display the pin states at startup.  */
 	sinput.runtime();
 	Serial.println("End Setup");
