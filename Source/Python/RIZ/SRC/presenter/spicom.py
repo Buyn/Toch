@@ -28,9 +28,14 @@ class SPICom(object):
         self.spi.max_speed_hz = 18000000
         self.spi.mode = 0b00
         self.spi.lsbfirst = False
-        resp = self.spi.xfer3([0x0,word])
+#         c = (word >> 8) & 0xff
+#         f = word & 0xff
+        resp = self.spi.xfer3([(word >> 8) & 0xff,word & 0xff])
         self.spi.close()
-        self.dp(3,"send = [ ", word, " ] , resiv = [ ", resp, " ]")
+        self.dp(3,"send = [ ", 
+                [hex((word >> 8) & 0xff),
+                hex(word & 0xff)],
+                " ] , resiv = [ ", resp, " ]")
         #time.sleep (SPI_SLEEPAFTERSEND);
         return self.pack(resp[::-1])
     

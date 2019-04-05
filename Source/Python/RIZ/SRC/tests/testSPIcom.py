@@ -36,9 +36,12 @@ class Test(unittest.TestCase):
 
 
     def testSpidevXref(self):
+        self.ledstm.dp(4)
         self.assertEqual(
-            self.ledstm.send( 200 )
-            , 200 )
+            self.ledstm.send( 200 ) , 200 )
+        print(hex(20000))
+        self.assertEqual(
+            self.ledstm.send( 0x4e20 ) , 0x4e20 )
 
         
     def testGetVar(self):
