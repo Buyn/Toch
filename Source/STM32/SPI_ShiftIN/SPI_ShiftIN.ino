@@ -203,6 +203,15 @@ void setup() {/*{{{*/
 	shiftout.initpins();
    /* Read in and display the pin states at startup.  */
 	sinput.runtime();
+//int perior =0;
+//for (int i = 0; i < 33000; i++) {
+//	if (perior == i) {
+//		Serial.println(perior);
+//			perior = i + 100;
+//		}
+//	shiftout.send16(i);
+//	delay(10);
+//	}
 	Serial.println("End Setup");
 	}/*}}}*/
 

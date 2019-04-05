@@ -45,13 +45,14 @@ terMenu     = TerMenu(
                     )
 # }}}
 
-def mainloope():
+def mainloope():# {{{
     while True:
         terMenu.pruntMenu()
         msg.runtime()
+        leds.send()
+# }}}
 
-
-def parsArgList():
+def parsArgList():# {{{
     print(str(sys.argv))
     for arg in sys.argv:
         if arg == "debug1":
@@ -71,18 +72,21 @@ def parsArgList():
             terMenu.inputOff = True 
             continue
         print("unknown arg = ", arg)
-        
+        # }}}
 
-def initButtons():
+def initButtons():# {{{
     buttons.setComandOnPress(B_CHOICE, 
-                             terMenu.setReadyStatus)
+            lambda: print("B_CHOICE", terMenu.setReadyStatus()))
+            #terMenu.setReadyStatus)
     buttons.setComandOnPress(B_OK, 
-                             lambda: spi.execute([SC_LEDSTOP]))
+            lambda: print("B_OK", spi.execute([SC_LEDSTOP])))
+                            #lambda: spi.execute([SC_LEDSTOP]))
     buttons.setComandOnPress(B_RESET, 
-                             lambda: spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET]))
+            lambda: print("B_OK", spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET])))
+                            #lambda: spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET]))
+# }}}
 
-
-if __name__ == '__main__':
+if __name__ == '__main__':# {{{
     parsArgList()
     initButtons()
     terMenu.setReadyStatus()
@@ -94,7 +98,7 @@ if __name__ == '__main__':
             terMenu.inputOff = False
             mainloope()
         sys.exit(0)
-
+# }}}
 
 
 
