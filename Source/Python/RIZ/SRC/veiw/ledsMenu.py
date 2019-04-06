@@ -107,6 +107,8 @@ class LEDsMenu(object):
     
     def setReadyState(self):
         self.cheget = False
+        self.leds.bitWordLast = 0
+        self.leds.ledOn(State.READY.value)
         self.runtimeCommand = self.readyState
         self.state = State.READY.value
         pygame.mixer.music.load("ready.wav")

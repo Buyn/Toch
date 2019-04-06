@@ -17,6 +17,8 @@ from veiw.termenu import TerMenu
 from presenter.buttons import Buttons
 from model.spimsg import SpiMSG
 from presenter.leds import LEDs
+from veiw.ledsMenu import *
+from presenter import buttons
 '''
 Created on 10 февр. 2019 г.
 @author: BuYn
@@ -43,6 +45,12 @@ terMenu     = TerMenu(
                     spi,
                     leds
                     )
+ledsMenu     = LEDsMenu(
+                    spi=spi,
+                    leds=leds,
+                    buttons = buttons
+                    )
+
 # }}}
 
 def mainloope():# {{{
@@ -50,6 +58,7 @@ def mainloope():# {{{
         terMenu.pruntMenu()
         msg.runtime()
         leds.send()
+        ledsMenu.runtime()
 # }}}
 
 def parsArgList():# {{{
