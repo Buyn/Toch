@@ -40,7 +40,7 @@
 //Step Drivers
 #define STARTDRIVER    0x31
 #define STOPDRIVER     0x32
-#define STEPDRIVERTIMEOUT     50
+#define STEPDRIVERTIMEOUT     1000
 #define STEPDRIVERPIN01     PB9
 #define STEPDRIVERPIN02     PB8
 #define STEPDRIVERPIN03     PB7
@@ -63,7 +63,7 @@ SlaveSPI sspi(SPIADRRES);
 ShiftIn sinput;
 ShiftOut shiftout;
 unsigned long stepDrivetime = 0;
-bool stepDriveMode = 0;
+bool stepDriveMode = false;
 
 /*}}}*/
 
@@ -166,7 +166,7 @@ void execute_command(void){
 			stepDriveMode = true;
 			test.trige();
 			break;/*}}}*/
-		case STOPDRIVER:/*{{{*/
+		case STOPECOUNTER:/*{{{*/
 			Serial.print("STOPE COUNTER");
 			stepDriveMode = false;
 			test.trige();
@@ -245,6 +245,11 @@ void setup() {/*{{{*/
 //	shiftout.send16(i);
 //	delay(10);
 //	}
+	
+   pinMode(STEPDRIVERPIN01, OUTPUT);
+   pinMode(STEPDRIVERPIN02, OUTPUT);
+   pinMode(STEPDRIVERPIN03, OUTPUT);
+   pinMode(STEPDRIVERPIN04, OUTPUT);
 	Serial.println("End Setup");
 	}/*}}}*/
 
@@ -272,7 +277,9 @@ void loop() {/*{{{*/
 		digitalWrite(STEPDRIVERPIN01, HIGH);
 		digitalWrite(STEPDRIVERPIN02, HIGH);
 		digitalWrite(STEPDRIVERPIN03, HIGH);
-      Serial.print("Step");
+      //Serial.print("Step - ");
+      //Serial.println(stepDrivetime);
+		//delayMicroseconds(100000);
 		digitalWrite(STEPDRIVERPIN01, LOW);
 		digitalWrite(STEPDRIVERPIN02, LOW);
 		digitalWrite(STEPDRIVERPIN03, LOW);
