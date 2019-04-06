@@ -27,10 +27,10 @@ class spi_dev{ // {{{
 #define STACK_MSG_SIZE		10
 /*}}}*/
 //define Debug mods block{{{
-#define DEBUGMSG_RECIVSEND
+//#define DEBUGMSG_RECIVSEND
 //#define DEBUGMSG_EXECUTESTAK
-#define DEBUGMSG_MSGSTASK
-#define DEBUGMSG_INFO
+//#define DEBUGMSG_MSGSTASK
+//#define DEBUGMSG_INFO
 /*}}}*/
 //define msg bloc  {{{
 #define SESIONTIMEOUT 900   

@@ -78,6 +78,39 @@ class Test(unittest.TestCase):
         print(State.list())
         # }}}
 
+    def test_ready(self):# {{{
+        self.assertEqual(
+            self.ledsMenu.state , State.NOTREADY.value)
+        self.ledsMenu.setReadyState()
+        self.assertEqual(
+            self.ledsMenu.runtime() , True)
+        self.assertEqual(
+            self.ledsMenu.cheget , False)
+        self.assertEqual(
+            self.ledsMenu.state , State.READY.value)
+        self.buttons.set(1<<B_CHOICE)
+        self.assertEqual(
+            self.ledsMenu.state , State.READY.value +1)
+        self.buttons.set(1<<B_OK)
+        self.assertEqual(
+            self.ledsMenu.state , State.READY.value +1)
+        # }}}
+
+
+    def test_nextStatus(self):# {{{
+        self.assertEqual(
+            self.ledsMenu.state , State.NOTREADY.value)
+        self.ledsMenu.nextStatus()
+        self.assertEqual(
+            self.ledsMenu.state , State.READY.value)
+        self.ledsMenu.nextStatus()
+        self.assertEqual(
+            self.ledsMenu.state , State.READY.value +1)
+        self.ledsMenu.state = State.SHARPENNING.value
+        self.assertEqual(
+        self.ledsMenu.nextStatus() , State.READY.value+1)
+        # }}}
+
 if __name__ == "__main__":# {{{
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

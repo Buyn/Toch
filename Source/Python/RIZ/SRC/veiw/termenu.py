@@ -127,7 +127,7 @@ class TerMenu(object):# {{{
             return True
         if  var == "b":
             print ("Blue")
-            self.spi.execute([0x0f, 0x00, 0x00, 0xff, SC_LEDSET])
+            self.spi.execute([0x0f, 0xff, 0x00, 0x00, SC_LEDSET])
             return True
         if  var == "r":
             print ("Red")
@@ -135,7 +135,7 @@ class TerMenu(object):# {{{
             return True
         if  var == "g":
             print ("Green")
-            self.spi.execute([0x0f, 0xff, 0x00, 0x00, SC_LEDSET])
+            self.spi.execute([0x0f, 0x00, 0x00, 0xff, SC_LEDSET])
             return True
         if  var == "w":
             print ("White")

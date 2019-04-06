@@ -164,6 +164,22 @@ class Test(unittest.TestCase):
             self.leds.chenged , True)
         # }}}
 
+    def test_blink(self):# {{{
+        self.assertEqual(
+            self.leds.blinkTime, 0)
+        self.assertEqual(
+            self.leds.blink(L_CERAMICKNIFE), True)
+        self.assertNotEqual(
+            self.leds.blinkTime, 0 )
+        self.assertEqual(
+            self.leds.blink(L_CERAMICKNIFE), False)
+        time.sleep(1)
+        self.assertEqual(
+            self.leds.blink(L_CERAMICKNIFE), True)
+        self.assertEqual(
+            self.leds.blink(L_CERAMICKNIFE), False)
+        # }}}
+
 if __name__ == "__main__":# {{{
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

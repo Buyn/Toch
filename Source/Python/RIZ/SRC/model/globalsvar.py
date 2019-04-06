@@ -57,6 +57,7 @@ SC_LEDSTART        = 0x11
 SC_LEDSET          = 0x14
 SC_LED01SET        = 0x1A
 SC_LED02SET        = 0x1B
+SC_LED03SET        = 0x1C
 #ShiftOut comands
 SC_SETSHIFTOUT     = 0x21
 

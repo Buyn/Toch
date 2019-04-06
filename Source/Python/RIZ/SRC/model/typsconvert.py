@@ -1,6 +1,6 @@
 
 def sth( param0):# {{{
-    return hex(self.isInt(param0))
+    return hex(isInt(param0))
     # }}}
     
 
@@ -15,3 +15,16 @@ def isInt(var):# {{{
         print("Not know Command or number")
         return 0
     # }}}
+
+def fillLEDset(setlist, command):# {{{
+    """Filling list from arrey and adding command"""
+    return [
+          isInt(setlist[5]),
+          isInt(setlist[4]), 
+          isInt(setlist[3]), 
+          isInt(setlist[2]), 
+          command 
+          ] 
+    # }}}
+        
+        

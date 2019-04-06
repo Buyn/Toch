@@ -1,6 +1,7 @@
 from enum import Enum, unique
-from model.globalsvar import SC_LEDSTOP, SC_LEDSTART
+from model.globalsvar import *
 import pygame
+from presenter.leds import LEDs
 
 @unique
 class State(Enum):# {{{
@@ -41,6 +42,7 @@ class CommandsMenu (Enum):# {{{
 class LEDsMenu(object):
     
     def __init__(self, spi, buttons, leds):# {{{
+        self.leds = LEDs(self.spi)
         self.spi = spi
         self.buttons = buttons
         self.leds = leds
@@ -66,6 +68,7 @@ class LEDsMenu(object):
 
     
     def readyState(self):
+        self.leds.blink(self.state)
         return True
 
     def notreadyState(self):
@@ -76,13 +79,62 @@ class LEDsMenu(object):
         self.cheget = True
 
     
+    def executeStatus(self):
+        self.leds.ledTrig(self.state)
+        if self.state == State.SHARPENNING.value:
+#         set blue
+            self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED01SET])
+            self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED02SET])
+            self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED03SET])
+            pygame.mixer.music.load("ready.wav")
+            pygame.mixer.music.play()
+        if self.state == State.POLISHING_DISK_CLEANING.value:
+#         set orange
+            self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED01SET])
+            self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED02SET])
+            self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED03SET])
+            pygame.mixer.music.load("ready.wav")
+            pygame.mixer.music.play()
+        if self.state == State.POLISHING.value or self.state == State.CERAMIC_KNIFE.value:
+#         set Ylow
+            self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED01SET])
+            self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED02SET])
+            self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED03SET])
+            pygame.mixer.music.load("ready.wav")
+            pygame.mixer.music.play()
+
+    
+    
     def setReadyState(self):
+        self.cheget = False
         self.runtimeCommand = self.readyState
         self.state = State.READY.value
         pygame.mixer.music.load("ready.wav")
         pygame.mixer.music.play()
         self.spi.execute([SC_LEDSTART])
-        self.spi.execute([SC_LEDSTART])
+#         set green
+        self.spi.execute([0x0A, 0x00, 0x00, 0xff, SC_LED01SET])
+        self.spi.execute([0x0A, 0x00, 0x00, 0x00, SC_LED02SET])
+#         set green
+        self.spi.execute([0x0A, 0x00, 0x00, 0xff, SC_LED03SET])
+        self.buttons.setComandOnPress(B_CHOICE, 
+            lambda: print("B_CHOICE", self.nextStatus()))
+        self.buttons.setComandOnPress(B_OK, 
+            lambda: print("B_OK", self.executeStatus()))
+        self.buttons.setComandOnPress(B_RESET, 
+            lambda: print("B_RESET", self.setReadyState()))
+
+    
+    def nextStatus(self):
+        if self.state == State.NOTREADY.value:
+            self.state = State.READY.value
+            return self.state 
+        if self.state == State.SHARPENNING.value:
+            self.state = State.READY.value + 1
+            return self.state 
+        self.state += 1
+        return self.state 
+    
     
     
         
