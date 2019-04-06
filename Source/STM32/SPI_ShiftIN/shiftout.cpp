@@ -44,6 +44,7 @@ bool ShiftOut::send16(BYTES_VAL_T value){
 Dump the list of zones along with their current status.
 */
 void ShiftOut::display_pin_values() {
+	 #ifdef DEBUGMSG_PINS/*{{{*/
     Serial.print("Pin States:\r\n");
     for(int i = 0; i < DATA_WIDTH; i++) {/*{{{*/
        Serial.print("  Pin-");
@@ -57,5 +58,6 @@ void ShiftOut::display_pin_values() {
        Serial.print("\r\n");
 		 }/*}}}*/
     Serial.print("\r\n");
+	 #endif/*DEBUGMSG_PINS}}}*/
 	}/*}}}*/
 

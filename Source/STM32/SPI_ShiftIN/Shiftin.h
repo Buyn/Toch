@@ -49,6 +49,7 @@
 #define SHIFTIN_DATAPIN          PB14 // Qh serial output Connects to the Q7 pin 
 #define SHIFTIN_CLOCKPIN         PB15 // clk Connects to the Clock pin 
 
+//#define DEBUGMSG_SHIFTOUT
 /*}}}*/
 // ShiftIn calss{{{
 class ShiftIn {

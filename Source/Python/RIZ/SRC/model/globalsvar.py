@@ -34,7 +34,7 @@ L_MIDDLECYCLE            = 7
 LEDSTM_ADRRESS = 0x08
 # SPI Timing
 SPI_SLEEPAFTERSEND      = 0.1
-SPI_SLEEPBETWINMSGGET   = 0.5
+SPI_SLEEPBETWINMSGGET   = 0.3
 # SPI stek command
 SC_EXECUTECOMMAND   = 0xAA
 SC_ISMSGWATING      = 0xB0
@@ -60,5 +60,12 @@ SC_LED02SET        = 0x1B
 SC_LED03SET        = 0x1C
 #ShiftOut comands
 SC_SETSHIFTOUT     = 0x21
+#Step comands
+STARTDRIVER    =0x31
+STOPDRIVER     =0x32
+#encounter comands
+STARTECOUNTER    =0x41
+STOPECOUNTER     =0x42
+
 
 

@@ -42,14 +42,14 @@ class CommandsMenu (Enum):# {{{
 class LEDsMenu(object):
     
     def __init__(self, spi, buttons, leds):# {{{
-        self.leds = LEDs(self.spi)
+#         self.leds = LEDs(self.spi)
         self.spi = spi
         self.buttons = buttons
         self.leds = leds
         self.newState = 0
         self.oldState = 0
         self.state = 0
-        self.runtimeCommand = self.notreadyState
+        self.runtimeCommand = self.setReadyState
         self.cheget = False
         pygame.mixer.init()
         pygame.mixer.music.set_volume(1.0)
@@ -88,6 +88,7 @@ class LEDsMenu(object):
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED03SET])
             pygame.mixer.music.load("ready.wav")
             pygame.mixer.music.play()
+            self.spi.execute([STARTDRIVER])
         if self.state == State.POLISHING_DISK_CLEANING.value:
 #         set orange
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED01SET])
@@ -102,15 +103,17 @@ class LEDsMenu(object):
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED03SET])
             pygame.mixer.music.load("ready.wav")
             pygame.mixer.music.play()
+            self.spi.execute([STARTECOUNTER])
 
     
     
     def setReadyState(self):
+        print("ready to work")
         self.cheget = False
         self.leds.bitWordLast = 0
         self.leds.ledOn(State.READY.value)
         self.runtimeCommand = self.readyState
-        self.state = State.READY.value
+        self.state = State.READY.value +1
         pygame.mixer.music.load("ready.wav")
         pygame.mixer.music.play()
         self.spi.execute([SC_LEDSTART])
@@ -125,26 +128,23 @@ class LEDsMenu(object):
             lambda: print("B_OK", self.executeStatus()))
         self.buttons.setComandOnPress(B_RESET, 
             lambda: print("B_RESET", self.setReadyState()))
+        self.spi.execute([STOPDRIVER])
+        self.spi.execute([STOPECOUNTER])
 
     
     def nextStatus(self):
+        self.leds.ledOff(self.state)
         if self.state == State.NOTREADY.value:
             self.state = State.READY.value
+            self.leds.ledOn(self.state)
             return self.state 
         if self.state == State.SHARPENNING.value:
             self.state = State.READY.value + 1
+            self.leds.ledOn(self.state)
             return self.state 
         self.state += 1
+        self.leds.ledOn(self.state)
         return self.state 
-    
-    
-    
-        
-    
-    
-    
-    
-    
     
     
     

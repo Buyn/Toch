@@ -99,7 +99,7 @@ def initButtons():# {{{
 if __name__ == '__main__':# {{{
     parsArgList()
     initButtons()
-    terMenu.setReadyStatus()
+#     terMenu.setReadyStatus()
     try:
         mainloope()
     except KeyboardInterrupt:
