@@ -129,6 +129,7 @@ class Test(unittest.TestCase):# {{{
         self.assertEqual(
             self.terMenu.inputOn , True)
         # }}}
+
         
 if __name__ == "__main__":# {{{
     #import sys;sys.argv = ['', 'Test.testName']

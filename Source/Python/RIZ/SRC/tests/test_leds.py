@@ -164,16 +164,6 @@ class Test(unittest.TestCase):
             self.leds.chenged , True)
         # }}}
 
-#     def test_runtime(self):# {{{
-#         self.assertEqual(
-#             self.leds.run(), False)
-#         self.leds.ledOn(L_READY) 
-#         self.assertEqual(
-#             self.leds.send(), True)
-#         self.assertEqual(
-#             self.leds.send(), False)
-#         # }}}
-
 if __name__ == "__main__":# {{{
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

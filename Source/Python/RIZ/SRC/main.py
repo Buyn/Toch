@@ -76,13 +76,14 @@ def parsArgList():# {{{
 
 def initButtons():# {{{
     buttons.setComandOnPress(B_CHOICE, 
+#                              lambda: print("B_CHOICE"))
             lambda: print("B_CHOICE", terMenu.setReadyStatus()))
             #terMenu.setReadyStatus)
     buttons.setComandOnPress(B_OK, 
             lambda: print("B_OK", spi.execute([SC_LEDSTOP])))
                             #lambda: spi.execute([SC_LEDSTOP]))
     buttons.setComandOnPress(B_RESET, 
-            lambda: print("B_OK", spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET])))
+            lambda: print("B_RESET", spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET])))
                             #lambda: spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET]))
 # }}}
 

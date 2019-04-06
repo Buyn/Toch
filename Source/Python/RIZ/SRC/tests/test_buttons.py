@@ -95,11 +95,16 @@ class Test(unittest.TestCase):
     def test_execude(self):
         self.test = False
         self.assertEqual(
-            self.buttons.isPressed(0) , False)
-        self.buttons.setComandOnPress(0, lambda: print("hi test"))
-        self.buttons.set(1) 
+            self.buttons.isPressed(B_CHOICE) , False)
+        self.buttons.setComandOnPress(B_CHOICE, lambda: print("hi test"))
+        self.buttons.set(1<<B_CHOICE) 
+        print(self.buttons.presed)
+        self.buttons.set(0) 
+        print(self.buttons.presed)
+        self.buttons.set(1<<B_CHOICE) 
+        print(self.buttons.presed)
         self.assertEqual(
-            self.buttons.isPressed(0) , True)
+            self.buttons.isPressed(B_CHOICE) , True)
         
                              
 if __name__ == "__main__":

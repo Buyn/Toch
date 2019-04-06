@@ -29,7 +29,7 @@ class Buttons(object):
 
 
     def setComandOnPress(self, key, command):
-        self.commandsOnPress = {key:command}
+        self.commandsOnPress.update({key:command})
 
 
     def exeCommand(self, key):
