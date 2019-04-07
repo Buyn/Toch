@@ -101,7 +101,10 @@ class TerMenu(object):# {{{
         print ( 'im '   , " isWaitingMsg") 
         print ( 'gm '   , " getOneMsg") 
         print ( 'rd  = ready ', " To ready Status") 
-        print ( 'leds', "pin param" , "LED trigered on param pin ") 
+        print("Encoder ON", "encon")
+        print("Encoder OFF", "encoff")
+        print("Step driver OFF", "stepooff")
+        print("Step driver ON", "stepon")
         # }}}
 
     def setReadyStatus(self):# {{{
@@ -161,6 +164,22 @@ class TerMenu(object):# {{{
         if  var == "rd":
             print("To ready Status")
             self.setReadyStatus()
+            return True
+        if  var == "encon":
+            print("Encoder ON")
+            self.spi.execute([STARTECOUNTER])
+            return True
+        if  var == "encoff":
+            print("Encoder OFF")
+            self.spi.execute([STOPECOUNTER])
+            return True
+        if  var == "stepooff":
+            print("Step driver OFF")
+            self.spi.execute([STOPDRIVER])
+            return True
+        if  var == "stepon":
+            print("Step driver ON")
+            self.spi.execute([STARTDRIVER])
             return True
         return False
         # }}}

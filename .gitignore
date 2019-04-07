@@ -13,3 +13,4 @@ virtualenv/
 __pycache__
 *.pyc
 .settings
+Res/

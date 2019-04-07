@@ -86,7 +86,7 @@ class LEDsMenu(object):
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED01SET])
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED02SET])
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED03SET])
-            pygame.mixer.music.load("ready.wav")
+            pygame.mixer.music.load("toch.wav")
             pygame.mixer.music.play()
             self.spi.execute([STARTDRIVER])
         if self.state == State.POLISHING_DISK_CLEANING.value:
@@ -94,14 +94,14 @@ class LEDsMenu(object):
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED01SET])
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED02SET])
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED03SET])
-            pygame.mixer.music.load("ready.wav")
+            pygame.mixer.music.load("file.wav")
             pygame.mixer.music.play()
         if self.state == State.POLISHING.value or self.state == State.CERAMIC_KNIFE.value:
 #         set Ylow
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED01SET])
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED02SET])
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED03SET])
-            pygame.mixer.music.load("ready.wav")
+            pygame.mixer.music.load("poll.wav")
             pygame.mixer.music.play()
             self.spi.execute([STARTECOUNTER])
 

@@ -87,13 +87,13 @@ class Test(unittest.TestCase):
         self.assertEqual(
             self.ledsMenu.cheget , False)
         self.assertEqual(
-            self.ledsMenu.state , State.READY.value)
+            self.ledsMenu.state , State.READY.value+1)
         self.buttons.set(1<<B_CHOICE)
         self.assertEqual(
-            self.ledsMenu.state , State.READY.value +1)
+            self.ledsMenu.state , State.READY.value +2)
         self.buttons.set(1<<B_OK)
         self.assertEqual(
-            self.ledsMenu.state , State.READY.value +1)
+            self.ledsMenu.state , State.READY.value +2)
         # }}}
 
 

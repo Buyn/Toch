@@ -11,6 +11,7 @@
 #include "Shiftin.h"
 #include "ShiftOut.h"
 #include <cstdint>
+#include "simplencoder.h"
 /*}}}*/
 
 /*Define Block{{{*/
@@ -18,7 +19,8 @@
 #define RBG_PIN_G PA9   // пин для канала G
 #define RBG_PIN_B PA10  // пин для канала B
 //debug msges 
-//#define					DEBUGMSG_LEDLINE
+//#define	DEBUGMSG_LEDLINE
+//#define	DEBUGMSG_SHIFTINFO
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 3    
@@ -27,27 +29,32 @@
 #define TITLEABOUT "SPI LED v 0.1"
 //Commands list
 #define SPIADRRES			0x08
-//LED comands
+//LED comands{{{
 #define LEDSTOP 		0x10
 #define LEDSTART		0x11
 #define LEDMAXSTATE 	0x12
 #define LEDSET	 		0x14
 #define LED01SET		0x1A
 #define LED02SET		0x1B
-#define LED03SET		0x1C
+#define LED03SET		0x1C/*}}}*/
 //ShiftOut comands
 #define SETSHIFTOUT     0x21
-//Step Drivers
+//Step Drivers{{{
 #define STARTDRIVER    0x31
 #define STOPDRIVER     0x32
 #define STEPDRIVERTIMEOUT     1000
 #define STEPDRIVERPIN01     PB9
 #define STEPDRIVERPIN02     PB8
 #define STEPDRIVERPIN03     PB7
-#define STEPDRIVERPIN04     PB6
-//encounter comands
+#define STEPDRIVERPIN04     PB6/*}}}*/
+//encounter comands{{{
 #define STARTECOUNTER    0x41
 #define STOPECOUNTER     0x42
+#define ENCPIN1				PB10
+#define ENCPIN2				PB11
+#define ENCPIN3				PB1
+#define SENSOR_DELAY			100
+/*}}}*/
 /*}}}*/
 
 /*Varibls Block{{{*/
@@ -64,7 +71,8 @@ ShiftIn sinput;
 ShiftOut shiftout;
 unsigned long stepDrivetime = 0;
 bool stepDriveMode = false;
-
+bool encodermode = false;
+SimplEncoder sencoder(ENCPIN1, ENCPIN2, ENCPIN3, SENSOR_DELAY);
 /*}}}*/
 
 /*   setupLEDLine   * {{{ */
@@ -131,8 +139,10 @@ void execute_command(void){
 			sspi.setmsg( 0 );
 			break;/*}}}*/
 		case SETSHIFTOUT:/*{{{*/
+#ifdef  DEBUGMSG_SHIFTINFO/*{{{*/
 			Serial.print("Set LEDs pins to:");
 			Serial.println(sspi.peek(), BIN);
+#endif/*DEBUGMSG_SHIFTINFO}}}*/
 			shiftout.send16(sspi.pull());
 			test.trige();
 			sspi.setmsg( 0 );
@@ -163,12 +173,12 @@ void execute_command(void){
 			break;/*}}}*/
 		case STARTECOUNTER:/*{{{*/
 			Serial.print("STARTE COUNTER ");
-			stepDriveMode = true;
+			encodermode = true;
 			test.trige();
 			break;/*}}}*/
 		case STOPECOUNTER:/*{{{*/
 			Serial.print("STOPE COUNTER");
-			stepDriveMode = false;
+			encodermode = false;
 			test.trige();
 			break;/*}}}*/
 		default:/*{{{*/
@@ -250,6 +260,12 @@ void setup() {/*{{{*/
    pinMode(STEPDRIVERPIN02, OUTPUT);
    pinMode(STEPDRIVERPIN03, OUTPUT);
    pinMode(STEPDRIVERPIN04, OUTPUT);
+	pinMode(ENCPIN1, INPUT);
+	pinMode(ENCPIN2, INPUT);
+   attachInterrupt(digitalPinToInterrupt(ENCPIN1), encoder1, CHANGE );
+   attachInterrupt(digitalPinToInterrupt(ENCPIN2), encoder2, CHANGE );
+   digitalWrite(ENCPIN1,HIGH); //these pins do not have pull up resistors on an attiny...
+   digitalWrite(ENCPIN2,HIGH); //you must pull them up on the board.
 	Serial.println("End Setup");
 	}/*}}}*/
 
@@ -284,5 +300,18 @@ void loop() {/*{{{*/
 		digitalWrite(STEPDRIVERPIN02, LOW);
 		digitalWrite(STEPDRIVERPIN03, LOW);
 		}/*}}}*/
+	if (encodermode && sencoder.have_data())/*{{{*/
+			shiftout.send16(sencoder.reset_uint());
+		/*}}}*/
 	}/*}}}*/
+
+void encoder1() {/*{{{*/
+	sencoder.encoder1();	
+	}
+/*}}}*/
+void encoder2() {/*{{{*/
+	sencoder.encoder2();	
+	}
+/*}}}*/
+
 
