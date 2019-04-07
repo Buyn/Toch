@@ -2,6 +2,7 @@ from enum import Enum, unique
 from model.globalsvar import *
 import pygame
 from presenter.leds import LEDs
+import time
 
 @unique
 class State(Enum):# {{{
@@ -84,26 +85,48 @@ class LEDsMenu(object):
         if self.state == State.SHARPENNING.value:
 #         set blue
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED01SET])
+            print("c1")
+            time.sleep(0.2)
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED02SET])
+            print("c2")
+            time.sleep(0.2)
             self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED03SET])
+            print("c3")
+            time.sleep(0.2)
             pygame.mixer.music.load("toch.wav")
             pygame.mixer.music.play()
             self.spi.execute([STARTDRIVER])
+            print("e")
+            time.sleep(0.2)
         if self.state == State.POLISHING_DISK_CLEANING.value:
 #         set orange
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED01SET])
+            print("c1")
+            time.sleep(0.2)
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED02SET])
+            print("c2")
+            time.sleep(0.2)
             self.spi.execute([0x0A, 0x00, 0xff, 0xff, SC_LED03SET])
+            print("c3")
+            time.sleep(0.2)
             pygame.mixer.music.load("file.wav")
             pygame.mixer.music.play()
         if self.state == State.POLISHING.value or self.state == State.CERAMIC_KNIFE.value:
 #         set Ylow
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED01SET])
+            print("c1")
+            time.sleep(0.2)
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED02SET])
+            print("c2")
+            time.sleep(0.2)
             self.spi.execute([0x0A, 0xff, 0x00, 0xff, SC_LED03SET])
+            print("c3")
+            time.sleep(0.2)
             pygame.mixer.music.load("poll.wav")
             pygame.mixer.music.play()
             self.spi.execute([STARTECOUNTER])
+            print("e")
+            time.sleep(0.2)
 
     
     
@@ -119,17 +142,25 @@ class LEDsMenu(object):
         self.spi.execute([SC_LEDSTART])
 #         set green
         self.spi.execute([0x0A, 0x00, 0x00, 0xff, SC_LED01SET])
+        self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED01SET])
+        print("c1")
+        time.sleep(0.2)
         self.spi.execute([0x0A, 0x00, 0x00, 0x00, SC_LED02SET])
+        self.spi.execute([0x0A, 0xff, 0x00, 0x00, SC_LED02SET])
+        print("c2")
+        time.sleep(0.2)
 #         set green
         self.spi.execute([0x0A, 0x00, 0x00, 0xff, SC_LED03SET])
+        print("c3")
+        time.sleep(0.2)
         self.buttons.setComandOnPress(B_CHOICE, 
             lambda: print("B_CHOICE", self.nextStatus()))
         self.buttons.setComandOnPress(B_OK, 
             lambda: print("B_OK", self.executeStatus()))
         self.buttons.setComandOnPress(B_RESET, 
             lambda: print("B_RESET", self.setReadyState()))
-        self.spi.execute([STOPDRIVER])
-        self.spi.execute([STOPECOUNTER])
+        #self.spi.execute([STOPDRIVER])
+        #self.spi.execute([STOPECOUNTER])
 
     
     def nextStatus(self):
