@@ -54,11 +54,18 @@ ledsMenu     = LEDsMenu(
 # }}}
 
 def mainloope():# {{{
-    while True:
-        terMenu.pruntMenu()
-        msg.runtime()
-        leds.send()
-        ledsMenu.runtime()
+    try:
+        while True:
+            terMenu.pruntMenu()
+            msg.runtime()
+            leds.send()
+            ledsMenu.runtime()
+    except KeyboardInterrupt:
+        print("interrupt")
+        if terMenu.inputOff:
+            terMenu.inputOff = False
+            return
+        else: sys.exit(0)
     # }}}
 
 def parsArgList():# {{{
@@ -85,30 +92,22 @@ def parsArgList():# {{{
 
 def initButtons():# {{{
     buttons.setComandOnPress(B_CHOICE, 
-#                              lambda: print("B_CHOICE"))
             lambda: print("B_CHOICE", terMenu.setReadyStatus()))
-            #terMenu.setReadyStatus)
+                            #terMenu.setReadyStatus)
     buttons.setComandOnPress(B_OK, 
             lambda: print("B_OK", spi.execute([SC_LEDSTOP])))
                             #lambda: spi.execute([SC_LEDSTOP]))
     buttons.setComandOnPress(B_RESET, 
             lambda: print("B_RESET", spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET])))
                             #lambda: spi.execute([0x0f, 0x00, 0xff, 0x00, SC_LEDSET]))
-# }}}
+    # }}}
 
 if __name__ == '__main__':# {{{
     parsArgList()
     initButtons()
-#     terMenu.setReadyStatus()
-    try:
+    while not terMenu.exit:
         mainloope()
-    except KeyboardInterrupt:
-        print("interrupt")
-        if terMenu.inputOff:
-            terMenu.inputOff = False
-            mainloope()
-        sys.exit(0)
-# }}}
+    # }}}
 
 
 

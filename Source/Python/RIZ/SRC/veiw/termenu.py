@@ -25,13 +25,13 @@ class TerMenu(object):# {{{
         self.inputOn = True
         self.pauseEnd = 0
         self.inputOff = False 
+        self.exit = False
         # }}}
 
     def writeNumber(self, number):# {{{
         print ("RPI: Hi Arduino, I sent you ", number)
         number =self.spi.send(number)
         print ("Arduino: Hey RPI, I received a digit ", number)
-        print
         return number
         # }}}
 
@@ -177,6 +177,10 @@ class TerMenu(object):# {{{
         if  var == "encoff":
             print("Encoder OFF")
             self.spi.execute([STOPECOUNTER])
+            return True
+        if  var == "exit":
+            print("Exit")
+            sys.exit(0)
             return True
         if  var == "stepooff":
             print("Step driver OFF")
