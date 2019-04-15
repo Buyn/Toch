@@ -149,8 +149,13 @@ class TerMenu(object):# {{{
             self.spi.execute([0x0f, 0x00, 0x00, 0x00, SC_LEDSET])
             return True
         if  var == "i":
-            print ("Input loop Start")
-            self.setInputPause(sec = 35)
+            sec = 60
+            print ("Input loop Start on ", sec, " sec.")
+            self.setInputPause(sec = sec)
+            return True
+        if  var == "io":
+            print ("Menu is OFF")
+            self.inputOff = True 
             return True
         if  var == "h":
             self.printHelp()
