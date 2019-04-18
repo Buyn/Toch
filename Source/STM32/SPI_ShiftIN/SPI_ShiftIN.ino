@@ -42,7 +42,7 @@
 //Step Drivers{{{
 #define STARTDRIVER    0x31
 #define STOPDRIVER     0x32
-#define STEPDRIVERTIMEOUT     1000
+#define STEPDRIVERTIMEOUT     1112
 #define STEPDRIVERPIN01     PB9
 #define STEPDRIVERPIN02     PB8
 #define STEPDRIVERPIN03     PB7
@@ -70,7 +70,7 @@ SlaveSPI sspi(SPIADRRES);
 ShiftIn sinput;
 ShiftOut shiftout;
 unsigned long stepDrivetime = 0;
-bool stepDriveMode = false;
+bool stepDriveMode = true;
 bool encodermode = false;
 SimplEncoder sencoder(ENCPIN1, ENCPIN2, ENCPIN3, SENSOR_DELAY);
 /*}}}*/
@@ -296,6 +296,7 @@ void loop() {/*{{{*/
       //Serial.print("Step - ");
       //Serial.println(stepDrivetime);
 		//delayMicroseconds(100000);
+		delayMicroseconds(1);
 		digitalWrite(STEPDRIVERPIN01, LOW);
 		digitalWrite(STEPDRIVERPIN02, LOW);
 		digitalWrite(STEPDRIVERPIN03, LOW);

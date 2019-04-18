@@ -12,11 +12,14 @@ from presenter.leds import LEDs
 import time
 from presenter.buttons import Buttons
 from veiw.ledsMenu import *
+import os
 # }}}
 
 
 
 class Test(unittest.TestCase):
+
+    os.chdir('D:/tools.win/Fast/Evol_fast/vadim/tradomat/Toch/Source/Python/RIZ/SRC/')
 
     @classmethod# {{{
     def setUpClass(self):
@@ -53,7 +56,6 @@ class Test(unittest.TestCase):
         i = "tear Down"
         print("-++-"*10,i,"-++-"*33)
         # }}}
-
 
     def test_init(self):# {{{
         self.assertEqual(
@@ -95,7 +97,6 @@ class Test(unittest.TestCase):
         self.assertEqual(
             self.ledsMenu.state , State.READY.value +2)
         # }}}
-
 
     def test_nextStatus(self):# {{{
         self.assertEqual(
