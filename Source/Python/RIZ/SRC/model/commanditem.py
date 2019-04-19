@@ -15,12 +15,11 @@ class FuncList (Enum):# {{{
 
 class CommandItem(object):
     
-    
-    def passDef(self, value = None):
+    def passDef(self, value = None):# {{{
         pass
+    # }}}
     
-    
-    def __init__(self,
+    def __init__(self,# {{{
                   key, 
                   runtimeCommand = passDef, 
                   onStartCommand = passDef, 
@@ -30,42 +29,44 @@ class CommandItem(object):
         self.onStartCommand = onStartCommand
         self.onEndCommand = onEndCommand
         self.passDef(value = None)
+# }}}
 
-    
-    def get_runtime_command(self):
+    # seter geter bloc{{{
+    def get_runtime_command(self):# {{{
 #         print("get run")
         return self.__runtimeCommand
+# }}}
 
-
-    def get_on_start_command(self):
+    def get_on_start_command(self):# {{{
 #         print("get start")
         return self.__onStartCommand
+# }}}
 
-
-    def get_on_end_command(self):
+    def get_on_end_command(self):# {{{
 #         print("get end")
         return self.__onEndCommand
+# }}}
 
-
-    def set_runtime_command(self, value):
+    def set_runtime_command(self, value):# {{{
 #         print("set rutime")
         self.__runtimeCommand = value
+# }}}
 
-
-    def set_on_start_command(self, value):
+    def set_on_start_command(self, value):# {{{
 #         print("set start")
         self.__onStartCommand = value
+# }}}
 
-
-    def set_on_end_command(self, value):
+    def set_on_end_command(self, value):# {{{
 #         print("set end")
         self.__onEndCommand = value
+# }}}
 
-    runtimeCommand = property(get_runtime_command, set_runtime_command, None, None)
+    runtimeCommand = property(get_runtime_command, set_runtime_command, None, None)# {{{
     onStartCommand = property(get_on_start_command, set_on_start_command, None, None)
     onEndCommand = property(get_on_end_command, set_on_end_command, None, None)
-    
-    
+    # }}}
+    # }}}
 
 
 

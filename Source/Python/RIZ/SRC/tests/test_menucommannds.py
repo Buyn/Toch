@@ -39,6 +39,8 @@ class Test(unittest.TestCase):# {{{
                                   runtimeCommand = lambda : print("runtime"), 
                                   onStartCommand = None,
                                   onEndCommand   = None)
+        from model.commandmenu import CommandMenu
+        self.menu = CommandMenu(key = 0) 
         # }}}
 
     def tearDown(self):# {{{
@@ -74,8 +76,68 @@ class Test(unittest.TestCase):# {{{
         self.assertEqual(
             self.commad.onStartCommand(20) , 21)
         # }}}
+
+    def test_init_CommandMenu(self):# {{{
+#         print(var.split(" "))
+        self.assertEqual(
+            len(self.menu.itemslist)
+            , 1)
+#         self.assertEqual(
+#             self.commad.runtimeCommand() , None)
+#         self.assertEqual(
+#             self.commad.onEndCommand , None)
+#         self.assertEqual(
+#             self.commad.onStartCommand , None)
+        # }}}
+
+    def test_addItems(self):# {{{
+        self.assertEqual(
+            len(self.menu.itemslist)
+            , 1)
+        self.menu.addItems([10, 20])
+        self.assertEqual(
+            len(self.menu.itemslist)
+            , 3)
+        self.assertIsNotNone(self.menu.addItems((100, 200)))
+        self.assertEqual(
+            len(self.menu.itemslist)
+            , 5)
+        self.assertIsNotNone(self.menu.getItem(10))
+        self.assertIsNotNone(self.menu.getItem(0))
+        self.assertIsNotNone(self.menu.getItem(200))
+        self.assertIsNone(self.menu.getItem(300))
+        # }}}
+
+    def test_addOneItem(self):# {{{
+        self.assertEqual(
+            len(self.menu.itemslist)
+            , 1)
+        self.menu.addOneItem(1)
+        self.assertEqual(
+            len(self.menu.itemslist)
+            , 2)
+        print(self.menu.itemslist)
+        self.assertIsNotNone(self.menu.getItem(0))
+        self.assertIsNotNone(self.menu.getItem(1))
+        self.assertIsNone(self.menu.getItem(9))
+        # }}}
+
+    def test_runtime(self):# {{{
+        self.assertNotEqual(self.menu.updatetime, 0)
+        self.assertTrue(
+            self.menu.runtime())
+        self.assertFalse(
+            self.menu.runtime())
+        # }}}
+
+    def test_reseTimer(self):# {{{
+        self.assertNotEqual(self.menu.delayRunTime, 0)
+        self.assertEqual(self.menu.updatetime, self.menu.reseTimer(0.3))
+        # }}}
+
+# }}}
+
 if __name__ == "__main__":# {{{
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
-# }}}
 # }}}
