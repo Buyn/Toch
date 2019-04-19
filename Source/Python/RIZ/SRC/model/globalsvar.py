@@ -1,3 +1,6 @@
+from enum import Enum, unique
+
+
 DEBUGMODE = False
 
 # SPI Devise
@@ -67,5 +70,22 @@ STOPDRIVER     =0x32
 STARTECOUNTER    =0x41
 STOPECOUNTER     =0x42
 
+@unique
+class State(Enum):# {{{
+    SHARPENNING           	= 15
+    POLISHING             	= 14
+    MIDDLE_CYCLE           	= 13
+    RIGHT_SIDE             	= 12
+    LEFT_SIDE              	= 11
+    CERAMIC_KNIFE          	= 10
+    POLISHING_DISK_CLEANING	= 9 
+    FULL_CYCLE             	= 8 
+    READY                 	= 7
+    NOTREADY                    = 0
+    
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, State))
+    # }}}
 
 

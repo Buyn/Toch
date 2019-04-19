@@ -5,24 +5,6 @@ from presenter.leds import LEDs
 import time
 
 @unique
-class State(Enum):# {{{
-    SHARPENNING           	= 15
-    POLISHING             	= 14
-    MIDDLE_CYCLE           	= 13
-    RIGHT_SIDE             	= 12
-    LEFT_SIDE              	= 11
-    CERAMIC_KNIFE          	= 10
-    POLISHING_DISK_CLEANING	= 9 
-    FULL_CYCLE             	= 8 
-    READY                 	= 7
-    NOTREADY                = 0
-    
-    @staticmethod
-    def list():
-        return list(map(lambda c: c.value, State))
-    # }}}
-
-@unique
 class FuncList (Enum):# {{{
     RUNTIME           	= 0
     ONSTART            	= 1
@@ -51,16 +33,16 @@ class LEDsMenu(object):
         self.oldState = 0
         self.state = 0
         self.runtimeCommand = self.setReadyState
-        self.cheget = False
+        self.changed = False
         pygame.mixer.init()
         pygame.mixer.music.set_volume(1.0)
 
     
     def runtime(self):
-        if self.cheget:
+        if self.changed:
             self.oldState = self.newState
             self.newState()
-            self.cheget =False
+            self.changed =False
         return self.runtimeCommand()
 
     
@@ -77,7 +59,7 @@ class LEDsMenu(object):
     
     def setNewState(self, onChegeCommand):
         self.newState = onChegeCommand
-        self.cheget = True
+        self.changed = True
 
     
     def executeStatus(self):
@@ -132,7 +114,7 @@ class LEDsMenu(object):
     
     def setReadyState(self):
         print("ready to work")
-        self.cheget = False
+        self.changed = False
         self.leds.bitWordLast = 0
         self.leds.ledOn(State.READY.value)
         self.runtimeCommand = self.readyState
@@ -176,8 +158,6 @@ class LEDsMenu(object):
         self.state += 1
         self.leds.ledOn(self.state)
         return self.state 
-    
-    
     
     # }}}
     

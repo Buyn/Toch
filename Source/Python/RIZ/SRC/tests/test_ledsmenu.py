@@ -73,10 +73,10 @@ class Test(unittest.TestCase):
         self.assertEqual(
             self.ledsMenu.runtime() , True)
         self.assertEqual(
-            self.ledsMenu.cheget , False)
+            self.ledsMenu.changed , False)
         self.ledsMenu.setNewState(self.ledsMenu.setReadyState)
         self.assertEqual(
-            self.ledsMenu.cheget , True)
+            self.ledsMenu.changed , True)
         print(State.list())
         # }}}
 
@@ -87,7 +87,7 @@ class Test(unittest.TestCase):
         self.assertEqual(
             self.ledsMenu.runtime() , True)
         self.assertEqual(
-            self.ledsMenu.cheget , False)
+            self.ledsMenu.changed , False)
         self.assertEqual(
             self.ledsMenu.state , State.READY.value+1)
         self.buttons.set(1<<B_CHOICE)
