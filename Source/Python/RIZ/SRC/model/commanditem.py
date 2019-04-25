@@ -1,5 +1,6 @@
 # from enum import Enum, unique
 from model.globalsvar import *
+import time
 
 @unique
 class FuncList (Enum):# {{{
@@ -25,11 +26,16 @@ class CommandItem(object):
                   onStartCommand = passDef, 
                   onEndCommand = passDef):
         self.key = key
-        self.runtimeCommand = runtimeCommand
+        self.set_runtime_command( runtimeCommand , 1000)  
         self.onStartCommand = onStartCommand
         self.onEndCommand = onEndCommand
-        self.passDef(value = None)
-# }}}
+        self.delayRunTime = 0
+        self.updatetime = 0
+        # }}}
+        
+    def reseTimer(self):
+        self.updatetime = time.time() + self.delayRunTime
+    
 
     # seter geter bloc{{{
     def get_runtime_command(self):# {{{
@@ -47,8 +53,9 @@ class CommandItem(object):
         return self.__onEndCommand
 # }}}
 
-    def set_runtime_command(self, value):# {{{
+    def set_runtime_command(self, value, timeout):# {{{
 #         print("set rutime")
+        self.delayRunTime = timeout
         self.__runtimeCommand = value
 # }}}
 
@@ -65,6 +72,15 @@ class CommandItem(object):
     runtimeCommand = property(get_runtime_command, set_runtime_command, None, None)# {{{
     onStartCommand = property(get_on_start_command, set_on_start_command, None, None)
     onEndCommand = property(get_on_end_command, set_on_end_command, None, None)
+
+    
+    def runtime(self, value = None):
+        if self.updatetime > time.time(): return None
+        self.updatetime = time.time() + self.delayRunTime
+        self.lastreturn = self.runtimeCommand(value)
+        return self.lastreturn 
+    
+    
     # }}}
     # }}}
 
