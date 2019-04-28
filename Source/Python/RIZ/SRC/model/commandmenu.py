@@ -6,15 +6,25 @@ class CommandMenu(object):
     
     def __init__(self, key=0):
         self.itemslist = {}
-        self.addItems(key)
+        self.activeItem = CommandItem(key)
+        self.itemslist.update({key : self.activeItem})
         self.runtimeList = []
-        self.activeItem = key
+        self.lastItem = None
+        self.lessKey = None
+        self.mostKey = None
         
 
     def addOneItem(self, key):
         if isinstance(key, int):
             result = CommandItem(key)
             self.itemslist.update({key : result})
+            if self.lessKey == None or self.mostKey == None:
+                self.lessKey = key
+                self.mostKey = key
+            if self.lessKey > key:
+                self.lessKey = key
+            if self.mostKey < key:
+                self.mostKey = key
             return result
         else : return None
 
@@ -54,13 +64,38 @@ class CommandMenu(object):
             return item
 
     
-    def switchActiv(self, key):
+    def switchActiv(self, key, last = None, new = None):
         item = self.getItem(key)
         if item == None:# {{{
             return None
         else:
-            self.activeItem = key
+            self.lastItem = self.activeItem
+            self.activeItem = item
+            self.lastItem.lastreturn = self.lastItem.onEndCommand(last)
+            self.activeItem.lastreturn = self.activeItem.onStartCommand(new)
             return item
+
+    
+    def getKeyList(self):
+        return list(map(lambda c: c.value, self.itemslist))
+  
+    
+    def setNextActiv(self,last = None,new = None):
+        next = 0
+        if self.mostKey == self.activeItem.key:
+            next = self.lessKey  
+        else : 
+            next = self.activeItem.key + 1
+        return self.switchActiv(next , last, new)
+    
+    
+    def setPreviusActiv(self,last = None,new = None):
+        next = 0
+        if self.lessKey == self.activeItem.key:
+            next = self.mostKey  
+        else : 
+            next = self.activeItem.key - 1
+        return self.switchActiv(next , last, new)
             # }}}
     
     

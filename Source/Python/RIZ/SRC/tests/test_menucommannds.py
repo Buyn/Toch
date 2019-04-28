@@ -165,18 +165,28 @@ class Test(unittest.TestCase):# {{{
 
 
     def runtimeTest(self,value):
+        if not value:
+            return value
         return value + 10
     
     
     def runtimeTest02(self,value):
+        print( "test 02= ", value)
+        if not value:
+            return value
         return value + 100
     
     
-    def setTest01(self,value):
+    def setTest01(self,value = 3):
+        print( "test 01= ", value)
+        if not value:
+            return value
         return value + 10
     
     
-    def setTest02(self,value):
+    def setTest02(self,value = 3):
+        if not value:
+            return value
         return value + 100
     
     
@@ -196,14 +206,73 @@ class Test(unittest.TestCase):# {{{
 # }}}
 
     def test_switchActive(self):# {{{
-        self.assertEqual(self.menu.activeItem, 0)
-        self.menu.addItems(1)
-        self.menu.addItems(3)
+        self.assertEqual(self.menu.activeItem.key, 0)
+        item1 = self.menu.addItems(1)
+        item1.set_on_end_command(self.setTest01)
+        item1.set_on_start_command(self.setTest02)
+        item2 = self.menu.addItems(2)
+        item2.set_on_end_command(self.setTest01)
+        item2.set_on_start_command(self.setTest02)
+        self.assertIsNone(item1.lastreturn)
+        self.assertIsNone(item2.lastreturn)
         self.assertIsNotNone(
-            self.menu.switchActiv(1))
+            self.menu.switchActiv(1, last = 3, new = 3))
+        self.assertIsNotNone(item1.lastreturn)
+        self.assertEqual(item1.lastreturn, 103)
+        self.assertIsNone(item2.lastreturn)
         self.assertIsNone(
             self.menu.switchActiv(10))
-        self.assertEqual(self.menu.activeItem, 1)
+        self.assertEqual(self.menu.activeItem.key, 1)
+        self.assertIsNotNone(item1.lastreturn)
+        self.assertEqual(item1.lastreturn, 103)
+        self.assertIsNone(item2.lastreturn)
+        self.assertIsNotNone(
+            self.menu.switchActiv(2, last = 5, new = 6))
+        self.assertEqual(self.menu.activeItem.key, 2)
+        self.assertEqual(item1.lastreturn, 15)
+        self.assertEqual(item2.lastreturn, 106)
+        # }}}
+
+# }}}
+
+    def test_nextPrevActiv(self):# {{{
+        self.assertEqual(self.menu.activeItem.key, 0)
+        item1 = self.menu.addItems(1)
+        item1.set_on_end_command(self.setTest01)
+        item1.set_on_start_command(self.setTest02)
+        item2 = self.menu.addItems(2)
+        item2.set_on_end_command(self.setTest01)
+        item2.set_on_start_command(self.setTest02)
+        self.assertIsNone(item1.lastreturn)
+        self.assertIsNone(item2.lastreturn)
+        self.assertEqual(
+            self.menu.setNextActiv(last = 3, new = 3).key
+            , 1)
+        self.assertIsNotNone(item1.lastreturn)
+        self.assertEqual(item1.lastreturn, 103)
+        self.assertIsNone(item2.lastreturn)
+        self.assertEqual(
+            self.menu.setPreviusActiv().key
+            , 2)
+        self.assertEqual(self.menu.activeItem.key, 2)
+        self.assertIsNone(item1.lastreturn)
+        self.menu.addItems(3)
+        print( "item 02 =" , item2.lastreturn)
+        self.assertEqual(
+            self.menu.setNextActiv( last = 5, new = 6).key
+            , 3)
+        self.assertEqual(self.menu.activeItem.key, 3)
+        self.assertEqual(item1.lastreturn, None)
+        self.assertEqual(item2.lastreturn, 15)
+        self.assertEqual(self.menu.activeItem.lastreturn, None)
+        self.assertEqual( self.menu.setNextActiv( last = 5, new = 6).key , 1)
+        self.assertEqual( self.menu.setNextActiv( last = 5, new = 6).key , 2)
+        self.assertEqual( self.menu.setNextActiv( last = 5, new = 6).key , 3)
+        self.assertEqual( self.menu.setNextActiv( last = 5, new = 6).key , 1)
+        self.assertEqual( self.menu.setNextActiv( last = 5, new = 6).key , 2)
+        self.assertEqual( self.menu.setPreviusActiv( last = 5, new = 6).key , 1)
+        self.assertEqual( self.menu.setPreviusActiv( last = 5, new = 6).key , 3)
+        self.assertEqual( self.menu.setPreviusActiv( last = 5, new = 6).key , 2)
         # }}}
 
 # }}}

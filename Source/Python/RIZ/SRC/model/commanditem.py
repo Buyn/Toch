@@ -31,11 +31,12 @@ class CommandItem(object):
         self.onEndCommand = onEndCommand
         self.delayRunTime = 0
         self.updatetime = 0
+        self.lastreturn = None
         # }}}
         
-    def reseTimer(self):
+    def reseTimer(self):# {{{
         self.updatetime = time.time() + self.delayRunTime
-    
+    # }}}
 
     # seter geter bloc{{{
     def get_runtime_command(self):# {{{
@@ -72,7 +73,7 @@ class CommandItem(object):
     runtimeCommand = property(get_runtime_command, set_runtime_command, None, None)# {{{
     onStartCommand = property(get_on_start_command, set_on_start_command, None, None)
     onEndCommand = property(get_on_end_command, set_on_end_command, None, None)
-
+    # }}}
     
     def runtime(self, value = None):
         if self.updatetime > time.time(): return None
@@ -81,7 +82,6 @@ class CommandItem(object):
         return self.lastreturn 
     
     
-    # }}}
     # }}}
 
 
