@@ -7,12 +7,13 @@ Created on 10 февр. 2019 г.
 '''
 # }}}
 # get Library {{{
-from array import array
+# from array import array
 import pygame
 import time
 import sys
 from model.globalsvar import * 
 from veiw.debugprint import DebugPrint
+from presenter.stepmotor import StepMotor
 # }}}
 
 class TerMenu(object):# {{{
@@ -26,6 +27,7 @@ class TerMenu(object):# {{{
         self.pauseEnd = 0
         self.inputOff = False 
         self.exit = False
+        self.smotors = StepMotor(spi)
         # }}}
 
     def writeNumber(self, number):# {{{
@@ -204,12 +206,38 @@ class TerMenu(object):# {{{
         self.leds.ledTrig(ledpin)
     
     
+    def stepCommand(self, elm_var):
+        self.dp(1, elm_var)
+        try:
+            self.smotors.getTag(elm_var[1])
+        except:
+            print("no such motor Name")
+            return False
+        if (elm_var[0] == 'go'):
+            print("Move step motor [", elm_var[1], "] on number of step =", elm_var[2])
+            return self.smotors.move(elm_var[1],elm_var[2])
+        if (elm_var[0] == 'dir'):
+            print("Step motor [", elm_var[1], "] dir is set to =", elm_var[2])
+            return self.smotors.setDir(elm_var[1],elm_var[2])
+        if (elm_var[0] == 'enb'):
+            print("Step motor [", elm_var[1], "] enable state is set to =", elm_var[2])
+            return self.smotors.setEnable(elm_var[1],elm_var[2])
+        if (elm_var[0] == 'spd'):
+            print("Move step motor [", elm_var[1], "] speed is set =", elm_var[2])
+            return self.smotors.setSpeed(elm_var[1],elm_var[2])
+        print("No such Step motor Command")
+        return False
+    
+    
     def isCommandList(self, elm_var):# {{{
         if (not isinstance(elm_var, str) and len(elm_var) > 1):
             if (elm_var[0] == 'led'):
                 self.ledcommand(elm_var)
             if (elm_var[0] == 'debug'):
                 self.debugcommand(elm_var)
+            if (elm_var[0] == 'step'):
+                elm_var.pop(0)
+                return self.stepCommand(elm_var)
             if (elm_var[0] == 'leds'):
                 self.setLED(self.isInt(elm_var[1]))
             return True

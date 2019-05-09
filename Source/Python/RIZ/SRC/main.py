@@ -59,7 +59,7 @@ def mainloope():# {{{
             terMenu.pruntMenu()
             msg.runtime()
             leds.send()
-            ledsMenu.runtime()
+#             ledsMenu.runtime()
     except KeyboardInterrupt:
         print("interrupt")
         if terMenu.inputOff:

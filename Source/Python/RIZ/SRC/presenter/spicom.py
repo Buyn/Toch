@@ -92,6 +92,7 @@ class SPICom(object):
         self.dp(2, "commandStak resiv = ", resivlist) 
         self.dp(2, "Last command result = ",
                       self.decodeError(self.sendEndSession()))
+        return resivlist
             
             
     def getVar(self, varName):

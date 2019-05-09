@@ -7,6 +7,9 @@ DEBUGMODE = False
 BUS     = 0 
 DEVICE  = 0
 
+#Setings
+ST_VOLUME   = 0.5
+
 # buttons pins
 B_RESET     = 13
 B_OK        = 14
@@ -63,9 +66,13 @@ SC_LED02SET        = 0x1B
 SC_LED03SET        = 0x1C
 #ShiftOut comands
 SC_SETSHIFTOUT     = 0x21
-#Step comands
+#Step Motor comands
 STARTDRIVER    =0x31
 STOPDRIVER     =0x32
+SM_STEP             = 0x33
+SM_SPEED            = 0x34
+SM_ENABLE           = 0x35
+SM_DIR              = 0x36
 #encounter comands
 STARTECOUNTER    =0x41
 STOPECOUNTER     =0x42
@@ -88,4 +95,12 @@ class State(Enum):# {{{
         return list(map(lambda c: c.value, State))
     # }}}
 
+class StepMotorsList(Enum):# {{{
+    X       = 0
+    Y       = 1
+    Z       = 2
+    ANGL    = 3
+    IN      = 4
+    
+    # }}}
 

@@ -94,7 +94,36 @@ class Test(unittest.TestCase):# {{{
             self.leds.chenged , True)
         self.assertEqual(
             self.leds.bitWordLast , 256)
-
+        # }}}
+        
+    def test_stepmotor(self):# {{{
+        self.spi.dp(5)
+        var = "step go x 100"
+        print(var.split(" "))
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , [100, StepMotorsList.X.value, SM_STEP, 170])
+        var = "step go r 100"
+        print(var.split(" "))
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , False)
+        var = "step go1 x 100"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , False)
+        var = "step dir x 100"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , [100, StepMotorsList.X.value, SM_DIR, 170])
+        var = "step enb y 0"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , [0, StepMotorsList.Y.value, SM_ENABLE, 170])
+        var = "step spd Z 1000"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , [1000, StepMotorsList.Z.value, SM_SPEED, 170])
         # }}}
         
     def test_inputOn(self):# {{{
