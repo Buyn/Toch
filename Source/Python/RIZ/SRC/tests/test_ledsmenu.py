@@ -60,12 +60,19 @@ class Test(unittest.TestCase):
     def test_init(self):# {{{
         self.assertEqual(
             State.NOTREADY.value , 0)
+        self.assertIsNotNone(
+                    self.ledsMenu.menu )
         self.assertEqual(
-            self.ledsMenu.newState , 0)
+            len(self.ledsMenu.menu.itemslist)
+            , len(State.list()))
         self.assertEqual(
-            self.ledsMenu.oldState , 0)
+            self.ledsMenu.menu.lessKey
+            , State.FULL_CYCLE.value)
+        self.assertEqual(
+            self.ledsMenu.menu.mostKey
+            , State.SHARPENNING.value)
 #         self.assertEqual(
-#             self.ledsMenu.state.getkey("") , 0)
+#             self.ledsMenu.oldState , 0)
         # }}}
         
     def test_runtime(self):# {{{

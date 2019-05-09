@@ -3,6 +3,7 @@ from model.globalsvar import *
 import pygame
 from presenter.leds import LEDs
 import time
+from model.commandmenu import *
 
 @unique
 class FuncList (Enum):# {{{
@@ -15,27 +16,26 @@ class FuncList (Enum):# {{{
         return list(map(lambda c: c.value, FuncList))
     # }}}
 
-class CommandsMenu (Enum):# {{{
-    def __init__(self, spi, buttons, leds):# {{{
-        pass
-#         for oneLine in State.
-        # }}}
-    # }}}
 
 class LEDsMenu(object):
     
+
+    def initCommandsItems(self):
+        list = State.list()
+        list.remove(State.NOTREADY.value)
+        self.menu.addItems(list)
+            
+    
     def __init__(self, spi, buttons, leds):# {{{
-#         self.leds = LEDs(self.spi)
         self.spi = spi
         self.buttons = buttons
         self.leds = leds
-        self.newState = 0
-        self.oldState = 0
-        self.state = 0
-        self.runtimeCommand = self.setReadyState
-        self.changed = False
+#         self.changed = False
+        self.menu = CommandMenu(key = State.NOTREADY.value)
+        self.initCommandsItems()
+        self.menu.lessKey = State.FULL_CYCLE.value
         pygame.mixer.init()
-        pygame.mixer.music.set_volume(1.0)
+        pygame.mixer.music.set_volume(ST_VOLUME)
 
     
     def runtime(self):
@@ -110,7 +110,6 @@ class LEDsMenu(object):
             print("e")
             time.sleep(0.2)
 
-    
     
     def setReadyState(self):
         print("ready to work")

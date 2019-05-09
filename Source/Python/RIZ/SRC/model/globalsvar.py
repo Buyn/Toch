@@ -7,6 +7,9 @@ DEBUGMODE = False
 BUS     = 0 
 DEVICE  = 0
 
+#Setings
+ST_VOLUME   = 0.5
+
 # buttons pins
 B_RESET     = 13
 B_OK        = 14
