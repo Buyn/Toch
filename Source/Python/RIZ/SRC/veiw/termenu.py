@@ -107,6 +107,14 @@ class TerMenu(object):# {{{
         print("Encoder OFF", "encoff")
         print("Step driver OFF", "stepooff")
         print("Step driver ON", "stepon")
+        print("step motor comands - Exempls:")
+        print("step dir x 1")
+        print("step go 1 100")
+        print("step go Z 1000")
+        print("go - Move step motor  on number of step ")
+        print('dir - ',"Step motor dir is set to ")
+        print("enb - Step motor  enable state is set to ")
+        print("spd - Move step motor speed is set ")
         # }}}
 
     def setReadyStatus(self):# {{{
