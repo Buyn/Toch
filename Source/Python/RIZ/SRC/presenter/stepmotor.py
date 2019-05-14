@@ -1,16 +1,21 @@
 from model.globalsvar import *
 # from presenter.spicom import SPICom
 from model.typsconvert import *
+
+TAG     = 0    
+DIR     = 1    
+ENB     = 2    
+
 class StepMotor(object):
     
-    
-    def __init__(self, spi):
+    def __init__(self, spi, leds):
 #         self.spi = SPICom(LEDSTM_ADRRESS, debugmode=2)
+        self.leds = leds
         self.spi = spi
 
     
     def move(self, tag, steps):
-        return self.spi.execute([isInt(steps), self.getTag(tag), SM_STEP])
+        return self.spi.execute([isInt(steps), self.getTag(tag)[TAG], SM_STEP])
 
     
     def getTag(self, tag):
@@ -23,14 +28,23 @@ class StepMotor(object):
 
     
     def setSpeed(self, tag, steps):
-        return self.spi.execute([isInt(steps), self.getTag(tag), SM_SPEED])
+        return self.spi.execute([isInt(steps), self.getTag(tag)[TAG], SM_SPEED])
     
     def setEnable(self, tag, steps):
-        return self.spi.execute([isInt(steps), self.getTag(tag), SM_ENABLE])
+        if steps == 0:# {{{
+            return self.leds.ledOff(self.getTag(tag)[ENB]) 
+        else:
+            return self.leds.ledOn(self.getTag(tag)[ENB]) 
+#         return self.spi.execute([isInt(steps), self.getTag(tag), SM_ENABLE])
+            # }}}
     
     
     def setDir(self, tag, steps):
-        return self.spi.execute([isInt(steps), self.getTag(tag), SM_DIR])
+        if steps == 0:# {{{
+            return self.leds.ledOff(self.getTag(tag)[DIR]) 
+        else:
+            return self.leds.ledOn(self.getTag(tag)[DIR]) 
+#         return self.spi.execute([isInt(steps), self.getTag(tag), SM_DIR])
     
     
     

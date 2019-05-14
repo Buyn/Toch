@@ -13,6 +13,7 @@ class LEDs(object):
     def ledOn(self, ledpin):
         self.bitWordLast |= 1<<ledpin 
         self.chenged = True
+        return self.bitWordLast
 
     
     def send(self):
@@ -25,11 +26,13 @@ class LEDs(object):
     def ledOff(self, ledpin):
         self.bitWordLast &= ~(1<<ledpin )
         self.chenged = True
+        return self.bitWordLast
     
 
     def ledTrig(self, ledpin):
         self.bitWordLast ^= 1<<ledpin 
         self.chenged = True
+        return self.bitWordLast
 
     
     def blink(self, ledpin):

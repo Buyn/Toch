@@ -96,11 +96,11 @@ class State(Enum):# {{{
     # }}}
 
 class StepMotorsList(Enum):# {{{
-    X       = 0
-    Y       = 1
-    Z       = 2
-    ANGL    = 3
-    IN      = 4
-    
+#   name    TAG, DIR, ENBL
+    X       = [0, 0, 1]
+    Y       = [1, 2, 3] 
+    Z       = [2, 4, 5]
+    ANGL    = [3, 6, 7]
+    IN      = [4, 8, 9]
     # }}}
 
