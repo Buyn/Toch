@@ -118,6 +118,7 @@ void setupLEDLine(void){
 void execute_command(void){
 	Serial.print("In execut Switch");
 	Serial.println(sspi.peek());
+	int tag1 ;
 	switch (sspi.pull()) {/*{{{*/
 		case LEDSTART:/*{{{*/
 			Serial.println("Start LED");
@@ -189,17 +190,21 @@ void execute_command(void){
 			test.trige();
 			break;/*}}}*/
 		case SM_STEP:/*{{{*/
-			Serial.print("Set move for motor = ", sspi.peek());
+			Serial.print("Set move for motor = ");
+			Serial.print(sspi.peek());
 			smotors[sspi.pull()].move(sspi.peek());
-			Serial.println(", on = ", sspi.pull());
+			Serial.print(", on = ");
+			Serial.println(sspi.pull());
 			test.trige();
 			break;/*}}}*/
 		case SM_SPEED:/*{{{*/
-			Serial.print("Set speed for motor = ", sspi.peek());
-			int tag =  sspi.pull();
-			smotors[tag].set_speed(sspi.peek());
-			Serial.println(", on = ", sspi.pull());
-			smotors[tag].resetimer();
+			Serial.print("Set speed for motor = ");
+			Serial.print(sspi.peek());
+			tag1 =  sspi.pull();
+			smotors[tag1].set_speed(sspi.peek());
+			Serial.print(", on = ");
+			Serial.println(sspi.pull());
+			smotors[tag1].resetimer();
 			test.trige();
 			break;/*}}}*/
 		case STARTECOUNTER:/*{{{*/
