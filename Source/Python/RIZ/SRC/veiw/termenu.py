@@ -27,7 +27,7 @@ class TerMenu(object):# {{{
         self.pauseEnd = 0
         self.inputOff = False 
         self.exit = False
-        self.smotors = StepMotor(spi)
+        self.smotors = StepMotor(spi, leds)
         # }}}
 
     def writeNumber(self, number):# {{{
