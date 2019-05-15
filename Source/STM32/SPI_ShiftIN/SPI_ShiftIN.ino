@@ -12,6 +12,7 @@
 #include "ShiftOut.h"
 #include <cstdint>
 #include "simplencoder.h"
+#include "stepmotor.h"
 /*}}}*/
 
 /*Define Block{{{*/
@@ -42,11 +43,17 @@
 //Step Drivers{{{
 #define STARTDRIVER    0x31
 #define STOPDRIVER     0x32
+#define SM_STEP              0x33
+#define SM_SPEED             0x34
+#define SM_ENABLE            0x35
+#define SM_DIR               0x36
 #define STEPDRIVERTIMEOUT     1112
 #define STEPDRIVERPIN01     PB9
 #define STEPDRIVERPIN02     PB8
 #define STEPDRIVERPIN03     PB7
-#define STEPDRIVERPIN04     PB6/*}}}*/
+#define STEPDRIVERPIN04     PB6
+#define STEPDRIVERPIN05     PB5
+/*}}}*/
 //encounter comands{{{
 #define STARTECOUNTER    0x41
 #define STOPECOUNTER     0x42
@@ -58,6 +65,7 @@
 /*}}}*/
 
 /*Varibls Block{{{*/
+//LEDs{{{
 RGB_LED led_Line(RBG_PIN_R, RBG_PIN_G, RBG_PIN_B);
 int state = 0;
 unsigned int ledstate01[] = {255	, 0	, 0	, 10};
@@ -66,11 +74,20 @@ unsigned int ledstate03[] = {0	, 0	, 255	, 10};
 bool led_activ  = true;
 int max_state = MAX_STATS;
 LED test(LED_BUILTIN);
+/*}}}*/
+StepMotor smotors[] = {/*{{{*/
+								StepMotor(STEPDRIVERPIN01),
+								StepMotor(STEPDRIVERPIN02),
+								StepMotor(STEPDRIVERPIN03),
+								StepMotor(STEPDRIVERPIN04),
+								StepMotor(STEPDRIVERPIN05),
+								};
+unsigned long stepDrivetime = 0;
+bool stepDriveMode = true;
+								/*}}}*/
 SlaveSPI sspi(SPIADRRES);
 ShiftIn sinput;
 ShiftOut shiftout;
-unsigned long stepDrivetime = 0;
-bool stepDriveMode = true;
 bool encodermode = false;
 SimplEncoder sencoder(ENCPIN1, ENCPIN2, ENCPIN3, SENSOR_DELAY);
 /*}}}*/
@@ -288,19 +305,11 @@ void loop() {/*{{{*/
        sinput.display_pin_values();
 		 sspi.addMSG(1, (unsigned int)sinput.oldPinValues); 
 		 }/*}}}*/
-   if(stepDriveMode && micros()> stepDrivetime) {/*and it do runtime(){{{*/
-		stepDrivetime = micros() + STEPDRIVERTIMEOUT;
-		digitalWrite(STEPDRIVERPIN01, HIGH);
-		digitalWrite(STEPDRIVERPIN02, HIGH);
-		digitalWrite(STEPDRIVERPIN03, HIGH);
-      //Serial.print("Step - ");
-      //Serial.println(stepDrivetime);
-		//delayMicroseconds(100000);
-		delayMicroseconds(1);
-		digitalWrite(STEPDRIVERPIN01, LOW);
-		digitalWrite(STEPDRIVERPIN02, LOW);
-		digitalWrite(STEPDRIVERPIN03, LOW);
-		}/*}}}*/
+   /*Step Motrs runtime(){{{*/
+		for (int i = 0; i < 5; i++) {
+			smotors[i].runtime();
+		}
+		/*}}}*/
 	if (encodermode && sencoder.have_data())/*{{{*/
 			shiftout.send16(sencoder.reset_uint());
 		/*}}}*/
