@@ -188,6 +188,20 @@ void execute_command(void){
 			stepDriveMode = false;
 			test.trige();
 			break;/*}}}*/
+		case SM_STEP:/*{{{*/
+			Serial.print("Set move for motor = ", sspi.peek());
+			smotors[sspi.pull()].move(sspi.peek());
+			Serial.println(", on = ", sspi.pull());
+			test.trige();
+			break;/*}}}*/
+		case SM_SPEED:/*{{{*/
+			Serial.print("Set speed for motor = ", sspi.peek());
+			int tag =  sspi.pull();
+			smotors[tag].set_speed(sspi.peek());
+			Serial.println(", on = ", sspi.pull());
+			smotors[tag].resetimer();
+			test.trige();
+			break;/*}}}*/
 		case STARTECOUNTER:/*{{{*/
 			Serial.print("STARTE COUNTER ");
 			encodermode = true;
