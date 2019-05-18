@@ -89,7 +89,7 @@ class Test(unittest.TestCase):
 
     def test_ready(self):# {{{
         self.assertEqual(
-            self.ledsMenu.state , State.NOTREADY.value)
+            self.ledsMenu.menu.activeItem , State.NOTREADY.value)
         self.ledsMenu.setReadyState()
         self.assertEqual(
             self.ledsMenu.runtime() , True)
@@ -107,7 +107,7 @@ class Test(unittest.TestCase):
 
     def test_nextStatus(self):# {{{
         self.assertEqual(
-            self.ledsMenu.state , State.NOTREADY.value)
+            self.ledsMenu.menu.activeItem.key  , State.NOTREADY.value)
         self.ledsMenu.nextStatus()
         self.assertEqual(
             self.ledsMenu.state , State.READY.value)

@@ -56,17 +56,17 @@ class Test(unittest.TestCase):# {{{
         self.assertEqual(self.smotor.setSpeed("X", 100)
                          , [100, StepMotorsList.X.value[TAG], SM_SPEED, 170])
         self.assertEqual(self.smotor.setEnable("x", 1)
-                         , [1, StepMotorsList.X.value, SM_ENABLE, 170])
+                         , 2)
         self.assertEqual(self.smotor.setDir("y", 0)
-                         , [0, StepMotorsList.Y.value, SM_DIR, 170])
+                         , 2)
         # }}}
 
     def test_getTag(self):# {{{
-        self.assertEqual(self.smotor.getTag("X"), 0)
+        self.assertEqual(self.smotor.getTag("X"), StepMotorsList.X.value)
         self.assertEqual(self.smotor.getTag(3), 3)
         with self.assertRaises(Exception) as context:
             self.smotor.getTag([])
-        self.assertEqual(self.smotor.getTag("x"), 0)
+        self.assertEqual(self.smotor.getTag("x"), StepMotorsList.X.value)
         # }}}
 
 if __name__ == "__main__":# {{{

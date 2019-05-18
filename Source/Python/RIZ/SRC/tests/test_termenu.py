@@ -102,7 +102,7 @@ class Test(unittest.TestCase):# {{{
         print(var.split(" "))
         self.assertEqual(
             self.terMenu.isCommandList( var.split(" "))
-            , [100, StepMotorsList.X.value, SM_STEP, 170])
+            , [100, StepMotorsList.X.value[0], SM_STEP, 170])
         var = "step go r 100"
         print(var.split(" "))
         self.assertEqual(
@@ -115,15 +115,15 @@ class Test(unittest.TestCase):# {{{
         var = "step dir x 100"
         self.assertEqual(
             self.terMenu.isCommandList( var.split(" "))
-            , [100, StepMotorsList.X.value, SM_DIR, 170])
+            , 257)
         var = "step enb y 0"
         self.assertEqual(
             self.terMenu.isCommandList( var.split(" "))
-            , [0, StepMotorsList.Y.value, SM_ENABLE, 170])
+            , 265)
         var = "step spd Z 1000"
         self.assertEqual(
             self.terMenu.isCommandList( var.split(" "))
-            , [1000, StepMotorsList.Z.value, SM_SPEED, 170])
+            , [1000, StepMotorsList.Z.value[0], SM_SPEED, 170])
         # }}}
         
     def test_inputOn(self):# {{{
