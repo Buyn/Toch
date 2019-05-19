@@ -33,7 +33,7 @@ class StepMotor(object):
     def setEnable(self, tag, steps):
         if isInt(steps)  == 0:# {{{
             return self.leds.ledOff(self.getTag(tag)[ENB]) 
-        else:
+        if isInt(steps)  == 1:# {{{
             return self.leds.ledOn(self.getTag(tag)[ENB]) 
 #         return self.spi.execute([isInt(steps), self.getTag(tag), SM_ENABLE])
             # }}}
@@ -42,7 +42,7 @@ class StepMotor(object):
     def setDir(self, tag, steps):
         if isInt(steps) == 0:# {{{
             return self.leds.ledOff(self.getTag(tag)[DIR]) 
-        else:
+        if isInt(steps) == 1:# {{{
             return self.leds.ledOn(self.getTag(tag)[DIR]) 
 #         return self.spi.execute([isInt(steps), self.getTag(tag), SM_DIR])
     
