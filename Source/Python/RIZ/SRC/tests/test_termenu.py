@@ -126,6 +126,36 @@ class Test(unittest.TestCase):# {{{
             , [1000, StepMotorsList.Z.value[0], SM_SPEED, 170])
         # }}}
         
+    def test_stepmotor_abs(self):# {{{
+        self.spi.dp(5)
+        var = "step go x 100"
+        print(var.split(" "))
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , [100, StepMotorsList.X.value[0], SM_STEP, 170])
+        var = "step go r 100"
+        print(var.split(" "))
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , False)
+        var = "step go1 x 100"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , False)
+        var = "step dir x 100"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , 257)
+        var = "step enb y 0"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , 265)
+        var = "step spd Z 1000"
+        self.assertEqual(
+            self.terMenu.isCommandList( var.split(" "))
+            , [1000, StepMotorsList.Z.value[0], SM_SPEED, 170])
+        # }}}
+        
     def test_inputOn(self):# {{{
         self.assertEqual(
             self.terMenu.inputOn , True)
