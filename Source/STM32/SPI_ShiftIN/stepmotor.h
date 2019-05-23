@@ -38,7 +38,7 @@ class StepMotor {
 #ifndef UNITTEST/*{{{*/
  private:
 #endif /* UNITTEST }}}*/
-	unsigned long update_time, value;
+	unsigned long update_time, value, step_from_last;
 	int pin;
 	bool enable;
 	unsigned long timeout;

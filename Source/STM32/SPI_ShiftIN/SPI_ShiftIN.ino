@@ -282,6 +282,7 @@ void setup() {/*{{{*/
 	shiftout.initpins();
    /* Read in and display the pin states at startup.  */
 	sinput.runtime();
+	shiftout.send16(0);
 //int perior =0;
 //for (int i = 0; i < 33000; i++) {
 //	if (perior == i) {

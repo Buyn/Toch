@@ -5,7 +5,8 @@ StepMotor::StepMotor(int _pin) {
 	pin 			= _pin;
 	value 		= 0;
 	timeout	 	= 10;
-	update_time = millis() + timeout;
+	steps_from_last = 0;
+	update_time = micros() + timeout;
 	pinMode(pin, OUTPUT);
 	} //}}}
 /*   StepMotor::StepMotor   * {{{ */
@@ -13,7 +14,7 @@ StepMotor::StepMotor() {
 	pin = 0;
 	value = 0;
 	timeout = 10;
-	update_time = millis() + timeout;
+	update_time = micros() + timeout;
 	} //}}}
 
 /*   StepMotor::set_speed   * {{{ */
@@ -50,14 +51,14 @@ void StepMotor::update(void){
 
 /*   StepMotor::resetimer   * {{{ */
 void StepMotor::resetimer(void){
-	update_time = millis() + timeout;
+	update_time = micros() + timeout;
 	} //}}}
 
 /*   StepMotor::runtime   * {{{ */
 void StepMotor::runtime(void){
-	if (millis() < update_time) return;
+	if (micros() < update_time) return;
 	step();
-	update_time = millis() + timeout;
+	update_time = micros() + timeout;
 	} //}}}
 /*   StepMotor::done   * {{{ */
 bool StepMotor::done(void){
@@ -70,6 +71,7 @@ void StepMotor::step(void){
 	if ( value == 0) return;
 	analogWrite(pin, HIGH);
 	value--;
+	steps_from_last++;
 	analogWrite(pin, LOW);
 	} //}}}
 
