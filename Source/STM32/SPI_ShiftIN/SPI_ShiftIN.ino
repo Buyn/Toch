@@ -22,6 +22,7 @@
 //debug msges 
 //#define	DEBUGMSG_LEDLINE
 //#define	DEBUGMSG_SHIFTINFO
+#define	DEBUGMSG_STEPMOTORDONE
 //#define SPI_CS_PIN PA4   // пин для канала B
 #define LED_MAX_VALUE 255    
 #define MAX_STATS 3    
@@ -328,6 +329,9 @@ void loop() {/*{{{*/
    /*Step Motrs runtime(){{{*/
 		for (int i = 0; i < 5; i++) {
 			smotors[i].runtime();
+			#ifdef DEBUGMSG_STEPMOTORDONE//{{{
+			print_on_done(i);
+			#endif /* DEBUGMSG_STEPMOTORDONE }}}*/			
 		}
 		/*}}}*/
 	if (encodermode && sencoder.have_data())/*{{{*/
@@ -335,6 +339,15 @@ void loop() {/*{{{*/
 		/*}}}*/
 	}/*}}}*/
 
+/*   print_on_done   *{{{ */
+#ifdef DEBUGMSG_STEPMOTORDONE
+void print_on_done(int index){
+	if (smotors[index].done()) {
+		Serial.print(index);
+		Serial.println("]-Stepmotor - done");
+		}
+	} 
+#endif /* DEBUGMSG_STEPMOTORDONE *}}}*/			
 void encoder1() {/*{{{*/
 	sencoder.encoder1();	
 	}

@@ -4,7 +4,7 @@
 StepMotor::StepMotor(int _pin) {
 	pin 			= _pin;
 	value 		= 0;
-	timeout	 	= 10;
+	timeout	 	= START_TIME_OUT;
 	steps_from_last = 0;
 	update_time = micros() + timeout;
 	pinMode(pin, OUTPUT);
@@ -13,17 +13,19 @@ StepMotor::StepMotor(int _pin) {
 StepMotor::StepMotor() {
 	pin = 0;
 	value = 0;
-	timeout = 10;
+	timeout = START_TIME_OUT;
 	update_time = micros() + timeout;
 	} //}}}
 
 /*   StepMotor::set_speed   * {{{ */
 void StepMotor::set_speed(int new_speed){
 	timeout = new_speed;
+	resetimer();
 	} //}}}
 /*   StepMotor::move   * {{{ */
 void StepMotor::move(long new_value){
 	value += new_value;
+	checked = false;
 	} //}}}
 
 /*   StepMotor::stop   * {{{ */
@@ -62,7 +64,10 @@ void StepMotor::runtime(void){
 	} //}}}
 /*   StepMotor::done   * {{{ */
 bool StepMotor::done(void){
-	if ( value == 0 ) return true;
+	if ( value == 0 && !checked) {
+		checked = true;
+		return true;
+		}
 	else return false;
 	} //}}}
 
