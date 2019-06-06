@@ -12,7 +12,7 @@
 #include "ShiftOut.h"
 #include <cstdint>
 #include "simplencoder.h"
-#include "stepmotor.h"
+#include "towavestepmotor.h"
 /*}}}*/
 
 /*Define Block{{{*/
@@ -48,12 +48,19 @@
 #define SM_SPEED             0x34
 #define SM_ENABLE            0x35
 #define SM_DIR               0x36
+#define SM_LONGS             0x37
 #define STEPDRIVERTIMEOUT     1112
 #define STEPDRIVERPIN01     PB9
 #define STEPDRIVERPIN02     PB8
 #define STEPDRIVERPIN03     PB7
 #define STEPDRIVERPIN04     PB6
 #define STEPDRIVERPIN05     PB5
+#define STEP_X		STEPDRIVERPIN01     
+#define STEP_Y		STEPDRIVERPIN02     
+#define STEP_Z		STEPDRIVERPIN03     
+#define STEP_A		STEPDRIVERPIN04     
+#define STEP_I		STEPDRIVERPIN05     
+#define STEP_R		STEPDRIVERPIN05     
 /*}}}*/
 //encounter comands{{{
 #define STARTECOUNTER    0x41
@@ -76,12 +83,12 @@ bool led_activ  = true;
 int max_state = MAX_STATS;
 LED test(LED_BUILTIN);
 /*}}}*/
-StepMotor smotors[] = {/*{{{*/
-								StepMotor(STEPDRIVERPIN01),
-								StepMotor(STEPDRIVERPIN02),
-								StepMotor(STEPDRIVERPIN03),
-								StepMotor(STEPDRIVERPIN04),
-								StepMotor(STEPDRIVERPIN05),
+ToWaveStepMotor smotors[] = {/*{{{*/
+								ToWaveStepMotor(STEPDRIVERPIN01),
+								ToWaveStepMotor(STEPDRIVERPIN02),
+								ToWaveStepMotor(STEPDRIVERPIN03),
+								ToWaveStepMotor(STEPDRIVERPIN04),
+								ToWaveStepMotor(STEPDRIVERPIN05),
 								};
 unsigned long stepDrivetime = 0;
 bool stepDriveMode = true;
@@ -208,6 +215,16 @@ void execute_command(void){
 			smotors[tag1].resetimer();
 			test.trige();
 			break;/*}}}*/
+		case SM_LONGS:/*{{{*/
+			Serial.print("Set longs for motor = ");
+			Serial.print(sspi.peek());
+			tag1 =  sspi.pull();
+			smotors[tag1].set_longs(sspi.peek());
+			Serial.print(", on = ");
+			Serial.println(sspi.pull());
+			smotors[tag1].resetimer();
+			test.trige();
+			break;/*}}}*/
 		case STARTECOUNTER:/*{{{*/
 			Serial.print("STARTE COUNTER ");
 			encodermode = true;
@@ -283,7 +300,7 @@ void setup() {/*{{{*/
 	shiftout.initpins();
    /* Read in and display the pin states at startup.  */
 	sinput.runtime();
-	shiftout.send16(0);
+	shiftout.send16(2048);
 //int perior =0;
 //for (int i = 0; i < 33000; i++) {
 //	if (perior == i) {
@@ -293,11 +310,14 @@ void setup() {/*{{{*/
 //	shiftout.send16(i);
 //	delay(10);
 //	}
-	
    pinMode(STEPDRIVERPIN01, OUTPUT);
    pinMode(STEPDRIVERPIN02, OUTPUT);
    pinMode(STEPDRIVERPIN03, OUTPUT);
    pinMode(STEPDRIVERPIN04, OUTPUT);
+	analogWrite(STEPDRIVERPIN01, LOW);
+	analogWrite(STEPDRIVERPIN02, LOW);
+	analogWrite(STEPDRIVERPIN03, LOW);
+	analogWrite(STEPDRIVERPIN04, LOW);
 	pinMode(ENCPIN1, INPUT);
 	pinMode(ENCPIN2, INPUT);
    attachInterrupt(digitalPinToInterrupt(ENCPIN1), encoder1, CHANGE );
@@ -327,15 +347,19 @@ void loop() {/*{{{*/
 		 sspi.addMSG(1, (unsigned int)sinput.oldPinValues); 
 		 }/*}}}*/
    /*Step Motrs runtime(){{{*/
-		for (int i = 0; i < 5; i++) {
+	//smotors[0].stop(100);
+	for (int i = 0; i < 5; i++) {
+			//smotors[i].stop(100);i error all is henging
 			smotors[i].runtime();
 			#ifdef DEBUGMSG_STEPMOTORDONE//{{{
 			print_on_done(i);
 			#endif /* DEBUGMSG_STEPMOTORDONE }}}*/			
-		}
+			}
 		/*}}}*/
-	if (encodermode && sencoder.have_data())/*{{{*/
+	/*
+	if (encodermode && sencoder.have_data()) {{{
 			shiftout.send16(sencoder.reset_uint());
+	*/
 		/*}}}*/
 	}/*}}}*/
 

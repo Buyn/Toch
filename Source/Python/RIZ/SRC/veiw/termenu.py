@@ -103,6 +103,7 @@ class TerMenu(object):# {{{
         print ( 'im '   , " isWaitingMsg") 
         print ( 'gm '   , " getOneMsg") 
         print ( 'rd  = ready ', " To ready Status") 
+        print ( 'leds', " Triger one shift out LED") 
         print("Encoder ON", "encon")
         print("Encoder OFF", "encoff")
         print("Step driver OFF", "stepooff")

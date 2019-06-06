@@ -6,8 +6,8 @@
 ***************************************
  *  }}}*/
 /* include bloc {{{*/
-#ifndef StepMotor_h
-#define StepMotor_h
+#ifndef ToWaveStepMotor_h
+#define ToWaveStepMotor_h
 // the #include statment and code go here...
 #if ARDUINO >= 100
 #include "Arduino.h"
@@ -20,12 +20,16 @@
 #define START_TIME_OUT 1000
 /*}}}*/
 // encounter calss{{{
-class StepMotor {
+class ToWaveStepMotor {
  public: // {{{
-	StepMotor(int );
-	StepMotor();
+	ToWaveStepMotor(int );
+	ToWaveStepMotor();
 	void move(long);
 	void set_speed(int);
+	void set_timeout(int);
+	void set_longs(int);
+	unsigned long get_timeout();
+	unsigned long get_longs();
 	void set_enable(int);
 	void resetimer(void);
 	void stop(void);
@@ -40,10 +44,9 @@ class StepMotor {
 #ifndef UNITTEST/*{{{*/
  private:
 #endif /* UNITTEST }}}*/
-	unsigned long update_time, value, steps_from_last;
+	unsigned long update_time, value, steps_from_last, timeout, longs;
 	int pin;
 	bool enable, checked;
-	unsigned long timeout;
 	void step(void);
 	/*}}}*/
  };
