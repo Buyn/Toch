@@ -44,6 +44,12 @@ class StepMotor(object):
             return self.leds.ledOff(self.getTag(tag)[DIR]) 
         if isInt(steps) == 1:# {{{
             return self.leds.ledOn(self.getTag(tag)[DIR]) 
+
+    
+    def setLongs(self, tag, steps):
+        return self.spi.execute([isInt(steps), self.getTag(tag)[TAG], SM_LONGS])
+    
+    
 #         return self.spi.execute([isInt(steps), self.getTag(tag), SM_DIR])
     
     

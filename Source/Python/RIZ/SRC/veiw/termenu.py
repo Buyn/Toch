@@ -116,6 +116,7 @@ class TerMenu(object):# {{{
         print('dir - ',"Step motor dir is set to ")
         print("enb - Step motor  enable state is set to ")
         print("spd - Move step motor speed is set ")
+        print("longs - Step motor [] Long of pulse is set to")
         # }}}
 
     def setReadyStatus(self):# {{{
@@ -232,8 +233,11 @@ class TerMenu(object):# {{{
             print("Step motor [", elm_var[1], "] enable state is set to =", elm_var[2])
             return self.smotors.setEnable(elm_var[1],elm_var[2])
         if (elm_var[0] == 'spd'):
-            print("Move step motor [", elm_var[1], "] speed is set =", elm_var[2])
+            print("Step motor [", elm_var[1], "] speed is set =", elm_var[2])
             return self.smotors.setSpeed(elm_var[1],elm_var[2])
+        if (elm_var[0] == 'longs'):
+            print("Step motor [", elm_var[1], "] Long of pulse is set =", elm_var[2])
+            return self.smotors.setLongs(elm_var[1],elm_var[2])
         print("No such Step motor Command")
         return False
     

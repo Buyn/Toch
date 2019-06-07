@@ -73,6 +73,8 @@ SM_STEP             = 0x33
 SM_SPEED            = 0x34
 SM_ENABLE           = 0x35
 SM_DIR              = 0x36
+SM_LONGS            = 0x37
+
 #encounter comands
 STARTECOUNTER    =0x41
 STOPECOUNTER     =0x42
