@@ -106,8 +106,6 @@ class TerMenu(object):# {{{
         print ( 'leds', " Triger one shift out LED") 
         print("Encoder ON", "encon")
         print("Encoder OFF", "encoff")
-        print("Step driver OFF", "stepooff")
-        print("Step driver ON", "stepon")
         print("step motor comands - Exempls:")
         print("step dir x 1")
         print("step go 1 100")
@@ -117,6 +115,8 @@ class TerMenu(object):# {{{
         print("enb - Step motor  enable state is set to ")
         print("spd - Move step motor speed is set ")
         print("longs - Step motor [] Long of pulse is set to")
+        print("pos - Step motor [] position is set to")
+        print("mnt - Step motor [] maintanse is start")
         # }}}
 
     def setReadyStatus(self):# {{{
@@ -238,6 +238,12 @@ class TerMenu(object):# {{{
         if (elm_var[0] == 'longs'):
             print("Step motor [", elm_var[1], "] Long of pulse is set =", elm_var[2])
             return self.smotors.setLongs(elm_var[1],elm_var[2])
+        if (elm_var[0] == 'pos'):
+            print("Step motor [", elm_var[1], "] position is set to =", elm_var[2])
+            return self.smotors.setPosition(elm_var[1],elm_var[2])
+        if (elm_var[0] == 'mnt'):
+            print("Step motor [", elm_var[1], "] maintanse is start =", elm_var[2])
+            return self.smotors.maintanse(elm_var[1],elm_var[2])
         print("No such Step motor Command")
         return False
     

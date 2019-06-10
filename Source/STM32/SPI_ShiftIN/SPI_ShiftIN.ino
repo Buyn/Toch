@@ -16,17 +16,20 @@
 /*}}}*/
 
 /*Define Block{{{*/
+/*LEDS LINE{{{*/
 #define RBG_PIN_R PA8   // пин для канала R
 #define RBG_PIN_G PA9   // пин для канала G
 #define RBG_PIN_B PA10  // пин для канала B
-//debug msges 
+#define LED_MAX_VALUE 255    
+#define MAX_STATS 3    
+#define FADESPEED 10   
+/*}}}*/
+//debug msges {{{
 //#define	DEBUGMSG_LEDLINE
 //#define	DEBUGMSG_SHIFTINFO
 #define	DEBUGMSG_STEPMOTORDONE
 //#define SPI_CS_PIN PA4   // пин для канала B
-#define LED_MAX_VALUE 255    
-#define MAX_STATS 3    
-#define FADESPEED 10   
+/*}}}*/
 //#define STEKSIZE 30   
 #define TITLEABOUT "SPI LED v 0.1"
 //Commands list
@@ -42,6 +45,7 @@
 //ShiftOut comands
 #define SETSHIFTOUT     0x21
 //Step Drivers{{{
+/*list cods comands{{{*/
 #define STARTDRIVER    0x31
 #define STOPDRIVER     0x32
 #define SM_STEP              0x33
@@ -49,6 +53,10 @@
 #define SM_ENABLE            0x35
 #define SM_DIR               0x36
 #define SM_LONGS             0x37
+#define SM_POS               0x38
+#define SM_MNT               0x39
+/*}}}*/
+/*step motors pins{{{*/
 #define STEPDRIVERTIMEOUT     1112
 #define STEPDRIVERPIN01     PB9
 #define STEPDRIVERPIN02     PB8
@@ -61,6 +69,7 @@
 #define STEP_A		STEPDRIVERPIN04     
 #define STEP_I		STEPDRIVERPIN05     
 #define STEP_R		STEPDRIVERPIN05     
+/*}}}*/
 /*}}}*/
 //encounter comands{{{
 #define STARTECOUNTER    0x41
@@ -290,7 +299,7 @@ void setup() {/*{{{*/
 	//enable serial data print
 	Serial.begin(115200);
 	test.trige();
-	//delay(3000);
+	delay(3000);
 	setupLEDLine();
 	sspi.spinit();
 	Serial.println(TITLEABOUT);
@@ -310,22 +319,36 @@ void setup() {/*{{{*/
 //	shiftout.send16(i);
 //	delay(10);
 //	}
+	setup_StepMotors();
+	//pinMode(ENCPIN1, INPUT);
+	//pinMode(ENCPIN2, INPUT);
+   //attachInterrupt(digitalPinToInterrupt(ENCPIN1), encoder1, CHANGE );
+   //attachInterrupt(digitalPinToInterrupt(ENCPIN2), encoder2, CHANGE );
+   //digitalWrite(ENCPIN1,HIGH); //these pins do not have pull up resistors on an attiny...
+   //digitalWrite(ENCPIN2,HIGH); //you must pull them up on the board.
+	Serial.println("End Setup");
+	}/*}}}*/
+
+/*   setup_StepMotors   * {{{ */
+void setup_StepMotors(void){
+	Serial.println("step pins start int");
    pinMode(STEPDRIVERPIN01, OUTPUT);
    pinMode(STEPDRIVERPIN02, OUTPUT);
    pinMode(STEPDRIVERPIN03, OUTPUT);
    pinMode(STEPDRIVERPIN04, OUTPUT);
-	analogWrite(STEPDRIVERPIN01, LOW);
-	analogWrite(STEPDRIVERPIN02, LOW);
-	analogWrite(STEPDRIVERPIN03, LOW);
-	analogWrite(STEPDRIVERPIN04, LOW);
-	pinMode(ENCPIN1, INPUT);
-	pinMode(ENCPIN2, INPUT);
-   attachInterrupt(digitalPinToInterrupt(ENCPIN1), encoder1, CHANGE );
-   attachInterrupt(digitalPinToInterrupt(ENCPIN2), encoder2, CHANGE );
-   digitalWrite(ENCPIN1,HIGH); //these pins do not have pull up resistors on an attiny...
-   digitalWrite(ENCPIN2,HIGH); //you must pull them up on the board.
-	Serial.println("End Setup");
-	}/*}}}*/
+   pinMode(STEPDRIVERPIN05, OUTPUT);
+	Serial.println("step pins setap to output");
+	digitalWrite(STEPDRIVERPIN01, LOW);
+	digitalWrite(STEPDRIVERPIN02, LOW);
+	digitalWrite(STEPDRIVERPIN03, LOW);
+	digitalWrite(STEPDRIVERPIN04, LOW);
+	digitalWrite(STEPDRIVERPIN05, LOW);
+	Serial.println("step pins int");
+	smotors[0] = ToWaveStepMotor(STEPDRIVERPIN01);
+	Serial.println("step motor x add");
+	for (int i = 0; i < 5; i++) smotors[i].stop(10000);//i error all is henging
+	Serial.println("step motors 100 movs add");
+	} //}}}
 
 void loop() {/*{{{*/
 	if (led_activ && led_Line.done()) {/*{{{*/
@@ -349,7 +372,7 @@ void loop() {/*{{{*/
    /*Step Motrs runtime(){{{*/
 	//smotors[0].stop(100);
 	for (int i = 0; i < 5; i++) {
-			//smotors[i].stop(100);i error all is henging
+			//smotors[i].stop(100);//i error all is henging
 			smotors[i].runtime();
 			#ifdef DEBUGMSG_STEPMOTORDONE//{{{
 			print_on_done(i);

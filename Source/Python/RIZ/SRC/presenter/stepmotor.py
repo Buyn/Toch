@@ -48,9 +48,20 @@ class StepMotor(object):
     
     def setLongs(self, tag, steps):
         return self.spi.execute([isInt(steps), self.getTag(tag)[TAG], SM_LONGS])
+
+    
+    def setPosition(self, tag, steps):
+        return self.spi.execute([isInt(steps), self.getTag(tag)[TAG], SM_POS])
+
+    
+    def maintanse(self, tag, steps):
+        return self.spi.execute([isInt(steps), self.getTag(tag)[TAG], SM_MNT])
     
     
-#         return self.spi.execute([isInt(steps), self.getTag(tag), SM_DIR])
+    
+    
+    
+    
     
     
     
