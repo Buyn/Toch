@@ -103,6 +103,8 @@ void ToWaveStepMotor::step(void){
 	if ( value == 0) return;
 	analogWrite(pin, HIGH);
 	value--;
+	if (posUp) pos++;
+	else pos--;
 	steps_from_last++;
 	#ifdef DEBAG_STEP_LONGS//{{{
 	delayMicroseconds(DEBAG_STEP_LONGS);
@@ -115,6 +117,8 @@ void ToWaveStepMotor::on(void) {
 	digitalWrite(pin, HIGH);
 	enable = true;
 	value--;
+	if (posUp) pos++;
+	else pos--;
 	steps_from_last++;
 	} //}}}
 /*   ToWaveStepMotor::off   * {{{ */

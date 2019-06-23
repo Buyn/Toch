@@ -27,6 +27,7 @@ void ShiftIn::update(void){
 		}
 	} //}}}
 
+
 /*   ShiftIn::isOn   * {{{ */
 bool ShiftIn::isOn(int pin){
 	return bitRead(bytesVal , pin); 

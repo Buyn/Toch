@@ -6,7 +6,7 @@ POStepMotor::POStepMotor(ShiftIn * _shIn, ShiftOut * _shOt, SlaveSPI * _spi){
 	shOt	= _shOt; 
 	spi 	= _spi;
 	size 	= 0;
-	sm = (StepMotor *)malloc ( sizeof (StepMotor) * ARRMAX);
+	sm = (ToWaveStepMotor *)malloc ( sizeof (ToWaveStepMotor) * ARRMAX);
 	} //}}}
 
 /*   POStepMotor::addMotor   * {{{ */
@@ -15,8 +15,8 @@ void POStepMotor::addMotor(int _steppin,int _zeropin, int _dirpin, bool _isDirTo
 // TODO или хоть добавить сообшения перед смертью
 	size++;
 	int tmp = size -1;
-	sm = (StepMotor *) realloc (sm, sizeof (StepMotor) * size);
-	sm [tmp] = StepMotor(_steppin);
+	sm = (ToWaveStepMotor *) realloc (sm, sizeof (ToWaveStepMotor) * size);
+	sm [tmp] = ToWaveStepMotor(_steppin);
 	sm [tmp].zeropin = _zeropin ;
 	sm [tmp].dirpin = _dirpin ;
 	sm [tmp].isDirToZero = _isDirToZero;
@@ -26,7 +26,7 @@ void POStepMotor::addMotor(int _steppin,int _zeropin, int _dirpin, bool _isDirTo
 	} //}}}
 
 /*   POStepMotor::getMotor   * {{{ */
-StepMotor * POStepMotor::getMotor(int motorNum){
+ToWaveStepMotor * POStepMotor::getMotor(int motorNum){
 	return & sm[motorNum];
 	} //}}}
 
@@ -84,14 +84,14 @@ unsigned long POStepMotor::gotoPOS(int motorNum, unsigned long newPos){
 	} //}}}
 
 /*   POStepMotor::setDirToZero   * {{{ */
-bool POStepMotor::setDirToZero(StepMotor * pSM){
+bool POStepMotor::setDirToZero(ToWaveStepMotor * pSM){
 	if (pSM->isDirToZero) shOt->on( pSM->dirpin);
 	else  shOt->off( pSM->dirpin);
 	pSM->posUp = false;
 	return pSM->isDirToZero;
 	} //}}}
 /*   POStepMotor::setDirFromZero   * {{{ */
-bool POStepMotor::setDirFromZero(StepMotor * pSM){
+bool POStepMotor::setDirFromZero(ToWaveStepMotor * pSM){
 	if (!pSM->isDirToZero) shOt->on( pSM->dirpin);
 	else  shOt->off( pSM->dirpin);
 	pSM->posUp = true;

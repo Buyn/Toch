@@ -39,12 +39,15 @@ class ToWaveStepMotor {
 	bool done(void);
 	void on(void );
 	void off(void );
+	int dirpin, enablepin, zeropin;
+	bool isDirToZero, isMaintenance, posUp;
+	unsigned long pos, steps_from_last;
 	/*}}}*/
 	/* private: * {{{*/
 #ifndef UNITTEST/*{{{*/
  private:
 #endif /* UNITTEST }}}*/
-	unsigned long update_time, value, steps_from_last, timeout, longs;
+	unsigned long update_time, value, timeout, longs;
 	int pin;
 	bool enable, checked;
 	void step(void);
