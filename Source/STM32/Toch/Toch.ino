@@ -323,7 +323,7 @@ void setup() {/*{{{*/
 	//enable serial data print
 	Serial.begin(115200);
 	test.trige();
-	delay(3000);
+	//delay(3000);
 	setupLEDLine();
 	sspi.spinit();
 	Serial.println(TITLEABOUT);
@@ -377,11 +377,8 @@ void setup_StepMotors(void){
 	posSM.addMotor(STEP_Y, ZERO_Y, DIR_Y, false);
 	posSM.startManteins(0);
 	posSM.startManteins(1);
-	//shiftout.on(3);
-	//shiftout.on(6);
-	//shiftout.on(5);
-	//shiftout.on(4);
-	//shiftout.on(8);
+	posSM.getMotor(0)->set_longs(1);
+	posSM.getMotor(0)->set_timeout(50);
 	//shiftout.on(11);
 	//shiftout.send16(1);
 	Serial.println("step motor x add");
