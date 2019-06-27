@@ -69,13 +69,13 @@ void ShiftOut::allOff(){
 
 /*   ShiftOut::isOn   * {{{ */
 bool ShiftOut::isOn(int pin){
-	return bitRead(oldPinValues , pin); 
+	return bitRead(oldPinValues , pin - 1); 
 	} //}}}
 
 /*   ShiftOut::on   * {{{ */
 BYTES_VAL_T ShiftOut::on(int pin){
 	tmpPinValues = oldPinValues;
-	bitSet(tmpPinValues, pin);
+	bitSet(tmpPinValues, pin );
 	send16(tmpPinValues);
 	return oldPinValues; 
 	} //}}}
@@ -83,7 +83,7 @@ BYTES_VAL_T ShiftOut::on(int pin){
 /*   ShiftOut::off   * {{{ */
 BYTES_VAL_T ShiftOut::off(int pin){
 	tmpPinValues = oldPinValues;
-	bitClear(tmpPinValues, pin);
+	bitClear(tmpPinValues, pin );
 	send16(tmpPinValues);
 	return oldPinValues; 
 	} //}}}

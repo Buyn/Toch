@@ -39,7 +39,7 @@ void POStepMotor::manteins(int motorNum){
 	tmpSM = getMotor(motorNum);
 	if(!tmpSM->isMaintenance)return ;
 	//TODO Function add shIn->Update(micros from last update)
-	if (!shIn->isOn(tmpSM->zeropin) ){
+	if (shIn->isOn(tmpSM->zeropin) ){
 		tmpSM->isMaintenance		= true;
 		tmpSM->pos 					= 10;
 		tmpSM->stop(100);

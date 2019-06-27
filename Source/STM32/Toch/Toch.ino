@@ -66,12 +66,13 @@
 #define STEPDRIVERPIN04     PB6
 #define STEPDRIVERPIN05     PB5
 #define STEP_X		STEPDRIVERPIN01     
-#define DIR_X		5     
-#define ZERO_X		14     
+#define DIR_X		0     
+#define ZERO_X		9     
 #define STEP_Y		STEPDRIVERPIN02     
 #define DIR_Y		2     
-#define ZERO_Y		15     
+#define ZERO_Y		8     
 #define STEP_Z		STEPDRIVERPIN03     
+#define ZERO_Z		2     
 #define STEP_A		STEPDRIVERPIN04     
 #define STEP_I		STEPDRIVERPIN05     
 #define STEP_R		STEPDRIVERPIN05     
@@ -344,6 +345,7 @@ void setup() {/*{{{*/
 //	delay(10);
 //	}
 	setup_StepMotors();
+	//shiftout.on(15);
 	//pinMode(ENCPIN1, INPUT);
 	//pinMode(ENCPIN2, INPUT);
    //attachInterrupt(digitalPinToInterrupt(ENCPIN1), encoder1, CHANGE );
@@ -370,11 +372,18 @@ void setup_StepMotors(void){
 	Serial.println("step pins int");
 	// copy of main global initializiation del it
 	//smotors[0] = ToWaveStepMotor(STEPDRIVERPIN01);
-	posSM.addMotor(STEP_X, ZERO_X, DIR_X, false);//a49(true) on big (false)
-	posSM.addMotor(STEP_Y, ZERO_Y, DIR_Y, true);
+	//posSM.addMotor(STEP_X, ZERO_X, DIR_X, false);//a49(true) on big (false)
+	posSM.addMotor(STEP_X, ZERO_X, DIR_X, true);//a49(true) on big (false)
+	posSM.addMotor(STEP_Y, ZERO_Y, DIR_Y, false);
 	posSM.startManteins(0);
 	posSM.startManteins(1);
-	//shiftout.send16(512);
+	//shiftout.on(3);
+	//shiftout.on(6);
+	//shiftout.on(5);
+	//shiftout.on(4);
+	//shiftout.on(8);
+	//shiftout.on(11);
+	//shiftout.send16(1);
 	Serial.println("step motor x add");
 	//for (int i = 0; i < 5; i++) smotors[i].stop(10000);//i error all is henging
 	Serial.println("step motors 100 movs add");
@@ -414,8 +423,39 @@ void loop() {/*{{{*/
 			shiftout.send16(sencoder.reset_uint());
 	*/
 		/*}}}*/
+	//testloop();
 	}/*}}}*/
 
+/*   testloop   * {{{ */
+void testloop(void){
+		testOnOff();
+		//testSenAdd();
+		//testSenShift();
+	} //}}}
+/*   testOnOff   * {{{ */
+void testOnOff(void){
+		for (int i = 7; i <= 15; i++) {
+			shiftout.on(i);
+			delay(1000);
+			shiftout.off(i);
+		}
+	} //}}}
+
+/*   testOnOff   * {{{ */
+void testSenAdd(void){
+		for (int i = 0; i < 66666; i++) {
+			shiftout.send16(i);
+			delay(10);
+		}
+	} //}}}
+
+/*   testSenShift   * {{{ */
+void testSenShift(void){
+		for (int i = 0; i < 16; i++) {
+			shiftout.send16(1<<i);
+			delay(1000);
+		}
+	} //}}}
 /*   print_on_done   *{{{ */
 #ifdef DEBUGMSG_STEPMOTORDONE
 void print_on_done(int index){
