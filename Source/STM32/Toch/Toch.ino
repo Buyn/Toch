@@ -218,6 +218,7 @@ void execute_command(void){
 			Serial.print("Set move for motor = ");
 			Serial.print(sspi.peek());
 			smotors[sspi.pull()].move(sspi.peek());
+			posSM.getMotor(sspi.pull())->move(sspi.peek());
 			Serial.print(", on = ");
 			Serial.println(sspi.pull());
 			test.trige();
@@ -226,20 +227,20 @@ void execute_command(void){
 			Serial.print("Set speed for motor = ");
 			Serial.print(sspi.peek());
 			tag1 =  sspi.pull();
-			smotors[tag1].set_speed(sspi.peek());
+			posSM.getMotor(tag1)->set_speed(sspi.peek());
 			Serial.print(", on = ");
 			Serial.println(sspi.pull());
-			smotors[tag1].resetimer();
+			posSM.getMotor(tag1)->resetimer();
 			test.trige();
 			break;/*}}}*/
 		case SM_LONGS:/*{{{*/
 			Serial.print("Set longs for motor = ");
 			Serial.print(sspi.peek());
 			tag1 =  sspi.pull();
-			smotors[tag1].set_longs(sspi.peek());
+			posSM.getMotor(tag1)->set_longs(sspi.peek());
 			Serial.print(", on = ");
 			Serial.println(sspi.pull());
-			smotors[tag1].resetimer();
+			posSM.getMotor(tag1)->resetimer();
 			test.trige();
 			break;/*}}}*/
 		case SM_POS:/*{{{*/
