@@ -15,6 +15,7 @@
 #include "towavestepmotor.h"
 #include "postepmotor.h"
 #include "stepmotor.h"
+#include "EnScaner.h"
 /*}}}*/
 
 /*Define Block{{{*/
@@ -115,6 +116,11 @@ unsigned long stepDrivetime = 0;
 bool stepDriveMode = true;
 POStepMotor posSM = POStepMotor( &sinput, &shiftout, &sspi);
 								/*}}}*/
+EnScaner eScan(
+				& sencoder,
+				& sspi,
+				& posSM,
+				& loop);
 /*}}}*/
 
 /*   setupLEDLine   * {{{ */
@@ -138,6 +144,7 @@ void setupLEDLine(void){
 	test.trige();
 	led_Line.set_speed(FADESPEED);
 	} //}}}
+
 
 /*   execute_command   *  {{{ */
 void execute_command(void){
