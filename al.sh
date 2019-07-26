@@ -5,4 +5,5 @@ git config --global user.email "buyn.tex@gmail.com"
 alias st="git status"
 alias gh="git push"
 alias gad="git add ."
+alias ac="git commit"
 
