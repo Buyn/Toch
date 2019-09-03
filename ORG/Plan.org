@@ -431,3 +431,22 @@ void loop ()
 ** Добавить тесты
 ** Начать переписоввать проект под кели 
   зета талк ненси
+* Датчики
+** проверяем
+*** цвет
+ - apds 9960  датчик цвета 
+ - TCS230 датчик цвета 
+****  скореей всего не подходят
+	  - vl6180 понимает только отенки серого
+	  https://learn.adafruit.com/adafruit-vl53l0x-micro-lidar-distance-sensor-breakout/arduino-code
+
+	  https://learn.sparkfun.com/tutorials/vl6180-hookup-guide/all
+	  - vl53l0x-v2 - понимает только отенки серого
+	  https://learn.adafruit.com/adafruit-vl53l0x-micro-lidar-distance-sensor-breakout/arduino-code
+** растояние
+*** pololu 
+Carrier with Sharp GP2Y0A60SZLF Analog Distance Sensor
+(sds01a) - 
+*** звуковой 
+ датчик звука
+ найти старый скетч
